@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "name": "Allan Clarke",
+      "login": "allan",
+      "slug": "allan",
+      "pwd": "1"
+    },
+    {
+      "name": "Graham Nash",
+      "login": "gram",
+      "slug": "gram",
+      "pwd": "1"
+    },
+    {
+      "name": "Tony Hicks",
+      "login": "tony",
+      "slug": "tony",
+      "pwd": "1"
+    },
+    {
+      "name": "Bobby Elliott",
+      "login": "bob",
+      "slug": "bob",
+      "pwd": "1"
+    },
+    {
+      "name": "Terry Sylvester",
+      "login": "terry",
+      "slug": "terry",
+      "pwd": "1"
+    }
+  ]
+}
