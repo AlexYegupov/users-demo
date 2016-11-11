@@ -193,7 +193,8 @@ function checkAuth(router) {
 app.post('/api/session', function(req, res) {
   const { login, pwd } = req.body
   let user = Users.login(login, pwd)
-  if (!user) return res.status(401).end()
+  if (!user) return res.status(401).json({'message': 'Wrong credentials'}).end()
+
   req.session.user = user
 
   //req.session.cookie

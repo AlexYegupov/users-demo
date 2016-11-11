@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import Explore from '../components/Explore'
+//import Explore from '../components/Explore'
 import { resetErrorMessage } from '../actions'
 
 class App extends Component {
@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   render() {
-    const { children, inputValue } = this.props
+    const { children, /* inputValue*/ } = this.props
     return (
       <div>
           {/* <Explore value={inputValue}

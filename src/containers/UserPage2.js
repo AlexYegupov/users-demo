@@ -5,6 +5,7 @@ import { login, logout } from '../actions/authActions'
 import { loadUsers } from '../actions/usersActions'
 
 import User2 from '../components/User2'
+import LU from '../components/LoggedUser'
 import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
@@ -28,7 +29,6 @@ class UserPage2 extends Component {
     // starredRepoOwners: PropTypes.array,
     users: PropTypes.array.isRequired,
     loggedUser: PropTypes.object,
-
     loadUsers: PropTypes.func.isRequired,
     // loadUser: PropTypes.func,
     // loadStarred: PropTypes.func
@@ -89,13 +89,17 @@ class UserPage2 extends Component {
   }
 
   render() {
-    const { users } = this.props
+    const { users, loggedUser } = this.props
 
     console.log('RENDER', this.props)
 
     return (
       <div>
-        <p>Logged as: {this.props.loggedUser ? this.props.loggedUser.name : ''} </p>
+        <LU ss="mystring" ii={45} />
+
+        <Link to={"/login"}>Login</Link>
+
+        <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
         <button onClick={this.login.bind(this)} >Login</button>
         <button onClick={this.logout.bind(this)} >Logout</button>
 
@@ -110,12 +114,12 @@ class UserPage2 extends Component {
                 </td>
                 <td>
                   <Link to={`users/${user.slug}`}>
-                    <button value="edit">Edit</button>
+                    <button value="edit" disabled={!loggedUser}>
+                      Edit
+                    </button>
                   </Link>
-                  <button
-                      value="delete"
-                      disabled={false}
-                      onClick={this.deleteClick.bind(this, user.slug)}>
+                  <button value="delete" disabled={!loggedUser}
+                          onClick={this.deleteClick.bind(this, user.slug)}>
                     Delete
                   </button>
                 </td>

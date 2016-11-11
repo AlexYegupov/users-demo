@@ -1,20 +1,20 @@
-import { Schema, arrayOf, normalize } from 'normalizr'
-import { camelizeKeys } from 'humps'
+//import { Schema, arrayOf, normalize } from 'normalizr'
+//import { camelizeKeys } from 'humps'
 
-// Extracts the next page URL from Github API response.
-const getNextPageUrl = response => {
-  const link = response.headers.get('link')
-  if (!link) {
-    return null
-  }
-
-  const nextLink = link.split(',').find(s => s.indexOf('rel="next"') > -1)
-  if (!nextLink) {
-    return null
-  }
-
-  return nextLink.split(';')[0].slice(1, -1)
-}
+// // Extracts the next page URL from Github API response.
+// const getNextPageUrl = response => {
+//   const link = response.headers.get('link')
+//   if (!link) {
+//     return null
+//   }
+// 
+//   const nextLink = link.split(',').find(s => s.indexOf('rel="next"') > -1)
+//   if (!nextLink) {
+//     return null
+//   }
+// 
+//   return nextLink.split(';')[0].slice(1, -1)
+// }
 
 // TODO: normalize
 const API_ROOT = 'https://api.github.com/'
@@ -71,27 +71,40 @@ const callApi2 = (endpoint, fetchOptions) => {
   return fetch(fullUrl, fetchOptions)
     .then(
       response => {
-        //console.log('FE2:', response, response.json())
-        return response.json().then(json => {
 
-          console.log('FETCHED2:', json, json[0])
+        // if (!response.ok)
+        //   return response
 
-          if (!response.ok) {
-            return Promise.reject(json)
-          }
+        console.log('FE2:', response)
 
-          //const nextPageUrl = getNextPageUrl(response)
 
-          //json = camelizeKeys(json)
-          //if (schema) { json = normalize(json, schema) }
+        return response.json()
+          .then(json => {
 
-          //?? let r = Object.assign( {}, json, /* { nextPageUrl }*/ )
-          //return r
+            console.log('FETCHED2:', response)
 
-          return json
-        })
+            if (!response.ok) {
+              return Promise.reject(json) // TODO: process also error status
+            }
+
+            //const nextPageUrl = getNextPageUrl(response)
+
+            //json = camelizeKeys(json)
+            //if (schema) { json = normalize(json, schema) }
+
+            //?? let r = Object.assign( {}, json, /* { nextPageUrl }*/ )
+            //return r
+
+            return json
+          })
+          // .catch( error => {
+          //   console.log('errr', error);
+          //   return {'EE': 'error'}
+          // })
+
       }
     )
+    //.catch( error => console.error('TODO: callApi2 fetch error', error) )
 }
 
 
@@ -212,7 +225,7 @@ export const api2 = store => next => action => {
   const actionWith = data => {
     const finalAction = Object.assign({}, action, data)
     delete finalAction[CALL_API2]
-    console.log('AW', action, data, finalAction)
+    //console.log('AW', action, data, finalAction)
     return finalAction
   }
 
@@ -220,14 +233,21 @@ export const api2 = store => next => action => {
 
   next(actionWith({ type: requestType }))
 
-  return callApi2(endpoint, fetchOptions).then(
-    response => next(actionWith({
-      response,
-      type: successType
-    })),
-    error => next(actionWith({
-      type: failureType,
-      error: error.message || 'Something bad happened'
-    }))
-  )
+  return callApi2(endpoint, fetchOptions)
+    .then(
+
+      response => next(actionWith({
+        response,
+        type: successType
+      })),
+
+      error => {
+        return next(actionWith({
+          type: failureType,
+          error: error.message || 'Something bad happened'
+        }))
+      }
+
+    )
+    //.catch( error => ({'E2': error}) )
 }
