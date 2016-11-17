@@ -53,6 +53,15 @@ import { connect } from 'react-redux'
 
 class LoggedUser extends React.Component {
 
+  static propTypes = {
+    loggedUser: PropTypes.shape({
+      login: PropTypes.string.isRequired,
+      //avatarUrl: PropTypes.string.isRequired,
+      name: PropTypes.string
+    }).isRequired
+  }
+
+
   handleClick() {
     this.props.dispatch({ type: 'TEST' })
     //this.props.dispatch
@@ -61,11 +70,20 @@ class LoggedUser extends React.Component {
   }
 
   render() {
-    return <div>aaa bbb
 
-    <button onClick={this.handleClick.bind(this)}>theButton</button>
-
-    </div>
+    return <div> LLL </div>
+    /* 
+     *     if (this.props.loggedUser) {
+     *       return <div>
+     *         Logged user: {this.props.loggedUser || ''}
+     *       </div>
+     *     } else {
+     *       return <div>
+     *         <Link to={"/login"}>Login</Link>
+     *       </div>
+     *     }
+     *     // <button onClick={this.handleClick.bind(this)}>theButton</button>
+     * */
   }
 }
 
@@ -74,4 +92,10 @@ class LoggedUser extends React.Component {
 
 //export default LoggedUser
 
-export default connect()(LoggedUser)
+export default connect(
+  /* (state, ownProps) => {
+   *   return {
+   *     loggedUser: state.auth.user
+   *   }
+   * }*/
+)(LoggedUser)

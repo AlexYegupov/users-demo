@@ -2,14 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
-import { loadUsers } from '../actions/usersActions'
+import { loadUsers, loadUser } from '../actions/usersActions'
 
 import User2 from '../components/User2'
-//import LU from '../components/LoggedUser'
+import LU from '../components/LoggedUser'
 import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 import { Link } from 'react-router'
+
+
+// TODO: refactor
+import { getUserInfo } from '../actions/authActions'
 
 //const loadData = ({ login, loadUser, loadStarred }) => {
 const loadData = ({ loadUsers }) => {
@@ -19,7 +23,7 @@ const loadData = ({ loadUsers }) => {
   //loadStarred(login)
 }
 
-class UserPage2 extends Component {
+class UserDetailsPage extends Component {
   static propTypes = {
 
     // login: PropTypes.string,
@@ -30,6 +34,7 @@ class UserPage2 extends Component {
     users: PropTypes.array.isRequired,
     loggedUser: PropTypes.object,
     loadUsers: PropTypes.func.isRequired,
+    loadUser: PropTypes.func.isRequired,
     // loadUser: PropTypes.func,
     // loadStarred: PropTypes.func
     login: PropTypes.func,
@@ -39,7 +44,9 @@ class UserPage2 extends Component {
   componentWillMount() {
     console.log('CWM')
     //console.log('Cookie:', document.cookie)
-    loadData(this.props)
+    //loadData(this.props)
+
+    this.props.loadUser(this.props.params.slug)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,15 +102,20 @@ class UserPage2 extends Component {
 
     return (
       <div>
-        {/* <LU ss="mystring" ii={45} /> */}
+        <h3> {this.props.params.login.toLowerCase()} details: </h3>
+        <LU ss="mystring" ii={45} />
+
+
+
 
         {/* <Link to={"/login"}>Login</Link> */}
 
-        <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
+        {/* <p>Logged as: { loggedUser ? loggedUser.name : ''} </p> */}
         <button onClick={this.login.bind(this)} >Login</button>
         <button onClick={this.logout.bind(this)} >Logout</button>
 
         <h3>Users:</h3>
+
         <button onClick={this.createClick.bind(this)} >Create</button>
         <table>
           <tbody>
@@ -180,6 +192,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     users: state.users.users,
     loggedUser: state.auth.user
+    : state.
   }
 }
 
@@ -191,5 +204,6 @@ export default connect(
     //loadStarred
     login,
     logout
-  }
-)(UserPage2)
+  },
+  { loadUser }
+)(UserDetailsPage)

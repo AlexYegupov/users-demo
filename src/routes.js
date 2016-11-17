@@ -6,6 +6,7 @@ import UserPage2 from './containers/UserPage2'
 import LoginPage from './containers/LoginPage'
 //import TestPage from './containers/TestPage'
 import RepoPage from './containers/RepoPage'
+//import UserDetailsPage from './containers/UserDetailsPage'
 
 
 export default <Route path="/" component={App}>
@@ -17,6 +18,8 @@ export default <Route path="/" component={App}>
  *        component={TestPage} />*/}
   <Route path="/users"
          component={UserPage2} />
+{/* <Route path="/users/:slug"
+ *        component={UserDetailsPage} />*/}
   <Route path="/login"
          component={LoginPage} />
 </Route>

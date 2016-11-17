@@ -4,22 +4,23 @@ import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
 import { loadUsers } from '../actions/usersActions'
 
-import User2 from '../components/User2'
-//import LU from '../components/LoggedUser'
+//import User2 from '../components/User2'
 import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 import { Link } from 'react-router'
+
+//import { push } from 'react-router-redux'
 
 //const loadData = ({ login, loadUser, loadStarred }) => {
 const loadData = ({ loadUsers }) => {
   console.log('loadData2')
   loadUsers()
   //loadUser(login, [ 'name' ])
-  //loadStarred(login)
+  //loadStarred(login)\\
 }
 
-class UserPage2 extends Component {
+class LoginPage extends Component {
   static propTypes = {
 
     // login: PropTypes.string,
@@ -29,6 +30,8 @@ class UserPage2 extends Component {
     // starredRepoOwners: PropTypes.array,
     users: PropTypes.array.isRequired,
     loggedUser: PropTypes.object,
+    loginError: PropTypes.string,
+
     loadUsers: PropTypes.func.isRequired,
     // loadUser: PropTypes.func,
     // loadStarred: PropTypes.func
@@ -36,15 +39,29 @@ class UserPage2 extends Component {
     logout: PropTypes.func,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {login: '', pwd: ''}
+    //this.handleLoginClick = this.handleLoginClick.bind(this)
+  }
+
   componentWillMount() {
-    console.log('CWM')
+    //console.log('CWM')
     //console.log('Cookie:', document.cookie)
     loadData(this.props)
+
+    //?? this.props.login(this.loggedUser.login, )
+
   }
 
   componentWillReceiveProps(nextProps) {
+
     console.log('CWRP', this.props, nextProps)
 
+    if (nextProps.loggedUser) {
+      this.props.history.push('/users')
+      // http://stackoverflow.com/a/34863577/1948511
+    }
     //? !!
     //loadData(nextProps)
     // if (nextProps.login !== this.props.login) {
@@ -69,15 +86,16 @@ class UserPage2 extends Component {
     //this.props.loadStargazers(this.props.fullName, true)
     console.log('DELETE', this, slug)
   }
-
-  login = () => {
-    this.props.login('allan', '1')
-  }
-
-  logout = () => {
-    // actually not log out because cannot delete httpOnly cookie
-    this.props.logout()
-  }
+  /* 
+   *   login = () => {
+   *     this.props.login('allan', '1')
+   *   }
+   * 
+   *   logout = () => {
+   *     // actually not log out because cannot delete httpOnly cookie
+   *     this.props.logout()
+   *   }
+   * */
 
   renderRepo([ repo, owner ]) {
     return (
@@ -88,21 +106,51 @@ class UserPage2 extends Component {
     )
   }
 
+  handleLoginClick(e) {
+    this.props.login(this.login.value, this.pwd.value)
+    /*
+     *     this.setState({
+     *       login: this.login.value,
+     *       pwd: this.pwd.value
+     *     })
+     * */
+  }
+
   render() {
-    const { users, loggedUser } = this.props
+    //const { users } = this.props
 
     console.log('RENDER', this.props)
 
     return (
       <div>
-        {/* <LU ss="mystring" ii={45} /> */}
+        <h3>Login</h3>
 
-        {/* <Link to={"/login"}>Login</Link> */}
+        <span className="loginLabel">Login</span>
+        <input ref={(input) => this.login = input} />
+        <br />
+        <span className="loginLabel">Password</span>
+        <input ref={(input) => this.pwd = input} />
 
-        <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
-        <button onClick={this.login.bind(this)} >Login</button>
-        <button onClick={this.logout.bind(this)} >Logout</button>
+        <button onClick={this.handleLoginClick.bind(this)}>Log in</button>
 
+        <p>allan/1</p>
+
+        <p>
+          {this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}
+          <br />
+          {this.props.loginError ? `Login error: ${this.props.loginError}`:''}
+        </p>
+
+
+        <hr />
+        Some other stuff:
+        <ul>
+          <li><button onClick={this.props.logout.bind(this)} >Logout</button></li>
+          <li><Link to={"/users"}>users list</Link></li>
+        </ul>
+
+
+        {/*
         <h3>Users:</h3>
         <button onClick={this.createClick.bind(this)} >Create</button>
         <table>
@@ -114,12 +162,12 @@ class UserPage2 extends Component {
                 </td>
                 <td>
                   <Link to={`users/${user.slug}`}>
-                    <button value="edit" disabled={!loggedUser}>
-                      Edit
-                    </button>
+                    <button value="edit">Edit</button>
                   </Link>
-                  <button value="delete" disabled={!loggedUser}
-                          onClick={this.deleteClick.bind(this, user.slug)}>
+                  <button
+                      value="delete"
+                      disabled={false}
+                      onClick={this.deleteClick.bind(this, user.slug)}>
                     Delete
                   </button>
                 </td>
@@ -128,6 +176,7 @@ class UserPage2 extends Component {
             }
           </tbody>
         </table>
+        */}
       </div>
     )
 
@@ -179,6 +228,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     users: state.users.users,
+    loginError: state.auth.loginError,
     loggedUser: state.auth.user
   }
 }
@@ -192,4 +242,4 @@ export default connect(
     login,
     logout
   }
-)(UserPage2)
+)(LoginPage)

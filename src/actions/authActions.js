@@ -25,3 +25,7 @@ export const logout = () => (dispatch, getState) => {
   return dispatch({type: 'LOGOUT'})
 }
 
+
+export const getUserInfo = (slug) => (dispatch, getState) => {
+  return dispatch({type: 'GET_USER_INFO', slug: slug})
+}

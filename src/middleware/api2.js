@@ -215,12 +215,13 @@ export const api2 = store => next => action => {
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
   }
-  if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.')
-  }
-  if (!types.every(type => typeof type === 'string')) {
-    throw new Error('Expected action types to be strings.')
-  }
+
+  // if (!Array.isArray(types) || types.length !== 3) {
+  //   throw new Error('Expected an array of three action types.')
+  // }
+  // if (!types.every(type => typeof type === 'string')) {
+  //   throw new Error('Expected action types to be strings.')
+  // }
 
   const actionWith = data => {
     const finalAction = Object.assign({}, action, data)

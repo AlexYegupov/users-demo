@@ -18,3 +18,9 @@ const fetchUsers = () => ({
 export const loadUsers = () => (dispatch, getState) => {
   return dispatch(fetchUsers())
 }
+
+
+
+
+
+
