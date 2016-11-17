@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
-import { loadUsers } from '../actions/usersActions'
+import { loadUsers3 as loadUsers } from '../actions/usersActions'
 
 import User2 from '../components/User2'
 //import LU from '../components/LoggedUser'
@@ -175,10 +175,14 @@ const mapStateToProps = (state, ownProps) => {
   //   user: users[login]
   // }
 
-  console.log('mapStateToProps', state, ownProps, state.users.users)
+  //w console.log('mapStateToProps', state, ownProps, state.users.users)
+  console.log('mapStateToProps', state, ownProps, state.users, state.users.response)
+
 
   return {
-    users: state.users.users,
+    //w users: state.users.users,
+    users: state.users.response,
+
     loggedUser: state.auth.user
   }
 }
