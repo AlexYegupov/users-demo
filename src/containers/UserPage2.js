@@ -176,12 +176,14 @@ const mapStateToProps = (state, ownProps) => {
   // }
 
   //w console.log('mapStateToProps', state, ownProps, state.users.users)
-  console.log('mapStateToProps', state, ownProps, state.users, state.users.response)
+  console.log('mapStateToProps', state, ownProps, state.users)
 
+  // ?? where to put getUsersListError??
 
   return {
     //w users: state.users.users,
-    users: state.users.response,
+    //users: state.users.response,
+    users: state.users.users,
 
     loggedUser: state.auth.user
   }

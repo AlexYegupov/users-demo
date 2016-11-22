@@ -202,104 +202,140 @@ export const CALL_API3 = Symbol('Call API3')
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
 export const api3 = store => next => action => {
-  const callAPI3 = action[CALL_API3]
-  if (typeof callAPI3 === 'undefined') {
-    return next(action)
-  }
 
-  console.log('MIDDLEWARE: api3', action)
-
-  let { endpoint } = callAPI3
-  //const { types, fetchOptions } = callAPI3
-  const { fetchOptions } = callAPI3
-
-  if (typeof endpoint === 'function') {
-    endpoint = endpoint(api3.getState())
-  }
-  if (typeof endpoint !== 'string') {
-    throw new Error('Specify a string endpoint URL.')
-  }
-
-  // if (!Array.isArray(types) || types.length !== 3) {
-  //   throw new Error('Expected an array of three action types.')
-  // }
-  // if (!types.every(type => typeof type === 'string')) {
-  //   throw new Error('Expected action types to be strings.')
+  // w
+  // const callAPI3 = action[CALL_API3]
+  // if (typeof callAPI3 === 'undefined') {
+  //   return next(action)
   // }
 
-  const actionWith = data => {
-    const finalAction = Object.assign({}, action, data)
-    delete finalAction[CALL_API3]
-    //console.log('AW', action, data, finalAction)
-    return finalAction
-  }
+  // alt1: if (action.type !== CALL_API3) return next(action)
 
-  //const [ requestType, successType, failureType ] = types
-  let requestType = callAPI3.type //~~
-
-  let aw = actionWith({ type: requestType })
-  console.log('AW', aw)
-  next(aw)
-
-  return fetch(endpoint, fetchOptions)
-    .then(
-      response => {
-
-        // if (!response.ok)
-        //   return response
-
-        console.log('FE2:', response)
+  //alt2
+  if (!(action.meta && action.meta.apiCall)) return next(action)
 
 
-        return response.json()
-          .then(json => {
+  console.log('MIDDLEWARE: api3. action:', action)
+  //let { endpoint, fetchOptions } = callAPI3
 
-            console.log('FETCHED2:', response)
+  // ??
+  // if (typeof endpoint === 'function') {
+  //   endpoint = endpoint(api3.getState())
+  // }
 
-            if (!response.ok) {
-              return Promise.reject(json) // TODO: process also error status
-            }
+  ///vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+  return fetch(action.meta.apiCall, action.meta.fetchOptions)
+    .then( response => {
+      console.log('FE3:', response)
 
-            //const nextPageUrl = getNextPageUrl(response)
-
-            //json = camelizeKeys(json)
-            //if (schema) { json = normalize(json, schema) }
-
-            //?? let r = Object.assign( {}, json, /* { nextPageUrl }*/ )
-            //return r
-
-            return json
-          })
-          // .catch( error => {
-          //   console.log('errr', error);
-          //   return {'EE': 'error'}
-          // })
-
+      if (!response.ok) {
+        return response.json().then(
+          json => Promise.reject(json)
+        )
       }
+
+      return response.json()
+      // return response.json()
+      //   .then(json => {
+      // 
+      //     console.log('FETCHED response:', response)
+      // 
+      //     return json
+      //   })
+
+    })
+    .then(json => {
+      console.log('resp OK. json:', json)
+      action['payload'] = json
+      return next(action)
+    })
+      // next(actionWith({
+      //   //type: successType
+      //   //type: callAPI3.type,
+      //   //result: 'API_SUCCESS',
+      //   payload: response,
+      // }))
+
+    .catch(error => {
+      console.log('resp Error. json:', error)
+      action['error'] = true
+      action['payload'] = error
+      return next(action)
+    }
+
+      //   next(actionWith({
+      // 
+      //   //type: failureType,
+      //   //type: callAPI3.type,
+      //   //result: 'API_FAIL',
+      // 
+      //   error: true,
+      //   payload: error,
+      // 
+      //   //error: error.message || 'Something bad happened'
+      // }))
     )
-    //.catch( error => console.error('TODO: callApi3 fetch error', error) )
-  // return callApi3(endpoint, fetchOptions)
-    .then(
-      
-      response => next(actionWith({
-        //type: successType
-        type: requestType,
-        result: 'API_SUCCESS',
 
-        response,
-      })),
-      
-      error => next(actionWith({
 
-        //type: failureType,
-        type: requestType,
-        result: 'API_FAIL',
 
-        error: error.message || 'Something bad happened'
-      }))
 
-      
-    )
-    //.catch( error => ({'E2': error}) )
 
+
+
+
+
+
+
+  // /// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  // 
+  // 
+  // const actionWith = data => {
+  //   const finalAction = Object.assign({}, action, data)
+  //   //??delete finalAction[CALL_API3]
+  //   return finalAction
+  // }
+  // 
+  // //const [ requestType, successType, failureType ] = types
+  // //next(actionWith({})) // just for statistics     was: ( type: callAPI3.type )
+  // //try to avoid calling here        next(action)
+  // 
+  // return fetch(action.endpoint, action.fetchOptions)
+  //   .then( response => {
+  //     console.log('FETCHED3:', response)
+  // 
+  //     if (!response.ok) {
+  //       return response.json().then(
+  //         json => Promise.reject(json)
+  //       )
+  //     }
+  // 
+  //     return response.json()
+  //   })
+  //   .then(json => {
+  //     console.log('FETCHED3 json:', json)
+  // 
+  //     return json
+  //   })
+  //   .then(
+  //     response => next(actionWith({
+  //       //type: successType
+  //       //type: callAPI3.type,
+  //       //result: 'API_SUCCESS',
+  //       payload: response,
+  //     }))
+  // 
+  //   )
+  //   .catch(
+  //     error => next(actionWith({
+  // 
+  //       //type: failureType,
+  //       //type: callAPI3.type,
+  //       //result: 'API_FAIL',
+  // 
+  //       error: true,
+  //       payload: error,
+  // 
+  //       //error: error.message || 'Something bad happened'
+  //     }))
+  //   )
 }

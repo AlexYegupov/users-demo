@@ -1,5 +1,5 @@
 //import { CALL_API2 } from '../middleware/api2'
-import { CALL_API3 } from '../middleware/api3'
+//import { CALL_API3 } from '../middleware/api3'
 
 
 // export const USERS_REQUEST = 'USERS_REQUEST'
@@ -29,17 +29,33 @@ import { CALL_API3 } from '../middleware/api3'
 
 export const loadUsers3 = () => (dispatch, getState) => {
 
+
   return dispatch({
-    [CALL_API3]: {
-      //types: [ USERS_REQUEST, USERS_SUCCESS, USERS_FAILURE ],
-      type: 'USERS_REQUEST3',
+    type: 'LOAD_USERS',
+    meta: {apiCall: 'http://localhost:3001/api/users'}
 
-      endpoint: 'http://localhost:3001/api/users', //`repos/${fullName}`,
-      //TODO: remove full url everywhere
-
-      //schema: Schemas.REPO  //??
-    }
+    // meta: {apiCall: 'USERS_LIST',
+    //        endpoint: 'http://localhost:3001/api/users'}
   })
+
+  // not sure such implementation details should be present in action
+  // return dispatch({
+  //   type: CALL_API3,
+  //   meta: {apiCall: 'USERS_LIST',
+  //          endpoint: 'http://localhost:3001/api/users'
+  //         },
+  // })
+
+  // return dispatch({
+  //   [CALL_API3]: {
+  //     //types: [ USERS_REQUEST, USERS_SUCCESS, USERS_FAILURE ],
+  //     type: 'USERS_REQUEST3',
+  // 
+  //     endpoint: 'http://localhost:3001/api/users', //`repos/${fullName}`,
+  //     //fetchOptions: {...}
+  //   }
+  // })
+
 
 }
 
