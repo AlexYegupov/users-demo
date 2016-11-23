@@ -240,6 +240,8 @@ app.get('/api/secure', checkAuth(function(req, res, next) {
 
 app.get('/api/users', function(req, res) {
   //res.json(Users.allDataSafe()).end()
+  return res.status(401).send('TEXT error')  //text/html
+  //return res.status(401).json({a: 1}).end() // application/json
   res.json(Users.all()).end()
 })
 

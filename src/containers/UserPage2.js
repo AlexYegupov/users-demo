@@ -28,6 +28,7 @@ class UserPage2 extends Component {
     // starredRepos: PropTypes.array,
     // starredRepoOwners: PropTypes.array,
     users: PropTypes.array.isRequired,
+    usersError: PropTypes.object,
     loggedUser: PropTypes.object,
     loadUsers: PropTypes.func.isRequired,
     // loadUser: PropTypes.func,
@@ -88,6 +89,11 @@ class UserPage2 extends Component {
     )
   }
 
+  renderError() {
+    if (this.props.usersError)
+      return <p>Error: {JSON.stringify(this.props.usersError)}</p>
+  }
+
   render() {
     const { users, loggedUser } = this.props
 
@@ -104,6 +110,7 @@ class UserPage2 extends Component {
         <button onClick={this.logout.bind(this)} >Logout</button>
 
         <h3>Users:</h3>
+        { this.renderError() }
         <button onClick={this.createClick.bind(this)} >Create</button>
         <table>
           <tbody>
@@ -184,6 +191,7 @@ const mapStateToProps = (state, ownProps) => {
     //w users: state.users.users,
     //users: state.users.response,
     users: state.users.users,
+    usersError: state.users.usersError,
 
     loggedUser: state.auth.user
   }

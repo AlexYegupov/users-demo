@@ -226,7 +226,14 @@ export const api3 = store => next => action => {
   ///vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
   return fetch(action.meta.apiCall, action.meta.fetchOptions)
     .then( response => {
-      console.log('FE3:', response)
+      //console.log('FE3:', response, response.headers.get('Content-Type'))
+
+      const contentType = response.headers.get('Content-Type')
+      if (!contentType.includes('application/json')) {
+        return response.text().then(
+          text => Promise.reject(`Response is not json (${contentType}). Text: ${text}; code: ${response.status}`)
+        )
+      }
 
       if (!response.ok) {
         return response.json().then(
