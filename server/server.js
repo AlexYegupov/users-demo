@@ -201,7 +201,7 @@ app.post('/api/session', function(req, res) {
   //return Promise.resolve(user);
 
   //req.session.message = 'Hello World ' + new Date()
-  res.json({user}).end()
+  res.json(user).end()
 })
 
 // ==logout
@@ -240,7 +240,7 @@ app.get('/api/secure', checkAuth(function(req, res, next) {
 
 app.get('/api/users', function(req, res) {
   //res.json(Users.allDataSafe()).end()
-  return res.status(401).send('TEXT error')  //text/html
+  //return res.status(401).send('TEST error')  //text/html
   //return res.status(401).json({a: 1}).end() // application/json
   res.json(Users.all()).end()
 })

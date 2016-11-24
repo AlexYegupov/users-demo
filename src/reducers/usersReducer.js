@@ -15,7 +15,7 @@ export const users =
       //return Object.assign({}, state, action) //
 
       if (!action.error)
-        return Object.assign({}, state, {users: action.payload})
+        return Object.assign({}, state, {users: action.payload, usersError: null})
       else
         return Object.assign({}, state, {users: [], usersError: action.payload})
 

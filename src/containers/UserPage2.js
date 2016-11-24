@@ -106,8 +106,6 @@ class UserPage2 extends Component {
         {/* <Link to={"/login"}>Login</Link> */}
 
         <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
-        <button onClick={this.login.bind(this)} >Login</button>
-        <button onClick={this.logout.bind(this)} >Logout</button>
 
         <h3>Users:</h3>
         { this.renderError() }
@@ -135,6 +133,15 @@ class UserPage2 extends Component {
             }
           </tbody>
         </table>
+
+        <hr />
+        Other stuff:
+        <ul>
+          <li><Link to={"/login"}>login</Link></li>
+          {/* <li><button onClick={this.login.bind(this)} >Login</button></li> */}
+          <li><button onClick={this.logout.bind(this)} >Logout</button></li>
+        </ul>
+
       </div>
     )
 
@@ -193,7 +200,7 @@ const mapStateToProps = (state, ownProps) => {
     users: state.users.users,
     usersError: state.users.usersError,
 
-    loggedUser: state.auth.user
+    loggedUser: state.auth.loggedUser
   }
 }
 

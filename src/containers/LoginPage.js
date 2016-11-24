@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
-import { loadUsers } from '../actions/usersActions'
+//import { loadUsers } from '../actions/usersActions'
 
 //import User2 from '../components/User2'
 import Repo from '../components/Repo'
@@ -12,13 +12,13 @@ import { Link } from 'react-router'
 
 //import { push } from 'react-router-redux'
 
-//const loadData = ({ login, loadUser, loadStarred }) => {
-const loadData = ({ loadUsers }) => {
-  console.log('loadData2')
-  loadUsers()
-  //loadUser(login, [ 'name' ])
-  //loadStarred(login)\\
-}
+// //const loadData = ({ login, loadUser, loadStarred }) => {
+// const loadData = ({ loadUsers }) => {
+//   console.log('loadData2')
+//   loadUsers()
+//   //loadUser(login, [ 'name' ])
+//   //loadStarred(login)\\
+// }
 
 class LoginPage extends Component {
   static propTypes = {
@@ -28,11 +28,11 @@ class LoginPage extends Component {
     // starredPagination: PropTypes.object,
     // starredRepos: PropTypes.array,
     // starredRepoOwners: PropTypes.array,
-    users: PropTypes.array.isRequired,
+    //users: PropTypes.array.isRequired,
     loggedUser: PropTypes.object,
-    loginError: PropTypes.string,
+    loginError: PropTypes.object,
 
-    loadUsers: PropTypes.func.isRequired,
+    //loadUsers: PropTypes.func.isRequired,
     // loadUser: PropTypes.func,
     // loadStarred: PropTypes.func
     login: PropTypes.func,
@@ -48,7 +48,7 @@ class LoginPage extends Component {
   componentWillMount() {
     //console.log('CWM')
     //console.log('Cookie:', document.cookie)
-    loadData(this.props)
+    //loadData(this.props)
 
     //?? this.props.login(this.loggedUser.login, )
 
@@ -116,6 +116,14 @@ class LoginPage extends Component {
      * */
   }
 
+  renderError() {
+    if (this.props.loginError) {
+      const errorText = this.props.loginError.message || JSON.stringify(this.props.loginError)
+
+      return <p>Login error: {errorText}</p>
+    }
+  }
+
   render() {
     //const { users } = this.props
 
@@ -124,22 +132,21 @@ class LoginPage extends Component {
     return (
       <div>
         <h3>Login</h3>
+        <div>
+          Login: <input defaultValue="allan" ref={(input) => this.login = input} />
+        </div>
+        <div>
+          Password:  <input defaultValue="1" ref={(input) => this.pwd = input} />
+        </div>
+        <div>
+          <button onClick={this.handleLoginClick.bind(this)}>Log in</button>
+        </div>
 
-        <span className="loginLabel">Login</span>
-        <input ref={(input) => this.login = input} />
-        <br />
-        <span className="loginLabel">Password</span>
-        <input ref={(input) => this.pwd = input} />
-
-        <button onClick={this.handleLoginClick.bind(this)}>Log in</button>
-
-        <p>allan/1</p>
-
+        { this.renderError() }
         <p>
           {this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}
-          <br />
-          {this.props.loginError ? `Login error: ${this.props.loginError}`:''}
         </p>
+
 
 
         <hr />
@@ -227,16 +234,16 @@ const mapStateToProps = (state, ownProps) => {
   console.log('mapStateToProps', state, ownProps, state.users.users)
 
   return {
-    users: state.users.users,
+    //users: state.users.users,
+    loggedUser: state.auth.loggedUser,
     loginError: state.auth.loginError,
-    loggedUser: state.auth.user
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    loadUsers,
+    //loadUsers,
     //loadUser,
     //loadStarred
     login,
