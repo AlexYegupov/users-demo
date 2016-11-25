@@ -118,7 +118,7 @@ class UserPage2 extends Component {
                   <User2 user={ user } />
                 </td>
                 <td>
-                  <Link to={`users/${user.slug}`}>
+                  <Link to={`/users/${user.slug}`}>
                     <button value="edit" disabled={!loggedUser}>
                       Edit
                     </button>

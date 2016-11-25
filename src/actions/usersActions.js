@@ -22,6 +22,8 @@
 // }
 
 
+import { urlize } from '../utils/serialize'
+
 
 
 
@@ -61,3 +63,33 @@ export const loadUsers3 = () => (dispatch, getState) => {
 
 
 
+
+export const loadUser = (slug) => (dispatch, getState) => {
+  //console.log('lU', slug)
+  return dispatch({
+    type: 'LOAD_USER',
+    meta: {
+      apiCall: `http://localhost:3001/api/users/${slug}`, 
+      fetchOptions: {
+        method: 'GET',
+        //body: new URLSearchParams(`login=${login}&pwd=${pwd}`),
+        //credentials: 'include'  // to include cookies in fresponse CR
+      }
+    }
+  })
+}
+
+export const patchUser = (user) => (dispatch, getState) => {
+  //console.log('UUU', user, urlize(user))
+  return dispatch({
+    type: 'PATCH_USER',
+    meta: {
+      apiCall: `http://localhost:3001/api/users/${user.slug}`, 
+      fetchOptions: {
+        method: 'PATCH',
+        body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
+        //credentials: 'include'  // to include cookies in fresponse CR
+      }
+    }
+  })  
+}

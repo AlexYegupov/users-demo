@@ -30,11 +30,19 @@ export const users =
 
     }
 
+    if (action.type === 'LOAD_USER') {
+      if (!action.error)
+        return Object.assign({}, state, {user: action.payload, userError: null})
+      else
+        return Object.assign({}, state, {user: null, userError: action.payload})
+    }
 
-    // if (action.type === 'LOGIN_SUCCESS') {
-    //   let r = merge({}, state, action.response )
-    //   return r
-    // }
+    if (action.type === 'PATCH_USER') {
+      if (!action.error)
+        return Object.assign({}, state, {user: action.payload, userError: null})
+      else
+        return Object.assign({}, state, {user: null, userError: action.payload})
+    }
 
     return state
   }

@@ -229,9 +229,12 @@ export const api3 = store => next => action => {
       //console.log('FE3:', response, response.headers.get('Content-Type'))
 
       const contentType = response.headers.get('Content-Type')
-      if (!contentType.includes('application/json')) {
+
+      if (!contentType || !contentType.includes('application/json')) {
         return response.text().then(
-          text => Promise.reject(`Response is not json (${contentType}). Text: ${text}; code: ${response.status}`)
+          text => Promise.reject({body: text, code: response.status})
+                                 //`${text} (${response.status})`)
+          // text => Promise.reject(`Response is not json (${contentType}). Text: ${text}; code: ${response.status}`)
         )
       }
 

@@ -249,9 +249,9 @@ app.get('/api/users', function(req, res) {
 // alt: could use :id instead of :slug
 app.get('/api/users/:slug', function(req, res) {
   let user = Users.findUser(req.params.slug)
-  if (!user) return res.status(204).end()
+  if (!user) return res.status(204).send('User not found').end()
 
-  res.json({user: user}).end()
+  res.json(user).end()
 })
 
 app.patch('/api/users/:slug', checkAuth(function(req, res) {
@@ -267,7 +267,7 @@ app.patch('/api/users/:slug', checkAuth(function(req, res) {
 
   if (user) {
     Users.saveAll()
-    return res.json({ user }).end()
+    return res.json(user).end()
   } else {
     return res.status(404).end()
   }
