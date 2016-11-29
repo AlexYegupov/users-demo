@@ -63,7 +63,7 @@ const DBFILE = 'server/db.json'
 let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
   requiredAttrs: [],
-  modifableAttrs: ['name', 'info'],
+  modifableAttrs: ['name', 'info', 'login'],
 
   _items: [],
 
@@ -100,7 +100,7 @@ let Users = {
   },
 
   saveAll() {
-    fs.writeFileSync(DBFILE, {'users': this._items})
+    fs.writeFileSync(DBFILE, JSON.stringify({'users': this._items}))
   },
 
   //allDataSafe() {

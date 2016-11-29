@@ -179,6 +179,8 @@ app.use(cors({credentials: true, origin: true}))
 function checkAuth(router) {
 
   function secureRouter(req, res, next) {
+    //console.log('RS, RSU', req.session, req.session.user)
+
     if (!req.session || !req.session.user) {
       res.status(403).send('unauthorized').end()
       return
@@ -222,8 +224,8 @@ app.delete('/api/session', function(req, res) {
 
 
 app.get('/api/test', function(req, res, next) {
-
-  res.json({a: "test", login: req.session.user})
+  //console.log('T GET: RS, RSU', req.session, req.session.user)
+  res.json({loggedUser: req.session.user})
   //res.send('Hello3')
   //throw new Error("my error");
 
@@ -234,11 +236,25 @@ app.get('/api/test', function(req, res, next) {
 })
 
 
+// app.patch('/api/test', function(req, res, next) {
+//   console.log('T PATCH: RS, RSU', req.session, req.session.user)
+//   res.json({loggedUser: req.session.user})
+//   //res.send('Hello3')
+//   //throw new Error("my error");
+// 
+//   //console.log('logged as:', req.session.user)
+// 
+//   //next()
+//   res.end()
+// })
+
+
 app.get('/api/secure', checkAuth(function(req, res, next) {
   res.send('SECURE DATA').end()
 }))
 
 app.get('/api/users', function(req, res) {
+  //console.log('RS, RSU', req.session, req.session.user)
   //res.json(Users.allDataSafe()).end()
   //return res.status(401).send('TEST error')  //text/html
   //return res.status(401).json({a: 1}).end() // application/json
@@ -257,7 +273,7 @@ app.get('/api/users/:slug', function(req, res) {
 app.patch('/api/users/:slug', checkAuth(function(req, res) {
   // let user = Users.findUser(req.params.slug)
   // if (!user) return res.status(404).end()
-  let slug = req.body.slug
+  let slug = req.params.slug //req.body.slug
 
   try {
     var user = Users.patchUser(slug, req.body)

@@ -80,7 +80,7 @@ export const loadUser = (slug) => (dispatch, getState) => {
 }
 
 export const patchUser = (user) => (dispatch, getState) => {
-  //console.log('UUU', user, urlize(user))
+  //console.log('UUU', user, urlize(user))\
   return dispatch({
     type: 'PATCH_USER',
     meta: {
@@ -88,7 +88,8 @@ export const patchUser = (user) => (dispatch, getState) => {
       fetchOptions: {
         method: 'PATCH',
         body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
-        //credentials: 'include'  // to include cookies in fresponse CR
+        credentials: 'include'  // to include cookies in response     (https://tonyspiro.com/how-to-keep-session-data-after-fetch-post-with-express/#comment-2544007117)
+
       }
     }
   })  

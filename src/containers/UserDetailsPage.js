@@ -4,9 +4,9 @@ import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 //import { login, logout } from '../actions/authActions'
 import { loadUser, patchUser } from '../actions/usersActions'
 
-import User2 from '../components/User2'
-import LU from '../components/LoggedUser'
-import Repo from '../components/Repo'
+/* import User2 from '../components/User2'
+ * import LU from '../components/LoggedUser'
+ * import Repo from '../components/Repo'*/
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 import { Link } from 'react-router'
@@ -49,8 +49,15 @@ class UserDetailsPage extends Component {
     history: PropTypes.object,
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {userForm: {name: '', login: '', slug: ''}}
+    // aa
+  }
+
   componentWillMount() {
-    //console.log('CWM')
+    console.log('CWM')
     //console.log('Cookie:', document.cookie)
     this.loadData()
 
@@ -58,16 +65,22 @@ class UserDetailsPage extends Component {
   }
 
   loadData() {
-    //console.log('lD', this.props.params.slug)
+    console.log('LOADDATA', this.props.params.slug)
     return this.props.loadUser(this.props.params.slug)
   }
 
   componentWillReceiveProps(nextProps) {
     console.log('CWRP', this.props, nextProps)
 
-    /* if (nextProps.user) {
-     *   this.props.history.push('/404?message=user not found')
-     * }*/
+    //if (nextProps.
+    //this.state.aa = nextProps.user.login        //aa
+    if (nextProps.user) {
+      //this.props.history.push('/404?message=user not found')
+      /* this.state.userForm.name = nextProps.user.name
+       * this.state.userForm.login = nextProps.user.login
+       * this.state.userForm.slug = nextProps.user.slug*/
+      this.setState({userForm: nextProps.user})
+    }
 
     //? !!
     //loadData(nextProps)
@@ -95,11 +108,25 @@ class UserDetailsPage extends Component {
   }
 
   saveClicked() {
+
+    //console.log('cdm+', this.loginInput.value)
+    console.log('sC', this.state.userForm)
+
     this.props.patchUser({
       slug: this.props.params.slug,
-      name: this.nameInput.value,
-      login: this.loginInput.value,
+      name: this.state.userForm.name, //this.nameInput.value,
+      login: this.state.userForm.login //this.loginInput.value,
     })
+  }
+
+
+  componentDidMount() {
+    //this.loadSubscriptionData(this.props.subscriptionId);
+    //console.log('CDM', this.loginInput, window )
+
+    //ReactDOM.findDOMNode(this.loginInput).setAttribute('-attribute', 'some value')
+
+
   }
 
   renderRepo([ repo, owner ]) {
@@ -110,6 +137,20 @@ class UserDetailsPage extends Component {
         key={repo.fullName} />
     )
   }
+
+  /* shouldComponentUpdate(nextProps, nextState) {
+
+   *   if (!this.props.user) return true
+
+   *   if (nextProps.user.login !== this.props.user.login) return true
+
+  *   return false;
+  * }*/
+
+  /* shouldRender() {
+   *   console.log('should RENDER', this.props.params.slug != this.props.user.slug)
+   *   return this.props.params.slug != this.props.user.slug
+   * }*/
 
   render() {
     if (!this.props.user) {
@@ -122,6 +163,10 @@ class UserDetailsPage extends Component {
       return null
     }
 
+    //if (!this.shouldRender()) return null
+
+    console.log('RENDERING', this.props.user.login)
+    const readOnly = !this.props.loggedUser
     return (
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : ''} </p>
@@ -131,106 +176,55 @@ class UserDetailsPage extends Component {
 
         <div>
           Name:
-          <input defaultValue={this.props.user.name}
-                 ref={(input) => this.nameInput = input} />
+          <input value={this.state.userForm.name}
+                 /* value={this.props.user.name}*/
+                 /* ref={(input) => this.nameInput = input} */
+                 /* readOnly={readOnly} */
+                 onChange={this.handleChange.bind(this, 'name')}
+            />
         </div>
 
         <div>
           Login:
-          <input defaultValue={this.props.user.login}
-                 ref={(input) => this.loginInput = input} />
+          <input value={this.state.userForm.login}
+                 /* value={this.state.aa} */
+                 /* {this.props.user.login} */
+      /* ref={ (input) => {this.loginInput = input; console.log('cdm set ref') } }*/
+                /* readOnly={readOnly} */
+                 onChange={this.handleChange.bind(this, 'login')}
+          />
         </div>
 
         <div>
           Slug: {this.props.user.slug}
           {/* <input defaultValue={this.props.user.slug}
-          readonly={true}
+          readOnly={readOnly}
           ref={(input) => this.slugInput = input} /> */}
         </div>
 
         <div>
-          <button onClick={this.saveClicked.bind(this)}>Save</button>
+          <button onClick={this.saveClicked.bind(this)}
+                  /* disabled={readOnly} */
+                  >Save</button>
         </div>
 
         <hr />
         Other stuff:
         <ul>
           <li><Link to={"/login"}>login</Link></li>
+          <li><Link to={"/users"}>users list</Link></li>
         </ul>
 
       </div>
     )
   }
 
-  render2() {
-    const { users, loggedUser } = this.props
-
-    console.log('RENDER', this.props)
-
-    return (
-      <div>
-        <h3> {this.props.params.login.toLowerCase()} details: </h3>
-        <LU ss="mystring" ii={45} />
-
-
-
-
-        {/* <Link to={"/login"}>Login</Link> */}
-
-        <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
-
-        {/* <button onClick={this.login.bind(this)} >Login</button>
-        <button onClick={this.logout.bind(this)} >Logout</button> */}
-
-        <h3>Users:</h3>
-
-        <button onClick={this.createClick.bind(this)} >Create</button>
-        <table>
-          <tbody>
-            { users.map( (user) =>
-            <tr key={ user.slug }>
-              <td>
-                <User2 user={ user } />
-              </td>
-              <td>
-                <Link to={`users/${user.slug}`}>
-                <button value="edit" disabled={!loggedUser}>
-                  Edit
-                </button>
-                  </Link>
-                  <button value="delete" disabled={!loggedUser}
-                          onClick={this.deleteClick.bind(this, user.slug)}>
-                    Delete
-                  </button>
-              </td>
-            </tr>
-            )
-            }
-          </tbody>
-        </table>
-      </div>
-    )
-
-
-    /* const { user, login } = this.props
-     * if (!user) {
-     *   return <h1><i>Loading {login}{"'s profile..."}</i></h1>
-     * }
-
-     * const { starredRepos, starredRepoOwners, starredPagination } = this.props
-     * return (
-     *   <div>
-     *     asdfadfs
-     *     <User user={user} />
-     *     <hr />
-     *     <List renderItem={this.renderRepo}
-     *           items={zip(starredRepos, starredRepoOwners)}
-     *           onLoadMoreClick={this.handleLoadMoreClick}
-     *           loadingLabel={`Loading ${login}'s starred...`}
-     *           {...starredPagination} />
-     *   </div>
-     * ) */
-       }
+  handleChange(name, event) {
+    //console.log(11, JSON.stringify(this.state), name, event.target.value)
+    let userForm = this.state.userForm
+    userForm[name] = event.target.value
+    this.setState({userForm: userForm})
+  }
 }
 
 export default connect(
@@ -259,11 +253,12 @@ export default connect(
     console.log('mapStateToProps', state, ownProps, state.users.users)
 
     return {
+      //aa: state.users.user ? state.users.user.login : '--',
       user: state.users.user,
       userError: state.users.userError,
 
       //users: state.users.users,
-      loggedUser: state.auth.user,
+      loggedUser: state.auth.loggedUser,
     }
   },
   {
