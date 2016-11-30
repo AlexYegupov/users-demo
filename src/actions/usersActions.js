@@ -79,6 +79,14 @@ export const loadUser = (slug) => (dispatch, getState) => {
   })
 }
 
+// w
+// export const createNewUser = () => (dispatch, getState) => {
+//   console.log('cNU')
+//   return dispatch({
+//     type: 'CREATE_NEW_USER',
+//   })
+// }
+
 export const patchUser = (user) => (dispatch, getState) => {
   //console.log('UUU', user, urlize(user))\
   return dispatch({
