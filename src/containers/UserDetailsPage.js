@@ -86,10 +86,10 @@ class UserDetailsPage extends Component {
     //   // http://stackoverflow.com/a/34863577/1948511
     // }
 
-    // ?better place (in react-router)
-    if (!nextProps.loggedUser && nextProps.location.pathname == '/users-create') {
-      this.props.history.push('/login')
-    }
+    // working but better implement via routes->onEnter requireAuth handler
+    // if (!nextProps.loggedUser && nextProps.location.pathname == '/users-create') {
+    //   this.props.history.push('/login')
+    // }
 
     //if (nextProps.
     //this.state.aa = nextProps.user.login        //aa\

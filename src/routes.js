@@ -10,12 +10,25 @@ import UserDetailsPage from './containers/UserDetailsPage'
 import NotFoundPage from './containers/NotFoundPage'
 
 
-export default (
+function requireAuth(store, nextState, replace) {
+  const state = store.getState()
+  console.log('State', state)
+
+  if (!state.auth.loggedUser) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+
+}
+
+export const createRoutes = (store) => (
   <Route path="/" component={App}>
     <Route path="/a/:login/:name" component={RepoPage} />
     <Route path="/a/:login" component={UserPage} />
     <Route path="/users" component={UserPage2} />
-    <Route path="/users-create" component={UserDetailsPage} />
+    <Route path="/users-create" component={UserDetailsPage} onEnter={requireAuth.bind(this, store)} />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />
     <Route path="/404" component={NotFoundPage} />
