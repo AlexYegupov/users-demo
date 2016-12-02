@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react'
 
 class UserEdit extends Component {
   static propTypes = {
-    //aa: PropTypes.string
+    readOnly: PropTypes.boolean,
     user: PropTypes.shape({
       slug: PropTypes.string,
       login: PropTypes.string,
@@ -21,6 +21,14 @@ class UserEdit extends Component {
     this.state = {userForm: props.user}
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('UserEdit: CWRP', nextProps)
+    // reset form
+    if (nextProps.user) {
+      this.setState({userForm: nextProps.user})
+    }
+  }
+
   render() {
     /* if (!this.props.user) {
      *   if (this.props.userError)
@@ -32,8 +40,9 @@ class UserEdit extends Component {
      *   return null
      * }*/
 
-    console.log('RENDERING UserEdit')
-    //const readOnly = !this.props.loggedUser
+    const readOnly = this.props.readOnly
+    console.log('RENDERING UserEdit', readOnly)
+
     //console.log(2222, this.test)
     return (
       <div>
@@ -41,7 +50,7 @@ class UserEdit extends Component {
           Name:
           <input value={this.state.userForm.name}
                  /* ref={(input) => this.nameInput = input} */
-                 /* readOnly={readOnly} */
+                 readOnly={readOnly}
                  onChange={this.handleChange.bind(this, 'name')}
             />
         </div>
@@ -50,7 +59,7 @@ class UserEdit extends Component {
           Login:
           <input value={this.state.userForm.login}
                  /* {this.props.user.login} */
-                 /* readOnly={readOnly} */
+                 readOnly={readOnly}
                  onChange={this.handleChange.bind(this, 'login')}
           />
         </div>
@@ -64,8 +73,9 @@ class UserEdit extends Component {
         </div>
 
         <div>
-          <button onClick={this.saveClicked.bind(this)}>Save</button>
-          {/* disabled={readOnly}*/}
+          <button onClick={this.saveClicked.bind(this)}
+                  disabled={readOnly}>Save</button>
+
 
         </div>
       </div>

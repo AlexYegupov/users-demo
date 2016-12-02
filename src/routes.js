@@ -15,6 +15,7 @@ export default (
     <Route path="/a/:login/:name" component={RepoPage} />
     <Route path="/a/:login" component={UserPage} />
     <Route path="/users" component={UserPage2} />
+    <Route path="/users-create" component={UserDetailsPage} />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />
     <Route path="/404" component={NotFoundPage} />

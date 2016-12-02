@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
-//import { login, logout } from '../actions/authActions'
-import { loadUser, patchUser, createNewUser } from '../actions/usersActions'
+import { logout } from '../actions/authActions'
+import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'
 import UserEdit from '../components/UserEdit'
 
@@ -33,8 +33,10 @@ class UserDetailsPage extends Component {
     //login: PropTypes.func,
     //logout: PropTypes.func,
     history: PropTypes.object,
+
     dispatch: PropTypes.func,
     params: PropTypes.object,
+    location: PropTypes.object,
   }
   /* 
    *   constructor(props) {
@@ -44,33 +46,59 @@ class UserDetailsPage extends Component {
    *   }
    * */
   componentWillMount() {
-    console.log('CWM')
+    console.log('CWM', this.props.location.pathname)
     //console.log('Cookie:', document.cookie)
     this.loadData()
     //!! this.props.loadUser(this.props.params.slug)
   }
 
+  isNew() {
+    return this.props.location.pathname === '/users-create'
+  }
+
   loadData() {
+    //console.log('UU', this.props.location, this.props.params)
     console.log('LOADDATA', this.props.params.slug)
-    if (this.props.params.slug !== 'NEW') {
-      //!!return this.props.loadUser(this.props.params.slug)
-      return this.props.dispatch(loadUser(this.props.params.slug))
-    } else {
+
+    // simple checking create/edit (better way?)
+    if (this.isNew()) {
       //return this.props.createNewUser()
-      console.log('DDD', this.props.dispatch)
+      //console.log('DDD', this.props.dispatch)
       //!! return this.props.dispatch(createNewUser)
       //return this.props.dispatch(createNewUser())
-      return this.props.dispatch({type: 'CREATE_NEW_USER'})
+      return this.props.dispatch({type: 'INIT_NEW_USER'})  //~~?? use
+    } else {
+      //!!return this.props.loadUser(this.props.params.slug)
+      return this.props.dispatch(loadUser(this.props.params.slug))
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    console.log('CWU', this.props.location.pathname, this.isNew())
+
+  }
+
   componentWillReceiveProps(nextProps) {
-    console.log('CWRP', this.props, nextProps)
+    console.log('CWRP', this.props, nextProps, nextProps.location.pathname)
+
+    // if (nextProps.loggedUser) {
+    //   this.props.history.push('/users')
+    //   // http://stackoverflow.com/a/34863577/1948511
+    // }
+
+    // ?better place (in react-router)
+    if (!nextProps.loggedUser && nextProps.location.pathname == '/users-create') {
+      this.props.history.push('/login')
+    }
 
     //if (nextProps.
     //this.state.aa = nextProps.user.login        //aa\
-    if (nextProps.user) {
-      //this.setState({userForm: nextProps.user})
+    // if (nextProps.user) {
+    //   //this.setState({userForm: nextProps.user})
+    // }
+
+    if (nextProps.userIsCreated) {
+      console.log('UIC')
     }
 
     //loadData(nextProps)
@@ -98,9 +126,20 @@ class UserDetailsPage extends Component {
     console.log('test', arguments)
   }
 
+
+  logout = () => {
+    // actually not log out because cannot delete httpOnly cookie
+    this.props.dispatch(logout())
+  }
+
   saveUser(user) {
-    console.log('Saving: ', user)
-    //this.props.patchUser(user)
+    console.log('Saving: ', user, this)
+    if (this.isNew()) {
+      this.props.dispatch(createUser(user))
+    } else {
+      //this.props.patchUser(user)
+      this.props.dispatch(patchUser(user))
+    }
   }
 
   componentDidMount() {
@@ -133,13 +172,16 @@ class UserDetailsPage extends Component {
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
 
-        <UserEdit user={this.props.user} onSave={this.saveUser} />
+        <UserEdit user={this.props.user} onSave={this.saveUser.bind(this)} readOnly={!this.props.loggedUser} />
 
         <hr />
         Other stuff:
         <ul>
           <li><Link to={"/login"}>login</Link></li>
           <li><Link to={"/users"}>users list</Link></li>
+          <li><Link to={"/users-create"}>create user</Link></li>
+          <li><Link to={"/users/bob"}>bob user</Link></li>
+          <li><button onClick={this.logout.bind(this)} >Logout</button></li>
         </ul>
 
       </div>
@@ -156,6 +198,7 @@ export default connect(
 
     return {
       //aa: state.users.user ? state.users.user.login : '--',
+      userIsCreated:state.users.userIsCreated,
       user: state.users.user,
       userError: state.users.userError,
       loggedUser: state.auth.loggedUser,

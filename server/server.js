@@ -185,6 +185,7 @@ function checkAuth(router) {
       res.status(403).send('unauthorized').end()
       return
     }
+
     return router(req, res, next)
   }
 
@@ -292,7 +293,8 @@ app.patch('/api/users/:slug', checkAuth(function(req, res) {
 
 
 // use POST only for creating new users
-app.post('/api/users', checkAuth(function(req, res) {
+app.post('/api/users', checkAuth(
+function(req, res) {
   let data = req.body
 
   try {

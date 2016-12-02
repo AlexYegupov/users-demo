@@ -97,6 +97,8 @@ class UserPage2 extends Component {
   render() {
     const { users, loggedUser } = this.props
 
+    const readOnly = !loggedUser
+
     console.log('RENDER', this.props)
 
     return (
@@ -109,7 +111,11 @@ class UserPage2 extends Component {
 
         <h3>Users:</h3>
         { this.renderError() }
-        <button onClick={this.createClick.bind(this)} >Create</button>
+
+        <Link to={`/users-create`}>
+          <button enabled={!readOnly}>Create</button>
+        </Link>
+
         <table>
           <tbody>
             { users.map( (user) =>
@@ -119,8 +125,8 @@ class UserPage2 extends Component {
                 </td>
                 <td>
                   <Link to={`/users/${user.slug}`}>
-                    <button value="edit" disabled={!loggedUser}>
-                      Edit
+                    <button value="edit">
+                      { loggedUser ? 'Edit' : 'View' }
                     </button>
                   </Link>
                   <button value="delete" disabled={!loggedUser}
