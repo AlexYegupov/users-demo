@@ -7,7 +7,7 @@ import { Router } from 'react-router'
 const Root = ({ store, history }) => (
   <Provider store={store}>
     <div>
-    <Router history={history} routes={createRoutes(store)} />
+      <Router history={history} routes={createRoutes(store)} />
       <DevTools />
     </div>
   </Provider>

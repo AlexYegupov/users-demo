@@ -37,6 +37,9 @@ class LoginPage extends Component {
     // loadStarred: PropTypes.func
     login: PropTypes.func,
     logout: PropTypes.func,
+
+    history: PropTypes.object,
+    location: PropTypes.object,
   }
 
   constructor(props) {
@@ -56,11 +59,18 @@ class LoginPage extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    console.log('CWRP', this.props, nextProps)
+    console.log('CWRP RO', this.props, nextProps)
 
-    if (nextProps.loggedUser) {
-      this.props.history.push('/users')
-      // http://stackoverflow.com/a/34863577/1948511
+    // redirect after login if nextPathname set before
+    let nextPathname = this.props.location.state && this.props.location.state.nextPathname || '/loginSuccess'
+
+    if (nextProps.loggedUser && nextPathname) {
+      //http://stackoverflow.com/a/34863577/1948511
+      //https://github.com/mjackson/history
+      this.props.history.push({
+        pathname: nextPathname,
+      })
+
     }
     //? !!
     //loadData(nextProps)

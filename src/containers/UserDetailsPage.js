@@ -32,8 +32,8 @@ class UserDetailsPage extends Component {
     // loadStarred: PropTypes.func
     //login: PropTypes.func,
     //logout: PropTypes.func,
-    history: PropTypes.object,
 
+    history: PropTypes.object,
     dispatch: PropTypes.func,
     params: PropTypes.object,
     location: PropTypes.object,
@@ -52,6 +52,7 @@ class UserDetailsPage extends Component {
     //!! this.props.loadUser(this.props.params.slug)
   }
 
+  // NOTE: this is kind of hack (behavour shouldn't rely on url. But how distinguish between editing existing and creating new user?
   isNew() {
     return this.props.location.pathname === '/users-create'
   }
@@ -80,6 +81,17 @@ class UserDetailsPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log('CWRP', this.props, nextProps, nextProps.location.pathname)
+
+    //
+    if (!nextProps.loggedUser) {
+      //console.log('SHOULD goto LOGIN', this.props.location.pathname)
+
+      //nw hangs this.props.history.replace(this.props.location.pathname)
+      this.props.history.push('/')
+      this.props.history.replace(this.props.location.pathname)
+
+      //browserHistory.replace(location)
+    }
 
     // if (nextProps.loggedUser) {
     //   this.props.history.push('/users')
