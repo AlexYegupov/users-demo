@@ -59,23 +59,38 @@ const DBFILE = 'server/db.json'
 // }
 
 
-  // TODO: read Users json
+// TODO: read Users json
 let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
-  requiredAttrs: [],
+  requiredAttrs: ['login', 'pwd', 'slug', 'name'],
   modifableAttrs: ['name', 'info', 'login'],
 
   _items: [],
+
+  getUserError(user) {
+    let error = ''
+    for (let field of this.requiredAttrs) {
+      if (!user[field]) {
+        error += `${field} should have value;`
+      }
+    }
+    return error
+  },
 
   // create user and return safe copy
   createUser(data) {
     let user = {}
 
+    // simple
     user.login = slugify(data.login || data.name)
     user.slug = data.login
 
     for (let attr of ['name', 'info', 'pwd']) {
       user[attr] = data[attr]
+    }
+    let error = this.getUserError(user)
+    if (error) {
+      throw new Error(`Cannot create user: ${error}`)
     }
 
     // if (isIntersected(Object.keys(data)
@@ -124,7 +139,7 @@ let Users = {
   // return user safe copy
   _safeUser(user) {
     if (!user) return null
-    return Object.assign({}, user, {pwd: undefined})
+    return Object.assign({}, user, {pwd: ''}) //always return empty password
   },
 
   findUserUnsafe(slug) {

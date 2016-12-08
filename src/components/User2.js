@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 function User2({ user: { slug, name } }) {
   return (
     <span className="user">
-      <Link to={`users/${slug}`}>
+      <Link to={`/users/${slug}`}>
         {name}
       </Link>
     </span>

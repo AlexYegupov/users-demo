@@ -1,4 +1,4 @@
-import { CALL_API2 } from '../middleware/api2'
+//import { CALL_API2 } from '../middleware/api2'
 
 export const LOGIN_REQUEST = 'LOGIN'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'

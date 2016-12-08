@@ -62,7 +62,7 @@ class LoginPage extends Component {
     console.log('CWRP RO', this.props, nextProps)
 
     // redirect after login if nextPathname set before
-    let nextPathname = this.props.location.state && this.props.location.state.nextPathname || '/loginSuccess'
+    let nextPathname = (this.props.location.state && this.props.location.state.nextPathname) || '/loginSuccess'
 
     if (nextProps.loggedUser && nextPathname) {
       //http://stackoverflow.com/a/34863577/1948511

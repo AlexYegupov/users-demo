@@ -5,9 +5,9 @@ export const users =
   //w (state = {users: []}, action) => {
   //(state = {response: []}, action) => {
   (state = {users: []}, action) => {
-    console.log('usersReducer ACTION:', action)
+    //console.log('usersReducer ACTION:', action)
 
-    console.log('REDUCER: state, action:', state, action)
+    //console.log('REDUCER: state, action:', state, action)
 
     //if (action.type === 'USERS_REQUEST' && action.result) {
     //if (action.type === CALL_API3 && action.meta.apiCall === 'USERS_LIST' ) {

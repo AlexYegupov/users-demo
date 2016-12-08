@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router'
 import App from './containers/App'
-import UserPage from './containers/UserPage'
+//import UserPage from './containers/UserPage'
 import UserPage2 from './containers/UserPage2'
 import LoginPage from './containers/LoginPage'
 //import TestPage from './containers/TestPage'
@@ -51,7 +51,6 @@ export const createRoutes = (store) => (
     <Route path="/users-create" component={UserDetailsPage} onEnter={requireAuth.bind(this, store)} />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />  {/* onLeave={onLoginLeave} */}
-    {/* <Route path="/loginSuccess" onEnter={onLoginSuccess} /> */}
     <Redirect from='/loginSuccess' to='/users' />
     <Route path="/404" component={NotFoundPage} />
     <Route path="*" component={NotFoundPage} />

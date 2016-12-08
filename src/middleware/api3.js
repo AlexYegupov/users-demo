@@ -255,7 +255,7 @@ export const api3 = store => next => action => {
 
     })
     .then(json => {
-      console.log('resp OK. json:', json)
+      //console.log('resp OK. json:', json)
       action['payload'] = json
       return next(action)
     })
