@@ -14,6 +14,11 @@ function stringifySimple(obj) {
     return  JSON.stringify(obj)
 }
 
+
+function isSameUser(user1, user2) {
+  return (user1||{}).slug === (user2 ||{}).slug
+}
+
 class UserDetailsPage extends Component {
   static propTypes = {
     // login: PropTypes.string,
@@ -48,7 +53,7 @@ class UserDetailsPage extends Component {
     // // https://facebook.github.io/react/docs/state-and-lifecycle.html
     // this.isNew = props.location.pathname === '/users-create'
 
-    this.state = {error: '', shouldUpdateUser: true}
+    this.state = {error: ''} //shouldUpdateUser: true
 
     console.log('CONSTRUCTOR', props, this.isNew)
   }
@@ -250,11 +255,19 @@ class UserDetailsPage extends Component {
 
     //let result = Boolean((nextProps.user||{}).slug !== (this.props.user||{}).slug)
 
-    let result = nextProps.user && nextProps.user.slug !== (this.props.user||{}).slug
+    let result = false
 
-    console.log('%cSCU', 'background: lightgreen', result, this.props, nextProps, this.state, nextState, this.props.params.slug, this.state.shouldUpdateUser, nextState.shouldUpdateUser, result)
+    // shallow and simple: update when user prop changes
+    result = result
+          || (nextProps.user && !isSameUser(nextProps.user, this.props.user))
 
+    // update on login/logout
+    result = result || (!isSameUser(nextProps.loggedUser, this.props.loggedUser))
 
+    // w except: (logged) bob -> create
+    // let result = nextProps.user && nextProps.user.slug !== (this.props.user||{}).slug
+
+    console.log('%cSCU', 'background: lightgreen', result, this.props, nextProps, this.state, nextState, this.props.params.slug, result)
 
     return result
   }
@@ -309,10 +322,14 @@ export default connect(
   function mapStateToProps(state, ownProps) {
 
     // consider only user actual for current url
-    let user = (state.users.user && ownProps.params.slug === state.users.user.slug)
-        ? state.users.user : null
+    let storeUser = state.users.user
+    let user = (
+      storeUser
+      && ((ownProps.location.pathname === '/users-create' && storeUser.isNew)
+          || (ownProps.params||{}).slug === storeUser.slug)
+    ) ? state.users.user : null
 
-    console.log('mapStateToProps', state, ownProps, user)
+    console.log('mapStateToProps', state, ownProps, (user||{}).slug)
 
     //shouldUpdateUser = nextProps.params.slug !== (this.props.user || {}).slug
     //state.users.user.slug

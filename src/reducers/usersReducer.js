@@ -45,7 +45,7 @@ export const users =
     }
 
     if (action.type === 'INIT_NEW_USER') {
-      const emptyUser = {slug: '', login: '', name: ''}
+      const emptyUser = {slug: '', login: '', name: '', isNew: true}
       return Object.assign({}, state, {user: emptyUser, userError: null})
     }
 
