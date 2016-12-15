@@ -5,7 +5,7 @@ export const users =
   //w (state = {users: []}, action) => {
   //(state = {response: []}, action) => {
   (state = {users: []}, action) => {
-    //console.log('usersReducer ACTION:', action)
+    console.log('usersReducer ACTION:', action)
 
     //console.log('REDUCER: state, action:', state, action)
 
@@ -45,16 +45,20 @@ export const users =
     }
 
     if (action.type === 'INIT_NEW_USER') {
-      const emptyUser = {slug: '', login: '', name: '', isNew: true}
+      const emptyUser = {slug: '', login: '', name: '', _isNew: true}
       return Object.assign({}, state, {user: emptyUser, userError: null})
     }
 
     if (action.type === 'CREATE_USER') {
-      if (!action.error)
-        return Object.assign({}, state, {user: action.payload, userError: null, userIsCreated: true})
-      else
+      if (!action.error) {
+        let user = action.payload
+        user._isCreated = true
+        return Object.assign({}, state, {user, userError: null})
+      } else {
         return Object.assign({}, state, {user: null, userError: action.payload})
+      }
     }
+
     return state
   }
 

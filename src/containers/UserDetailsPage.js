@@ -8,10 +8,14 @@ import UserEdit from '../components/UserEdit'
 
 // simply stringify object
 function stringifySimple(obj) {
-  if (obj instanceof Error) // http://stackoverflow.com/a/26199752/1948511
-    return JSON.stringify(obj, ["message", "arguments", "type", "name"])
-  else
-    return  JSON.stringify(obj)
+  if (!obj) return ''
+
+  if (obj.message) return obj.message
+
+  // http://stackoverflow.com/a/26199752/1948511
+  if (obj instanceof Error) return JSON.stringify(obj, ["message", "arguments", "type", "name"])
+
+  return JSON.stringify(obj)
 }
 
 
@@ -45,30 +49,25 @@ class UserDetailsPage extends Component {
   
   constructor(props) {
     super(props)
-    //this.state = {userForm: {name: '', login: '', slug: ''}}
-    //this.state = {isNew: props.location.pathname === '/users-create'}
-
     //!!
     // // "free to add additional fields to the class manually if you need to store something that is not used for the visual output"
     // // https://facebook.github.io/react/docs/state-and-lifecycle.html
-    // this.isNew = props.location.pathname === '/users-create'
+    // this.isCreating = props.location.pathname === '/users-create'
 
-    this.state = {error: ''} //shouldUpdateUser: true
+    this.state = {
+      isCreating: undefined,
+      error: ''
+    } //shouldUpdateUser: true
 
-    console.log('CONSTRUCTOR', props, this.isNew)
+    console.log('CONSTRUCTOR', props)
   }
 
   componentWillMount() {
     console.log('CWM', this.props.location.pathname, this.state, this.props)
     //console.log('Cookie:', document.cookie)
 
-    // // "free to add additional fields to the class manually if you need to store something that is not used for the visual output"
-    // // https://facebook.github.io/react/docs/state-and-lifecycle.html
-    // this.isNew = this.props.location.pathname === '/users-create'
-
-
-    // // !! duplicate logic of updating isNew and loadUser
-    this.isNew = this.props.location.pathname === '/users-create'
+    // // !! duplicate logic of updating isCreating and loadUser
+    this.setState( {isCreating: this.props.location.pathname === '/users-create'} )
 
     // !! probably need just set    shouldUpdateUser  state to use
     //     componentWillReceiveProps engine
@@ -80,38 +79,16 @@ class UserDetailsPage extends Component {
 
   }
 
-  // in fact
-  //
-  // // NOTE: this is kind of hack (behavour shouldn't rely on url. But how distinguish between editing existing and creating new user?
-  // isNew() {
-  //   return this.props.location.pathname === '/users-create'
-  // }
-
   loadUser(slug=null) {
     //console.log('UU', this.props.location, this.props.params)
-    console.log('%cLOAD USER', 'background: yellow; color: black', slug) //this.props.params.slug
+    console.log('%cLOAD USER', 'background: yellow', slug)
 
     if (slug)
       this.props.dispatch(loadUser(slug))
     else
       this.props.dispatch({type: 'INIT_NEW_USER'})
 
-    // // simple checking create/edit (better way?)
-    // if (this.isNew) {
-    //   //return this.props.createNewUser()
-    //   //console.log('DDD', this.props.dispatch)
-    //   //!! return this.props.dispatch(createNewUser)
-    //   //return this.props.dispatch(createNewUser())
-    //   return this.props.dispatch({type: 'INIT_NEW_USER'})  //~~?? use
-    // } else {
-    //   //!!return this.props.loadUser(this.props.params.slug)
-    //   return this.props.dispatch(loadUser(slug))
-    // }
-
-
   }
-
-
 
 
   componentWillUpdate(nextProps, nextState) {
@@ -121,12 +98,19 @@ class UserDetailsPage extends Component {
   componentWillReceiveProps(nextProps) {
     console.log('%cCWRP', 'background: lightgray', this.props, nextProps, nextProps.location.pathname, (nextProps.user||{}).slug)
 
+
     // -> CWM -> here (because CWM will not called on switching urls)
     // // "free to add additional fields to the class manually if you need to store something that is not used for the visual output"
     // // https://facebook.github.io/react/docs/state-and-lifecycle.html
-    this.isNew = nextProps.location.pathname === '/users-create'
 
-    if (!nextProps.loggedUser && this.isNew) {
+    let isCreating = nextProps.location.pathname === '/users-create'
+
+    // TODO: check: "componentnWillReceiveProps set state"
+    if (this.state.isCreating !== isCreating) {
+      this.setState( {isCreating} )
+    }
+
+    if (!nextProps.loggedUser && isCreating) {
       //console.log('SHOULD goto LOGIN', this.props.location.pathname)
 
       //nw hangs this.props.history.replace(this.props.location.pathname)
@@ -155,44 +139,16 @@ class UserDetailsPage extends Component {
     //   //this.setState({userForm: nextProps.user})
     // }
 
-    if (nextProps.userIsCreated) {
+    if (isCreating && nextProps.user && nextProps.user._isCreated) {  //nextProps.userIsCreated
       console.log('UIC')
+      this.props.history.push(`/users/${nextProps.user.slug}`)
     }
 
-    // //!! todo: move logic to loadUser
-    // // process changing editing/creating user (or ...props.params.slug...?)
-    // 
-    // let shouldUpdateUser = nextProps.params.slug !== (this.props.user || {}).slug
-    // 
-    // console.log('SUU', shouldUpdateUser, nextProps.params.slug, this.props.user)
-    // this.setState({shouldUpdateUser})
-
-
     // try: initiate loading user
-    if (!nextProps.user) {
+    if (!nextProps.user && !nextProps.error) {
       this.loadUser(nextProps.params.slug)
     }
 
-    // !!
-    // if (shouldUpdateUser && this.props.user) {
-    //   this.loadUser(nextProps.params.slug)
-    // }
-
-    // if (nextProps.params.slug !== this.props.params.slug) {
-    // 
-    //   this.loadUser(nextProps.params.slug)
-    // } else {
-    //   //this.props.dispatch({type: 'INIT_NEW_USER'}) // here??
-    // }
-
-    // if (this.props.location.pathname !== nextProps.location.pathname) {
-    //   this.loadUser(nextProps.params.slug)
-    // }
-
-    //loadUser(nextProps)
-    // if (nextProps.login !== this.props.login) {
-    //   loadUser(nextProps)
-    // }
   }
 
   // handleLoadMoreClick = () => {
@@ -220,13 +176,13 @@ class UserDetailsPage extends Component {
     this.props.dispatch(logout())
   }
 
-  saveUser(user, error) {
+  saveUser(user) {
     console.log('Saving: ', user, this)
 
-    this.setState( {error} )
+    // !!8 this.setState( {error} )
 
-    if (!error) {
-      if (this.isNew) {
+    if (!this.state.error) {
+      if (this.state.isCreating) {
         this.props.dispatch(createUser(user))
       } else {
         //this.props.patchUser(user)
@@ -234,6 +190,22 @@ class UserDetailsPage extends Component {
       }
     }
   }
+
+  // !!8
+  // saveUser(user, error) {
+  //   console.log('Saving: ', user, this)
+  // 
+  //   this.setState( {error} )
+  // 
+  //   if (!error) {
+  //     if (this.state.isCreating) {
+  //       this.props.dispatch(createUser(user))
+  //     } else {
+  //       //this.props.patchUser(user)
+  //       this.props.dispatch(patchUser(user))
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
     //this.loadSubscriptionData(this.props.subscriptionId);
@@ -251,8 +223,6 @@ class UserDetailsPage extends Component {
     //let result = this.props.location.pathname !== nextProps.location.pathname
     //let result = true
 
-    // TODO: consider also new
-
     //let result = Boolean((nextProps.user||{}).slug !== (this.props.user||{}).slug)
 
     let result = false
@@ -264,42 +234,56 @@ class UserDetailsPage extends Component {
     // update on login/logout
     result = result || (!isSameUser(nextProps.loggedUser, this.props.loggedUser))
 
+    // ...or update on change error message
+    // TODO: remove ugly combination nextProps.error && nextState.error
+    result = result || (nextProps.error !== this.props.error)
+      || (nextState.error !== this.state.error)
+
+
     // w except: (logged) bob -> create
     // let result = nextProps.user && nextProps.user.slug !== (this.props.user||{}).slug
 
-    console.log('%cSCU', 'background: lightgreen', result, this.props, nextProps, this.state, nextState, this.props.params.slug, result)
+    if (result) console.log('%cSCU', 'background: lightgreen', result)
+    console.log('SCU details:', this.props, nextProps, this.state, nextState, this.props.params.slug, result)
 
     return result
   }
 
-  onUserEditChange(user, error) {
-    console.log('OUEC', user, error)
-    this.setState( {error: error} )
+  onUserEditUpdate(error) { //user,
+    console.log('OUEE', error)
+    this.setState( {error: error} ) //
   }
 
   render() {
+
+
+    // error could come from props (server error) or state error (UserEdit error)
+    let error = [
+      stringifySimple(this.props.error),
+      this.state.error].filter(Boolean).join('; ')
+
+
     // TODO render error below user
-    if (!this.props.user) {
+    if (!this.props.user && !this.state.isCreating) {
       console.log('%cRENDERING no user', 'background: lightblue')
-      if (this.props.error) {
-        //console.log('UE1', this.props.error)
-        //console.log('UE2', JSON.stringify(this.props.error))
-    
-        return (<div>Error: {stringifySimple(this.props.error)}</div>)
+      if (error) {
+        return (<div>Error: {error}</div>)
       } else {
         return <div>Loading...</div>
       }
-    
-    } else console.log('%cRENDERING user', 'background: blue', this.props.user)
+
+    } else {
+      console.log('%cRENDERING user', 'background: cyan', this.props.user, error)
+    }
 
     //const readOnly = !this.props.loggedUser
     return (
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
 
-        <UserEdit user={this.props.user} onSave={this.saveUser.bind(this)} onChange={this.onUserEditChange.bind(this)} readOnly={!this.props.loggedUser} />
+        <UserEdit user={this.props.user} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser} />
 
-        { this.state.error ? <div>Error: {this.state.error}</div> : '' }
+        { error ? <div>Error: {error}</div> : '' }
         <hr />
 
         Other stuff:
@@ -325,8 +309,11 @@ export default connect(
     let storeUser = state.users.user
     let user = (
       storeUser
-      && ((ownProps.location.pathname === '/users-create' && storeUser.isNew)
-          || (ownProps.params||{}).slug === storeUser.slug)
+      && ((ownProps.location.pathname === '/users-create'
+           && (storeUser._isNew || storeUser._isCreated)
+          )
+          || (ownProps.params||{}).slug === storeUser.slug
+         )
     ) ? state.users.user : null
 
     console.log('mapStateToProps', state, ownProps, (user||{}).slug)
@@ -335,7 +322,7 @@ export default connect(
     //state.users.user.slug
 
     return {
-      userIsCreated:state.users.userIsCreated,
+      //userIsCreated:state.users.userIsCreated,
       user,
       error: state.users.userError,
       loggedUser: state.auth.loggedUser,

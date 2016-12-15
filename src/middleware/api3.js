@@ -226,7 +226,7 @@ export const api3 = store => next => action => {
   ///vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
   return fetch(action.meta.apiCall, action.meta.fetchOptions)
     .then( response => {
-      //console.log('FE3:', response, response.headers.get('Content-Type'))
+      console.log('FE3:', response)
 
       const contentType = response.headers.get('Content-Type')
 

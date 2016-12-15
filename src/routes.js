@@ -51,7 +51,7 @@ export const createRoutes = (store) => (
     <Route path="/users-create" component={UserDetailsPage} onEnter={requireAuth.bind(this, store)} />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />  {/* onLeave={onLoginLeave} */}
-    <Redirect from='/loginSuccess' to='/users' />
+    <Redirect from="/loginSuccess" to="/users" />
     <Route path="/404" component={NotFoundPage} />
     <Route path="*" component={NotFoundPage} />
   </Route>

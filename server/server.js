@@ -279,7 +279,7 @@ app.patch('/api/users/:slug', checkAuth(function(req, res) {
   try {
     var user = Users.patchUser(slug, req.body)
   } catch (e) {
-    return res.json({'error': e, 'message': e.message}).status(406).end()
+    return res.status(406).json({'error': e, 'message': e.message}).end()
   }
 
   if (user) {
@@ -299,11 +299,11 @@ app.post('/api/users', checkAuth(function(req, res) {
   try {
     var user = Users.createUser(data)
   } catch (e) {
-    return res.json({'error': e, 'message': e.message}).status(406).end()
+    return res.status(406).json({'error': e, 'message': e.message}).end()
   }
 
   Users.saveAll()
-  res.json({user}).status(201).end()
+  res.json(user).status(201).end()
 }))
 
 

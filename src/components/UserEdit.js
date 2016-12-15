@@ -2,6 +2,11 @@ import React, { Component, PropTypes } from 'react'
 //import { Link } from 'react-router'
 
 
+// TODO: remove duplicate
+function isSameUser(user1, user2) {
+  return (user1||{}).slug === (user2 ||{}).slug
+}
+
 class UserEdit extends Component {
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -14,7 +19,7 @@ class UserEdit extends Component {
       //aa: PropTypes.string
     }),
     onSave: PropTypes.func,
-    onChange: PropTypes.func
+    onUpdate: PropTypes.func
   }
 
   constructor(props) {
@@ -24,24 +29,24 @@ class UserEdit extends Component {
     // let user = Object.assign({name: '', login: '', pwd: '', pwd2: '', slug: ''}, props.user)
     // this.state = {userForm: user, error: ''}
 
-    this.state = {userForm: this.userToForm(props.user), error: ''}
+    this.state = {userForm: this.userToForm(props.user)} //error: ''
   }
 
   componentWillReceiveProps(nextProps) {
     console.log('UserEdit: CWRP', nextProps)
     // reset form
-    if (nextProps.user) {
+    if (nextProps.user && !isSameUser(this.props.user, nextProps.user)) {
       this.setState( {userForm: this.userToForm(nextProps.user)} )
     }
   }
 
   userToForm(user) {
-    return Object.assign({pwd2: ''}, user)
+    return Object.assign({pwd: '', pwd2: ''}, user)
   }
 
   // componentWillUpdate(nextProps, nextState) {
   // 
-  //   let error = this.formError(this.state.userForm)
+  //   let error = this.getFormError(this.state.userForm)
   //   //this.setState( {userForm, error} )
   //   if (this.props.onChange) this.props.onChange(userForm, error)
   // 
@@ -68,7 +73,7 @@ class UserEdit extends Component {
      * }*/
 
     const readOnly = this.props.readOnly
-    console.log('RENDERING UserEdit', readOnly, this.state.userForm)
+    console.log('UserEdit: RENDERING', readOnly, this.state)
 
     return (
       <div>
@@ -118,11 +123,11 @@ class UserEdit extends Component {
   }
 
   // simplified form error
-  formError(form) {
-    //let error = ''
-    //console.log(2222222222, form['pwd'], form['pwd2'])
-    if (!form['login']) return 'Empty login'
+  getFormError(form) {
     if (!form['name']) return 'Empty name'
+    if (!form['login']) return 'Empty login'
+    if (form['login'].length < 2) return 'Login should be 2+ characters length'
+    if (!form['pwd']) return 'Empty password'
     if (form['pwd'] !== form['pwd2']) return 'Password mismatch'
   }
 
@@ -131,27 +136,22 @@ class UserEdit extends Component {
     let userForm = this.state.userForm
     userForm[attr] = event.target.value
 
-    let error = this.formError(userForm)
+    let error = this.getFormError(userForm)
 
     this.setState( {userForm, error} )
 
-    // let error = this.getError()
-    //this.setState( {userForm, error} )
-    if (this.props.onChange) this.props.onChange(userForm, error)
+    if (this.props.onUpdate) this.props.onUpdate(error)  // userForm,
   }
 
   saveClicked() {
     //console.log('cdm+', this.loginInput.value)
     //console.log('sC', this.state.userForm)
 
-    let error = this.state.error
+    //let error = this.state.error
     let user = Object.assign({}, this.state.userForm)
     delete user.pwd2
 
-    this.props.onSave(user, error)
-    // if (!error) {
-    //   
-    // }
+    this.props.onSave(user)     // , error
   }
 
 }
