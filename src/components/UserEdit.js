@@ -127,7 +127,7 @@ class UserEdit extends Component {
     if (!form['name']) return 'Empty name'
     if (!form['login']) return 'Empty login'
     if (form['login'].length < 2) return 'Login should be 2+ characters length'
-    if (!form['pwd']) return 'Empty password'
+    //if (!form['pwd']) return 'Empty password' (if edit user could be empty)
     if (form['pwd'] !== form['pwd2']) return 'Password mismatch'
   }
 
@@ -149,6 +149,7 @@ class UserEdit extends Component {
 
     //let error = this.state.error
     let user = Object.assign({}, this.state.userForm)
+    if (!user.pwd) delete user.pwd // don't change password if empty value
     delete user.pwd2
 
     this.props.onSave(user)     // , error

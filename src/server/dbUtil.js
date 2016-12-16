@@ -13,12 +13,12 @@
 // }
 
 
-//import { isIntersected, isSubset } from './setUtil'
+import { intersect } from '../utils/setUtil'
 
 const fs = require('fs')
 import slugify from 'slugify'
 
-const DBFILE = 'server/db.json'
+const DBFILE = 'src/server/db.json'
 
 // const db = low('server/db.yaml', {
 //   storage: fileAsync,
@@ -63,7 +63,7 @@ const DBFILE = 'server/db.json'
 let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
   requiredAttrs: ['login', 'pwd', 'slug', 'name'],
-  modifableAttrs: ['name', 'info', 'login'],
+  modifableAttrs: ['name', 'info', 'login', 'pwd'],
 
   _items: [],
 
@@ -161,7 +161,8 @@ let Users = {
     let user = this.findUserUnsafe(slug)
     if (!user) return null
 
-    for (let attr of this.modifableAttrs) {
+    console.log('IS', intersect(this.modifableAttrs, Object.keys(data)))
+    for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
       user[attr] = data[attr]
     }
 
