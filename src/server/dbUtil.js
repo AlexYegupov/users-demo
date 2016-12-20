@@ -151,9 +151,9 @@ let Users = {
     return this._items.find( u => u.slug === slug )
   },
 
-  //deleteBySlug(slug) {
+  // patch user (in memory only) and return true if ok
   deleteUser(slug) {
-    const i = this._items.findIndex( (item) => item._data.slug === slug )
+    const i = this._items.findIndex( (item) => item.slug === slug )
     if (i === -1) {
       return false
     }

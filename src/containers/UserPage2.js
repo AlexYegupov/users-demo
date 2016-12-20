@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
-import { loadUsers3 as loadUsers } from '../actions/usersActions'
+import { loadUsers3 as loadUsers, deleteUser } from '../actions/usersActions'
 
 import User2 from '../components/User2'
 //import LU from '../components/LoggedUser'
@@ -35,6 +35,13 @@ class UserPage2 extends Component {
     // loadStarred: PropTypes.func
     login: PropTypes.func,
     logout: PropTypes.func,
+    deleteUser: PropTypes.func
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {error: '', users: []}
   }
 
   componentWillMount() {
@@ -69,6 +76,7 @@ class UserPage2 extends Component {
   deleteClick = (slug) => {
     //this.props.loadStargazers(this.props.fullName, true)
     console.log('DELETE', this, slug)
+    this.props.deleteUser(slug)
   }
 
   login = () => {
@@ -96,10 +104,9 @@ class UserPage2 extends Component {
 
   render() {
     const { users, loggedUser } = this.props
-
     const readOnly = !loggedUser
-
-    console.log('RENDER', this.props)
+    let error = this.state.error
+    console.log('RENDER', this.props, error)
 
     return (
       <div>
@@ -139,6 +146,8 @@ class UserPage2 extends Component {
             }
           </tbody>
         </table>
+
+        <div>{ error ? `Error: ${error}` : '' }</div>
 
         <hr />
         Other stuff:
@@ -205,8 +214,8 @@ const mapStateToProps = (state, ownProps) => {
     //users: state.users.response,
     users: state.users.users,
     usersError: state.users.usersError,
-
-    loggedUser: state.auth.loggedUser
+    loggedUser: state.auth.loggedUser,
+    //deletedUser: state.users.deletedUser
   }
 }
 
@@ -217,6 +226,12 @@ export default connect(
     //loadUser,
     //loadStarred
     login,
-    logout
+    logout,
+    deleteUser
   }
 )(UserPage2)
+
+
+
+
+

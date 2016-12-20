@@ -230,7 +230,9 @@ export const api3 = store => next => action => {
 
       const contentType = response.headers.get('Content-Type')
 
-      if (!contentType || !contentType.includes('application/json')) {
+      if (response.status !== 204
+          && (!contentType || !contentType.includes('application/json'))) {
+        console.log('response is not json', contentType)
         return response.text().then(
           text => Promise.reject({body: text, code: response.status})
                                  //`${text} (${response.status})`)
@@ -239,17 +241,19 @@ export const api3 = store => next => action => {
       }
 
       if (!response.ok) {
+        console.log('response is not ok')
         return response.json().then(
           json => Promise.reject(json)
         )
       }
 
-      return response.json()
+      return response.status === 204 ? {} : response.json()
+
       // return response.json()
       //   .then(json => {
       // 
       //     console.log('FETCHED response:', response)
-      // 
+      //
       //     return json
       //   })
 

@@ -2,32 +2,14 @@
 
 // Updates an entity cache in response to any action with response.entities.
 export const users =
-  //w (state = {users: []}, action) => {
-  //(state = {response: []}, action) => {
-  (state = {users: []}, action) => {
+  (state={users:[]}, action) => {
     console.log('usersReducer ACTION:', action)
 
-    //console.log('REDUCER: state, action:', state, action)
-
-    //if (action.type === 'USERS_REQUEST' && action.result) {
-    //if (action.type === CALL_API3 && action.meta.apiCall === 'USERS_LIST' ) {
     if (action.type === 'LOAD_USERS') {
-      //return Object.assign({}, state, action) //
-
       if (!action.error)
         return Object.assign({}, state, {users: action.payload, usersError: null})
       else
         return Object.assign({}, state, {users: [], usersError: action.payload})
-
-      //w return Object.assign({}, state, {users: action.response}) //
-
-      // if (action.result = 'API_SUCCESS') {
-      //   //console.log(111111, action.response, [1,2,3])
-      //   return Object.assign({}, state, {users: action.response}) //
-      // } else {
-      //   return Object.assign({}, state, {users: null, }, ) //
-      // }
-
     }
 
     if (action.type === 'LOAD_USER') {
@@ -65,6 +47,19 @@ export const users =
         return Object.assign({}, state, {user, userError: null})
       } else {
         return Object.assign({}, state, {user: null, userError: action.payload})
+      }
+    }
+
+    if (action.type === 'DELETE_USER') {
+      console.log("DDD UUU", state.users, action, action.payload.deletedUserSlug)
+      if (!action.error) {
+        // delete deleted user from "users" array
+        let newState = Object.assign({}, state)
+        newState.users = state.users.filter(
+          item => item.slug !== action.payload.deletedUserSlug)
+        return newState
+      } else {
+        return Object.assign({}, state, {user: null, usersError: action.payload})
       }
     }
 

@@ -269,7 +269,7 @@ app.get('/api/users', function(req, res) {
 // alt: could use :id instead of :slug
 app.get('/api/users/:slug', function(req, res) {
   let user = Users.findUser(req.params.slug)
-  if (!user) return res.status(204).send('User not found').end()
+  if (!user) return res.status(204).end() //send('User not found').
 
   res.json(user).end()
 })
@@ -306,13 +306,14 @@ app.post('/api/users', checkAuth(function(req, res) {
   }
 
   Users.saveAll()
-  res.json(user).status(201).end()
+  res.status(201).json(user).end()
 }))
 
 
 app.delete('/api/users/:slug', checkAuth(function(req, res) {
-  if (Users.deleteBySlug(req.params.slug)) {
-    return res.status(204).end()
+  if (Users.deleteUser(req.params.slug)) {
+    Users.saveAll()
+    return res.status(200).json({deletedUserSlug: req.params.slug}).end() // 204
   } else {
     return res.status(404).end()
   }

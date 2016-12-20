@@ -30,8 +30,6 @@ import { urlize } from '../utils/serialize'
 
 
 export const loadUsers3 = () => (dispatch, getState) => {
-
-
   return dispatch({
     type: 'LOAD_USERS',
     meta: {apiCall: 'http://localhost:3001/api/users'}
@@ -58,10 +56,7 @@ export const loadUsers3 = () => (dispatch, getState) => {
   //   }
   // })
 
-
 }
-
-
 
 
 export const loadUser = (slug) => (dispatch, getState) => {
@@ -113,6 +108,21 @@ export const createUser = (user) => (dispatch, getState) => {
       fetchOptions: {
         method: 'POST',
         body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
+        credentials: 'include'  // to include cookies in response     (https://tonyspiro.com/how-to-keep-session-data-after-fetch-post-with-express/#comment-2544007117)
+
+      }
+    }
+  })  
+}
+
+export const deleteUser = (slug) => (dispatch, getState) => {
+  return dispatch({
+    type: 'DELETE_USER',
+    meta: {
+      apiCall: `http://localhost:3001/api/users/${slug}`,
+      fetchOptions: {
+        method: 'DELETE',
+        //body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
         credentials: 'include'  // to include cookies in response     (https://tonyspiro.com/how-to-keep-session-data-after-fetch-post-with-express/#comment-2544007117)
 
       }
