@@ -118,6 +118,7 @@ let Users = {
     // this.create({login: 'roger', name: "Roger", pwd: '1', slug: 'roger'})
   },
 
+  // save all users (memory -> file)
   saveAll() {
     fs.writeFileSync(DBFILE, JSON.stringify({'users': this._items}))
   },
@@ -160,7 +161,7 @@ let Users = {
     return true
   },
 
-  // patch user and return safe copy
+  // patch user (in memory only) and return safe copy
   patchUser(slug, data) {
     let user = this.findUserUnsafe(slug)
     if (!user) return null
@@ -168,6 +169,11 @@ let Users = {
     //console.log('IS', intersect(this.modifableAttrs, Object.keys(data)))
     for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
       user[attr] = data[attr]
+    }
+
+    let error = this.getUserError(user)
+    if (error) {
+      throw new Error(`Cannot patch user: ${error}`)
     }
 
     return this._safeUser(user)

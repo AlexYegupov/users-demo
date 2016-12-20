@@ -253,18 +253,20 @@ class UserDetailsPage extends Component {
     // display local error OR server error (because server error could lose actuaaaality)
     let error = this.state.error // || stringifySimple(this.props.error)
 
-    // TODO render error below user
-    if (!this.props.user && !this.state.isCreating) {
-      console.log('%cRENDERING no user', 'background: lightblue')
-      if (error) {
-        return (<div>Error: {error}</div>)
-      } else {
-        return <div>Loading...</div>
-      }
+    // // TODO render error below user
+    // if (!this.props.user && !this.state.isCreating) {
+    //   console.log('%cRENDERING no user', 'background: lightblue')
+    //   if (error) {
+    //     return (<div>Error: {error}</div>)
+    //   } else {
+    //     return <div>Loading...</div>
+    //   }
+    // 
+    // } else {
+    //   console.log('%cRENDERING user', 'background: cyan', this.props.user, error)
+    // }
 
-    } else {
-      console.log('%cRENDERING user', 'background: cyan', this.props.user, error)
-    }
+    console.log('%cRENDERING user', 'background: cyan', this.props.user, error)
 
     //const readOnly = !this.props.loggedUser
     return (
