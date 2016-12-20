@@ -75,6 +75,9 @@ let Users = {
       }
     }
 
+    if (user.pwd === '000') error += 'Test server error: pwd cannot be 000;'
+    if (user.login === '000') error += 'Test server error: login cannot be 000;'
+
     return error
   },
 
@@ -162,7 +165,7 @@ let Users = {
     let user = this.findUserUnsafe(slug)
     if (!user) return null
 
-    console.log('IS', intersect(this.modifableAttrs, Object.keys(data)))
+    //console.log('IS', intersect(this.modifableAttrs, Object.keys(data)))
     for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
       user[attr] = data[attr]
     }
