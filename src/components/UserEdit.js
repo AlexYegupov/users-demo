@@ -1,11 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 //import { Link } from 'react-router'
-
-
-// TODO: remove duplicate
-function isSameUser(user1, user2) {
-  return (user1||{}).slug === (user2 ||{}).slug
-}
+import { isUserChanged } from  '../utils/userUtil'
 
 class UserEdit extends Component {
   static propTypes = {
@@ -24,7 +19,7 @@ class UserEdit extends Component {
 
   constructor(props) {
     super(props)
-    console.log('UserEdit. user:', props.user)
+    console.log('UserEdit. constructor. user:', props.user)
 
     // let user = Object.assign({name: '', login: '', pwd: '', pwd2: '', slug: ''}, props.user)
     // this.state = {userForm: user, error: ''}
@@ -33,12 +28,18 @@ class UserEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('UserEdit: CWRP', nextProps)
+    console.log('UserEdit: CWRP', this.props, nextProps)
     // reset form
-    if (nextProps.user && !isSameUser(this.props.user, nextProps.user)) {
+    if (nextProps.user && isUserChanged(this.props.user, nextProps.user)
+        //|| nextProps.user._isCreated  || nextProps.user._isPatched
+           ) {
       this.setState( {userForm: this.userToForm(nextProps.user)} )
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   
+  // }
 
   userToForm(user) {
     return Object.assign({pwd: '', pwd2: ''}, user)
@@ -124,9 +125,10 @@ class UserEdit extends Component {
 
   // simplified form error
   getFormError(form) {
+    console.log('FF', form)
     if (!form['name']) return 'Empty name'
     if (!form['login']) return 'Empty login'
-    if (form['login'].length < 2) return 'Login should be 2+ characters length'
+    if (form['login'].length < 3) return 'Login should be 3+ characters length'
     //if (!form['pwd']) return 'Empty password' (if edit user could be empty)
     if (form['pwd'] !== form['pwd2']) return 'Password mismatch'
   }

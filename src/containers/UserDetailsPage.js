@@ -5,6 +5,7 @@ import { logout } from '../actions/authActions'
 import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'
 import UserEdit from '../components/UserEdit'
+import { isSameUser, isUserChanged } from  '../utils/userUtil'
 
 // simply stringify object
 function stringifySimple(obj) {
@@ -18,10 +19,6 @@ function stringifySimple(obj) {
   return JSON.stringify(obj)
 }
 
-
-function isSameUser(user1, user2) {
-  return (user1||{}).slug === (user2 ||{}).slug
-}
 
 class UserDetailsPage extends Component {
   static propTypes = {
@@ -110,6 +107,13 @@ class UserDetailsPage extends Component {
       this.setState( {isCreating} )
     }
 
+    // !!9
+    if (nextProps.error && nextProps.error !== this.props.error) {
+      console.log('Overwrite Error', nextProps.error)
+      //update error state by server value
+      this.setState( {error: nextProps.error.message} )
+    }
+
     if (!nextProps.loggedUser && isCreating) {
       //console.log('SHOULD goto LOGIN', this.props.location.pathname)
 
@@ -191,22 +195,6 @@ class UserDetailsPage extends Component {
     }
   }
 
-  // !!8
-  // saveUser(user, error) {
-  //   console.log('Saving: ', user, this)
-  // 
-  //   this.setState( {error} )
-  // 
-  //   if (!error) {
-  //     if (this.state.isCreating) {
-  //       this.props.dispatch(createUser(user))
-  //     } else {
-  //       //this.props.patchUser(user)
-  //       this.props.dispatch(patchUser(user))
-  //     }
-  //   }
-  // }
-
   componentDidMount() {
     //this.loadSubscriptionData(this.props.subscriptionId);
     //console.log('CDM', this.loginInput, window )
@@ -229,15 +217,19 @@ class UserDetailsPage extends Component {
 
     // shallow and simple: update when user prop changes
     result = result
-          || (nextProps.user && !isSameUser(nextProps.user, this.props.user))
+      || isUserChanged(this.props.user, nextProps.user)
+          //|| (nextProps.user && !isSameUser(nextProps.user, this.props.user))
 
     // update on login/logout
-    result = result || (!isSameUser(nextProps.loggedUser, this.props.loggedUser))
+    result = result || (!isSameUser(this.props.loggedUser, nextProps.loggedUser))
 
     // ...or update on change error message
     // TODO: remove ugly combination nextProps.error && nextState.error
     result = result || (nextProps.error !== this.props.error)
       || (nextState.error !== this.state.error)
+
+    // //...or returned patched user
+    // result = result || isUserChanged(this.props.user, nextProps.user)
 
 
     // w except: (logged) bob -> create
@@ -255,13 +247,8 @@ class UserDetailsPage extends Component {
   }
 
   render() {
-
-
-    // error could come from props (server error) or state error (UserEdit error)
-    let error = [
-      stringifySimple(this.props.error),
-      this.state.error].filter(Boolean).join('; ')
-
+    // display local error OR server error (because server error could lose actuaaaality)
+    let error = this.state.error // || stringifySimple(this.props.error)
 
     // TODO render error below user
     if (!this.props.user && !this.state.isCreating) {

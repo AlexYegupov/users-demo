@@ -74,6 +74,7 @@ let Users = {
         error += `${field} should have value;`
       }
     }
+
     return error
   },
 

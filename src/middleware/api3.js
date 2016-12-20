@@ -257,6 +257,10 @@ export const api3 = store => next => action => {
     .then(json => {
       //console.log('resp OK. json:', json)
       action['payload'] = json
+
+      // exp: response timestamp
+      action['meta'].timestamp = new Date().toISOString()
+
       return next(action)
     })
       // next(actionWith({

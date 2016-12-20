@@ -31,21 +31,29 @@ export const users =
     }
 
     if (action.type === 'LOAD_USER') {
-      if (!action.error)
-        return Object.assign({}, state, {user: action.payload, userError: null})
-      else
+      if (!action.error) {
+        let user = action.payload
+        user._timestamp = action.meta.timestamp
+        return Object.assign({}, state, {user, userError: null})
+      } else {
         return Object.assign({}, state, {user: null, userError: action.payload})
+      }
     }
 
     if (action.type === 'PATCH_USER') {
-      if (!action.error)
-        return Object.assign({}, state, {user: action.payload, userError: null})
-      else
+      if (!action.error) {
+        let user = action.payload
+        user._isPatched = true
+        user._timestamp = action.meta.timestamp
+        return Object.assign({}, state, {user, userError: null})
+      } else {
         return Object.assign({}, state, {user: null, userError: action.payload})
+      }
     }
 
     if (action.type === 'INIT_NEW_USER') {
-      const emptyUser = {slug: '', login: '', name: '', _isNew: true}
+      const emptyUser = {slug: '', login: '', name: '', _isNew: true,
+                         _timestamp: new Date().toISOString()}
       return Object.assign({}, state, {user: emptyUser, userError: null})
     }
 
@@ -53,6 +61,7 @@ export const users =
       if (!action.error) {
         let user = action.payload
         user._isCreated = true
+        user._timestamp = action.meta.timestamp
         return Object.assign({}, state, {user, userError: null})
       } else {
         return Object.assign({}, state, {user: null, userError: action.payload})
