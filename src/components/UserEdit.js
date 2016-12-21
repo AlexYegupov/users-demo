@@ -104,6 +104,7 @@ class UserEdit extends Component {
         <div>
           Password:
           <input value={this.state.userForm.pwd}
+                 type="password"
                  disabled={readOnly}
                  onChange={this.handleChange.bind(this, 'pwd')}
           />
@@ -112,6 +113,7 @@ class UserEdit extends Component {
         <div>
           Password again:
           <input value={this.state.userForm.pwd2}
+                 type="password"
                  disabled={readOnly}
                  onChange={this.handleChange.bind(this, 'pwd2')}
           />

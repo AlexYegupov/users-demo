@@ -92,7 +92,6 @@ class UserDetailsPage extends Component {
   componentWillReceiveProps(nextProps) {
     console.log('%cCWRP', 'background: lightgray', this.props, nextProps, nextProps.location.pathname, (nextProps.user||{}).slug)
 
-
     // -> CWM -> here (because CWM will not called on switching urls)
     // // "free to add additional fields to the class manually if you need to store something that is not used for the visual output"
     // // https://facebook.github.io/react/docs/state-and-lifecycle.html
