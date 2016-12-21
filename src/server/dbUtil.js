@@ -59,6 +59,15 @@ const DBFILE = 'src/server/db.json'
 // }
 
 
+function crypt(text) {
+  return `###${text}###`
+}
+
+function decrypt(text) {
+  return text.slice(3, -2)
+}
+
+
 // TODO: read Users json
 let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
@@ -102,6 +111,8 @@ let Users = {
     //   if (key
     // }
 
+    user['pwd'] = crypt(user.pwd)
+
     this._items.push(user)
     return this._safeUser(user)
     // let newUser = Object.assign({}, UserProto, {_data: data})
@@ -137,6 +148,7 @@ let Users = {
   },
 
   login(login, pwd) {
+    pwd = crypt(pwd)
     let user = this._items.find(u => ((u.login === login) && (u.pwd === pwd)) )
     return this._safeUser(user)
   },
@@ -144,7 +156,7 @@ let Users = {
   // return user safe copy
   _safeUser(user) {
     if (!user) return null
-    return Object.assign({}, user, {pwd: ''}) //always return empty password
+    return Object.assign({}, user, {pwd: undefined}) //without password
   },
 
   findUserUnsafe(slug) {
@@ -171,6 +183,8 @@ let Users = {
       user[attr] = data[attr]
     }
 
+    user['pwd'] = crypt(user.pwd)
+
     let error = this.getUserError(user)
     if (error) {
       throw new Error(`Cannot patch user: ${error}`)
@@ -179,12 +193,13 @@ let Users = {
     return this._safeUser(user)
   },
 
-  setUserPwd(slug, old, new_) {
-    let user = this.findUserUnsafe(slug)
-    if (old === user.pwd) return false
-    user.pwd = new_
-    return true
-  },
+  // w but no need
+  // setUserPwd(slug, old, new_) {
+  //   let user = this.findUserUnsafe(slug)
+  //   if (old === user.pwd) return false
+  //   user.pwd = new_
+  //   return true
+  // },
 
 
 }

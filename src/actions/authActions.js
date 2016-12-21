@@ -32,7 +32,7 @@ export const login = (login, pwd) => (dispatch, getState) =>
       apiCall: 'http://localhost:3001/api/session', //TODO: "apiCall" -> "url"
       fetchOptions: {
         method: 'POST',
-        body: new URLSearchParams(`login=${login}&pwd=${pwd}`),
+        body: new URLSearchParams(`login=${encodeURIComponent(login)}&pwd=${encodeURIComponent(pwd)}`),
         credentials: 'include'  // to include cookies in fresponse CR
       }  //TODO -> "options"
     }
