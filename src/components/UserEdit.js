@@ -13,6 +13,7 @@ class UserEdit extends Component {
       //avatarUrl: PropTypes.string.isRequired,
       //aa: PropTypes.string
     }),
+    error: PropTypes.string,
     onSave: PropTypes.func,
     onUpdate: PropTypes.func
   }
@@ -34,6 +35,10 @@ class UserEdit extends Component {
         //|| nextProps.user._isCreated  || nextProps.user._isPatched
            ) {
       this.setState( {userForm: this.userToForm(nextProps.user)} )
+    }
+
+    if (nextProps.error && !this.state.error) {
+      this.setState( {error:nextProps.error} )
     }
   }
 

@@ -154,6 +154,10 @@ class UserList extends Component {
         <ul>
           <li><Link to={"/login"}>login</Link></li>
           {/* <li><button onClick={this.login.bind(this)} >Login</button></li> */}
+          <li><Link to={"/users"}>users list</Link></li>
+          <li><Link to={"/users-create"}>create user</Link></li>
+          <li><Link to={"/users/terry"}>terry user</Link></li>
+          <li><Link to={"/users/bob"}>bob user</Link></li>
           <li><button onClick={this.logout.bind(this)} >Logout</button></li>
         </ul>
 

@@ -24,7 +24,7 @@ class UserDetailsPage extends Component {
   static propTypes = {
     // login: PropTypes.string,
     user: PropTypes.object,
-    error: PropTypes.object,  //internal or external error
+    error: PropTypes.string, //PropTypes.object,  //internal or external error
     // starredPagination: PropTypes.object,
     // starredRepos: PropTypes.array,
     // starredRepoOwners: PropTypes.array,
@@ -53,8 +53,9 @@ class UserDetailsPage extends Component {
 
     this.state = {
       isCreating: undefined,
-      error: ''
-    } //shouldUpdateUser: true
+      error: '',
+      errorIsLocal: false,
+    }
 
     console.log('CONSTRUCTOR', props)
   }
@@ -71,9 +72,6 @@ class UserDetailsPage extends Component {
     if (!this.props.user) {
       this.loadUser(this.props.params.slug)
     }
-
-    //nw this.setState( {aa: 22} )
-
   }
 
   loadUser(slug=null) {
@@ -86,7 +84,6 @@ class UserDetailsPage extends Component {
       this.props.dispatch({type: 'INIT_NEW_USER'})
 
   }
-
 
   componentWillUpdate(nextProps, nextState) {
     console.log('CWU', this.props.location.pathname, nextProps, nextState)
@@ -108,10 +105,12 @@ class UserDetailsPage extends Component {
     }
 
     // !!9
-    if (nextProps.error && nextProps.error !== this.props.error) {
+    //if (nextProps.error && nextProps.error !== this.props.error) {
+    if (nextProps.error && !this.state.errorIsLocal) {
       console.log('Overwrite Error', nextProps.error)
       //update error state by server value
-      this.setState( {error: nextProps.error.message} )
+      this.setState( {error: stringifySimple(nextProps.error),
+                      errorIsLocal: true} )
     }
 
     if (!nextProps.loggedUser && isCreating) {
@@ -137,12 +136,6 @@ class UserDetailsPage extends Component {
     //   this.props.history.push('/login')
     // }
 
-    //if (nextProps.
-    //this.state.aa = nextProps.user.login        //aa\
-    // if (nextProps.user) {
-    //   //this.setState({userForm: nextProps.user})
-    // }
-
     if (isCreating && nextProps.user && nextProps.user._isCreated) {  //nextProps.userIsCreated
       console.log('UIC')
       this.props.history.push(`/users/${nextProps.user.slug}`)
@@ -158,25 +151,9 @@ class UserDetailsPage extends Component {
 
   }
 
-  // handleLoadMoreClick = () => {
-  //   //this.props.loadStarred(this.props.login, true)
-  // }
-
-  // saveClicked() {
-  //   //console.log('cdm+', this.loginInput.value)
-  //   console.log('sC', this.state.userForm)
-  // 
-  //   this.props.patchUser({
-  //     slug: this.props.params.slug,
-  //     name: this.state.userForm.name, //this.nameInput.value,
-  //     login: this.state.userForm.login //this.loginInput.value,
-  //   })
-  // }
-
   test() {
     console.log('test', arguments)
   }
-
 
   logout = () => {
     // actually not log out because cannot delete httpOnly cookie
@@ -189,6 +166,9 @@ class UserDetailsPage extends Component {
     // !!8 this.setState( {error} )
 
     if (!this.state.error) {
+      this.setState( {//error: '', assumed no error when saving
+                      errorIsLocal: false} )
+
       if (this.state.isCreating) {
         this.props.dispatch(createUser(user))
       } else {
@@ -244,9 +224,9 @@ class UserDetailsPage extends Component {
     return result
   }
 
-  onUserEditUpdate(error) { //user,
+  onUserEditUpdate(error) {
     console.log('OUEE', error)
-    this.setState( {error: error} ) //
+    this.setState( {error: error} )
   }
 
   render() {
@@ -273,7 +253,9 @@ class UserDetailsPage extends Component {
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
 
-        <UserEdit user={this.props.user} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser} />
+        <UserEdit user={this.props.user} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser}
+          error={error}
+        />
 
         { error ? <div>Error: {error}</div> : '' }
         <hr />
@@ -308,13 +290,12 @@ export default connect(
          )
     ) ? state.users.user : null
 
-    console.log('mapStateToProps', state, ownProps, (user||{}).slug)
+    console.log('mapStateToProps', state, ownProps)
 
     //shouldUpdateUser = nextProps.params.slug !== (this.props.user || {}).slug
-    //state.users.user.slug
 
     return {
-      //userIsCreated:state.users.userIsCreated,
+      //userIsCreated:state.users.userIsCreated,\
       user,
       error: state.users.userError,
       loggedUser: state.auth.loggedUser,

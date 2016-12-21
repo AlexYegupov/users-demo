@@ -53,7 +53,7 @@ export const users =
     if (action.type === 'DELETE_USER') {
       console.log("DDD UUU", state.users, action, action.payload.deletedUserSlug)
       if (!action.error) {
-        // delete deleted user from "users" array
+        // delete deleted on server user from "users" array
         let newState = Object.assign({}, state)
         newState.users = state.users.filter(
           item => item.slug !== action.payload.deletedUserSlug)
