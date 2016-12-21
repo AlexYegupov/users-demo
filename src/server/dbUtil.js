@@ -20,6 +20,7 @@ import slugify from 'slugify'
 
 const DBFILE = 'src/server/db.json'
 
+import { crypt, verify } from './cryptUtil'
 // const db = low('server/db.yaml', {
 //   storage: fileAsync,
 //   format: YAMLFormat
@@ -58,14 +59,6 @@ const DBFILE = 'src/server/db.json'
 // 
 // }
 
-
-function crypt(text) {
-  return `###${text}###`
-}
-
-function decrypt(text) {
-  return text.slice(3, -2)
-}
 
 
 // TODO: read Users json
@@ -148,8 +141,7 @@ let Users = {
   },
 
   login(login, pwd) {
-    pwd = crypt(pwd)
-    let user = this._items.find(u => ((u.login === login) && (u.pwd === pwd)) )
+    let user = this._items.find(u => ((u.login === login) && verify(u.pwd, pwd)) )
     return this._safeUser(user)
   },
 
