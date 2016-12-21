@@ -19,7 +19,7 @@ const loadData = ({ loadUsers }) => {
   //loadStarred(login)
 }
 
-class UserPage2 extends Component {
+class UserList extends Component {
   static propTypes = {
 
     // login: PropTypes.string,
@@ -229,7 +229,7 @@ export default connect(
     logout,
     deleteUser
   }
-)(UserPage2)
+)(UserList)
 
 
 
