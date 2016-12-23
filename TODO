@@ -1,0 +1,6 @@
+e: login should be uniq
+
+e: cannot logout after server remote restart
+
++: update only modified attrs
+
