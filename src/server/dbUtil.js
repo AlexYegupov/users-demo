@@ -66,10 +66,11 @@ let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
   requiredAttrs: ['login', 'pwd', 'slug', 'name'],
   modifableAttrs: ['name', 'info', 'login', 'pwd'],
+  uniqueAttrs: ['login', 'slug'],
 
   _items: [],
 
-  getUserError(user) {
+  getUserError(user, isExisting) {
     let error = ''
     for (let field of this.requiredAttrs) {
       if (!user[field]) {
@@ -79,6 +80,17 @@ let Users = {
 
     if (user.pwd === '000') error += 'Test server error: pwd cannot be 000;'
     if (user.login === '000') error += 'Test server error: login cannot be 000;'
+
+    // check unique attrs
+    //let maxAllowed = isExisting ? 1 : 0
+    for (let attr of this.uniqueAttrs) {
+      let foundOther = this._items.filter(
+        u => u[attr] === user[attr]).length
+
+      if ((foundOther >= 2) || (foundOther == 1 && !isExisting)) {
+        error += `"${user[attr]}" ${attr} is busy;`
+      }
+    }
 
     return error
   },
@@ -91,27 +103,41 @@ let Users = {
     user.login = slugify(data.login || data.name)
     user.slug = data.login
 
-    for (let attr of ['name', 'info', 'pwd']) {
-      user[attr] = data[attr]
+    for (let attr of intersect(this.attrs, Object.keys(data))) {
+      user[attr] =  data[attr]
     }
-    let error = this.getUserError(user)
+    let error = this.getUserError(user, false)
     if (error) {
       throw new Error(`Cannot create user: ${error}`)
     }
 
-    // if (isIntersected(Object.keys(data)
-    // for (let key of Object.keys(data)) {
-    //   if (key
-    // }
-
-    user['pwd'] = crypt(user.pwd)
+    // crypt AFTER validating
+    if (user.pwd) user.pwd = crypt(user.pwd)
 
     this._items.push(user)
     return this._safeUser(user)
-    // let newUser = Object.assign({}, UserProto, {_data: data})
-    // let i = this._items.push(newUser)
-    // return this._items[i - 1]
+  },
 
+  // patch user (in memory only) and return safe copy
+  patchUser(slug, data) {
+    let user = this.findUserUnsafe(slug)
+    if (!user) return null
+
+    let modifiedUser = Object.assign({}, user)
+    for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
+      modifiedUser[attr] = data[attr]
+    }
+
+    let error = this.getUserError(modifiedUser, true)
+    if (error) {
+      throw new Error(`Cannot modify user: ${error}`)
+    }
+
+    // crypt AFTER validating
+    if (modifiedUser.pwd) modifiedUser.pwd = crypt(modifiedUser.pwd)
+
+    Object.assign(user, modifiedUser)
+    return this._safeUser(user)
   },
 
   loadAll() {
@@ -163,26 +189,6 @@ let Users = {
     }
     this._items.splice(i, 1)
     return true
-  },
-
-  // patch user (in memory only) and return safe copy
-  patchUser(slug, data) {
-    let user = this.findUserUnsafe(slug)
-    if (!user) return null
-
-    //console.log('IS', intersect(this.modifableAttrs, Object.keys(data)))
-    for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
-      user[attr] = data[attr]
-    }
-
-    user['pwd'] = crypt(user.pwd)
-
-    let error = this.getUserError(user)
-    if (error) {
-      throw new Error(`Cannot patch user: ${error}`)
-    }
-
-    return this._safeUser(user)
   },
 
   // w but no need

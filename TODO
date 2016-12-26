@@ -1,6 +1,19 @@
-e: login should be uniq
-
 e: cannot logout after server remote restart
 
 +: update only modified attrs
 
++: add slugify slug & login
+
+
+
+## 1
+
+r: state ->
+
+r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
+
++: improve slugify by login
+
+## 2
+
+r: getUserError should return list of error, not string
