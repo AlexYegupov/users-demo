@@ -1,7 +1,3 @@
-e: cannot logout after server remote restart
-
-+: update only modified attrs
-
 +: add slugify slug & login
 
 

@@ -10,7 +10,7 @@
 
 // simple set creator. Usage: set(1,2,3) or set([1,2,3])
 export function set() {
-  if (arguments.length == 1) {
+  if (arguments.length === 1) {
     return new Set(arguments[0])
   } else {
     return new Set(Object.values(arguments))
@@ -18,6 +18,7 @@ export function set() {
 }
 
 // Note: see also https://github.com/torbs/set-utils (simple but uses lodash)
+// TODO: unlimited args
 export function union(a, b) {
   return new Set([...a, ...b])
 }

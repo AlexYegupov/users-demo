@@ -142,7 +142,7 @@ class UserDetailsPage extends Component {
 
     // try: initiate loading user
     if ((!nextProps.user && !nextProps.error)
-        ||(this.props.location.pathname != nextProps.location.pathname)
+        ||(this.props.location.pathname !== nextProps.location.pathname)
        )
     {
       this.loadUser(nextProps.params.slug)

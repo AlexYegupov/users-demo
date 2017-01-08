@@ -120,7 +120,7 @@ class UserList extends Component {
         { this.renderError() }
 
         <Link to={`/users-create`}>
-          <button enabled={!readOnly}>Create</button>
+          <button disabled={readOnly}>Create</button>
         </Link>
 
         <table>

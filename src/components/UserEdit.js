@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 //import { Link } from 'react-router'
 import { isUserChanged } from  '../utils/userUtil'
+import { union } from  '../utils/setUtil'
 
 class UserEdit extends Component {
   static propTypes = {
@@ -21,11 +22,10 @@ class UserEdit extends Component {
   constructor(props) {
     super(props)
     console.log('UserEdit. constructor. user:', props.user)
-
-    // let user = Object.assign({name: '', login: '', pwd: '', pwd2: '', slug: ''}, props.user)
-    // this.state = {userForm: user, error: ''}
-
-    this.state = {userForm: this.userToForm(props.user)} //error: ''
+    this.state = {
+      userForm: this.userToForm(props.user),
+      modifiedFields: new Set()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,7 +34,10 @@ class UserEdit extends Component {
     if (nextProps.user && isUserChanged(this.props.user, nextProps.user)
         //|| nextProps.user._isCreated  || nextProps.user._isPatched
            ) {
-      this.setState( {userForm: this.userToForm(nextProps.user)} )
+      this.setState( {
+        userForm: this.userToForm(nextProps.user),
+        modifiedFields: new Set()
+      } )
     }
 
     if (nextProps.error && !this.state.error) {
@@ -45,10 +48,6 @@ class UserEdit extends Component {
   // shouldComponentUpdate(nextProps, nextState) {
   //   
   // }
-
-  userToForm(user) {
-    return Object.assign({pwd: '', pwd2: ''}, user)
-  }
 
   // componentWillUpdate(nextProps, nextState) {
   // 
@@ -81,6 +80,8 @@ class UserEdit extends Component {
     const readOnly = this.props.readOnly
     console.log('UserEdit: RENDERING', readOnly, this.state)
 
+    let saveDisabled = (readOnly || this.state.error
+                        || !this.state.modifiedFields.size)
     return (
       <div>
         <div>
@@ -122,7 +123,7 @@ class UserEdit extends Component {
         {/* { this.state.error ? <div>Error: {this.state.error}</div> : '' } */}
         <div>
           <button onClick={this.saveClicked.bind(this)}
-                  disabled={readOnly || this.state.error}>Save</button>
+                  disabled={saveDisabled}>Save</button>
 
 
         </div>
@@ -146,22 +147,45 @@ class UserEdit extends Component {
     userForm[attr] = event.target.value
 
     let error = this.getFormError(userForm)
+    let modifiedFields = union(this.state.modifiedFields, [attr])
 
-    this.setState( {userForm, error} )
+    this.setState( {userForm, error, modifiedFields} )
 
     if (this.props.onUpdate) this.props.onUpdate(error)  // userForm,
   }
 
+
+  userToForm(user) {
+    return Object.assign({pwd: '', pwd2: ''}, user)
+  }
+
+  // form -> user
+  getFormUser() {
+    let user = {}
+
+    let fields = new Set(this.state.modifiedFields)
+
+    if (this.state.userForm['slug']) fields.add('slug')
+
+    // don't change password if empty value
+    if (!this.state.userForm['pwd']) {
+      fields.delete('pwd')
+    }
+
+    fields.delete('pwd2')
+
+    for (let f of fields) {
+      user[f] = this.state.userForm[f]
+    }
+
+    return user
+  }
+
   saveClicked() {
-    //console.log('cdm+', this.loginInput.value)
-    //console.log('sC', this.state.userForm)
+    let user = this.getFormUser()
+    console.log('saveClicked', user) //this.props.user,this.state.modifiedFields)
 
-    //let error = this.state.error
-    let user = Object.assign({}, this.state.userForm)
-    if (!user.pwd) delete user.pwd // don't change password if empty value
-    delete user.pwd2
-
-    this.props.onSave(user)     // , error
+    this.props.onSave(user)
   }
 
 }

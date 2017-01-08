@@ -99,12 +99,12 @@ let Users = {
   createUser(data) {
     let user = {}
 
-    // simple
+    // simple. TODO: slugify
     user.login = slugify(data.login || data.name)
     user.slug = data.login
 
     for (let attr of intersect(this.attrs, Object.keys(data))) {
-      user[attr] =  data[attr]
+      user[attr] = data[attr]
     }
     let error = this.getUserError(user, false)
     if (error) {
