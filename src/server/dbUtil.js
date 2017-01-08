@@ -16,7 +16,7 @@
 import { intersect } from '../utils/setUtil'
 
 const fs = require('fs')
-import slugify from 'slugify'
+const slugify = require('slugify')
 
 const DBFILE = 'src/server/db.json'
 
@@ -99,13 +99,12 @@ let Users = {
   createUser(data) {
     let user = {}
 
-    // simple. TODO: slugify
-    user.login = slugify(data.login || data.name)
-    user.slug = data.login
-
     for (let attr of intersect(this.attrs, Object.keys(data))) {
       user[attr] = data[attr]
     }
+
+    user.login = user.slug = slugify(data.login)
+
     let error = this.getUserError(user, false)
     if (error) {
       throw new Error(`Cannot create user: ${error}`)

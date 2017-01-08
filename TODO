@@ -1,7 +1,3 @@
-+: add slugify slug & login
-
-
-
 ## 1
 
 r: state ->
