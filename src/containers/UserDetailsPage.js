@@ -24,7 +24,8 @@ class UserDetailsPage extends Component {
   static propTypes = {
     // login: PropTypes.string,
     user: PropTypes.object,
-    error: PropTypes.string, //PropTypes.object,  //internal or external error
+    serverError: PropTypes.string,
+    localError: PropTypes.string,
     // starredPagination: PropTypes.object,
     // starredRepos: PropTypes.array,
     // starredRepoOwners: PropTypes.array,
@@ -53,8 +54,7 @@ class UserDetailsPage extends Component {
 
     this.state = {
       isCreating: undefined,
-      error: '',
-      errorIsLocal: false,
+      localError: ''
     }
 
     console.log('CONSTRUCTOR', props)
@@ -102,11 +102,10 @@ class UserDetailsPage extends Component {
 
     // !!9
     //if (nextProps.error && nextProps.error !== this.props.error) {
-    if (nextProps.error && !this.state.errorIsLocal) {
+    if (nextProps.serverError && !this.state.localError) {
       console.log('Overwrite Error', nextProps.error)
       //update error state by server value
-      this.setState( {error: stringifySimple(nextProps.error),
-                      errorIsLocal: true} )
+      this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
     if (!nextProps.loggedUser && isCreating) {
@@ -138,7 +137,7 @@ class UserDetailsPage extends Component {
     }
 
     // try: initiate loading user
-    if ((!nextProps.user && !nextProps.error)
+    if ((!nextProps.user && !nextProps.serverError)
         ||(this.props.location.pathname !== nextProps.location.pathname)
        )
     {
@@ -161,9 +160,8 @@ class UserDetailsPage extends Component {
 
     // !!8 this.setState( {error} )
 
-    if (!this.state.error) {
-      this.setState( {//error: '', assumed no error when saving
-                      errorIsLocal: false} )
+    if (!this.state.localError) {
+      //? this.setState( {localError: ''} )
 
       if (this.state.isCreating) {
         this.props.dispatch(createUser(user))
@@ -204,8 +202,8 @@ class UserDetailsPage extends Component {
 
     // ...or update on change error message
     // TODO: remove ugly combination nextProps.error && nextState.error
-    result = result || (nextProps.error !== this.props.error)
-      || (nextState.error !== this.state.error)
+    result = result || (nextProps.serverError !== this.props.serverError)
+      || (nextState.localError !== this.state.localError)
 
     // //...or returned patched user
     // result = result || isUserChanged(this.props.user, nextProps.user)
@@ -222,12 +220,12 @@ class UserDetailsPage extends Component {
 
   onUserEditUpdate(error) {
     console.log('OUEE', error)
-    this.setState( {error: error} )
+    this.setState( {localError: error} )
   }
 
   render() {
     // display local error OR server error (because server error could lose actuaaaality)
-    let error = this.state.error // || stringifySimple(this.props.error)
+    let error = this.state.localError // || stringifySimple(this.props.error)
 
     // // TODO render error below user
     // if (!this.props.user && !this.state.isCreating) {
@@ -293,7 +291,7 @@ export default connect(
     return {
       //userIsCreated:state.users.userIsCreated,\
       user,
-      error: state.users.userError,
+      serverError: state.users.userError,
       loggedUser: state.auth.loggedUser,
     }
   },
