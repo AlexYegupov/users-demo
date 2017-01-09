@@ -1,10 +1,13 @@
+## 0
+
+After browser refresh keep logged user
+
+
 ## 1
 
 r: state ->
 
 r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
-
-+: improve slugify by login
 
 ## 2
 

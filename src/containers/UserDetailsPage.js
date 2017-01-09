@@ -98,10 +98,7 @@ class UserDetailsPage extends Component {
 
     let isCreating = nextProps.location.pathname === '/users-create'
 
-    // TODO: check: "componentnWillReceiveProps set state"
-    if (this.state.isCreating !== isCreating) {
-      this.setState( {isCreating} )
-    }
+    this.setState( {isCreating} )
 
     // !!9
     //if (nextProps.error && nextProps.error !== this.props.error) {
