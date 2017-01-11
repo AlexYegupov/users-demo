@@ -27,7 +27,6 @@ class UserDetailsPage extends Component {
   static propTypes = {
     storeUser: PropTypes.object,
     serverError: PropTypes.object,
-    localError: PropTypes.string,
     loggedUser: PropTypes.object,
 
     history: PropTypes.object,
@@ -43,7 +42,6 @@ class UserDetailsPage extends Component {
     this.state = {
       isCreating: undefined,
       localError: '',
-      serverError: ''
     }
 
     console.log('CONSTRUCTOR', props)
@@ -121,8 +119,6 @@ class UserDetailsPage extends Component {
     console.log('Saving: ', user, this)
 
     if (!this.state.localError) {
-      //this.setState( {localError: ''} )
-
       if (this.state.isCreating) {
         this.props.dispatch(createUser(user))
       } else {
@@ -213,12 +209,22 @@ export default connect(
     //        )
     // ) ? storeUser : null
 
-    let storeUser =
-        u &&
-        ( (isUserCreating(ownProps) && (u._isNew || u._isCreated))
-          || (ownProps.params||{}).slug === u.slug
-        )
-        && u
+    let storeUser = null
+
+    if (u) {
+      if ((isUserCreating(ownProps) && (u._isNew || u._isCreated))
+        || ((ownProps.params||{}).slug === u.slug)) {
+          storeUser = u
+        }
+    }
+
+    // if (u && (
+    //   (isUserCreating(ownProps) && (u._isNew || u._isCreated))
+    //     || (ownProps.params||{}).slug === u.slug
+    // )) {
+    //   storeUser = u
+    // }
+
 
     console.log('mapStateToProps', state, ownProps, 'storeUser:', storeUser)
 
