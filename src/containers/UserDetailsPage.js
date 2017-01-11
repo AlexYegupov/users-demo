@@ -87,7 +87,7 @@ class UserDetailsPage extends Component {
     }
 
     if (!nextProps.loggedUser && isCreating) {
-      // NOTE: duplicate redirect logic with routes redirect (how to make better?)
+      // NOTE: redirect to login page if unlogged
       this.props.history.push('/login')
     }
 
@@ -122,17 +122,12 @@ class UserDetailsPage extends Component {
       if (this.state.isCreating) {
         this.props.dispatch(createUser(user))
       } else {
-        //this.props.patchUser(user)
         this.props.dispatch(patchUser(user))
       }
     }
   }
 
   componentDidMount() {
-    //this.loadSubscriptionData(this.props.subscriptionId);
-    //console.log('CDM', this.loginInput, window )
-
-    //ReactDOM.findDOMNode(this.loginInput).setAttribute('-attribute', 'some value')
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -146,7 +141,6 @@ class UserDetailsPage extends Component {
     result = result || (!isSameUser(this.props.loggedUser, nextProps.loggedUser))
 
     // ...or update on change error message
-    // TODO: remove ugly combination nextProps.error && nextState.error
     result = result || (nextProps.serverError !== this.props.serverError)
       || (nextState.localError !== this.state.localError)
 
@@ -166,7 +160,6 @@ class UserDetailsPage extends Component {
 
     console.log('%cRENDERING user', 'background: cyan', this.props.storeUser, error)
 
-    //const readOnly = !this.props.loggedUser
     return (
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
@@ -200,31 +193,13 @@ export default connect(
     // consider only user actual for current url
     let u = state.users.user
 
-    // let user = (
-    //   storeUser
-    //     && ((isUserCreating(ownProps)
-    //          && (storeUser._isNew || storeUser._isCreated)
-    //         )
-    //         || (ownProps.params||{}).slug === storeUser.slug
-    //        )
-    // ) ? storeUser : null
-
     let storeUser = null
-
     if (u) {
       if ((isUserCreating(ownProps) && (u._isNew || u._isCreated))
         || ((ownProps.params||{}).slug === u.slug)) {
           storeUser = u
         }
     }
-
-    // if (u && (
-    //   (isUserCreating(ownProps) && (u._isNew || u._isCreated))
-    //     || (ownProps.params||{}).slug === u.slug
-    // )) {
-    //   storeUser = u
-    // }
-
 
     console.log('mapStateToProps', state, ownProps, 'storeUser:', storeUser)
 
