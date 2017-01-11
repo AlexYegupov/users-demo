@@ -2,8 +2,6 @@
 
 After browser refresh keep logged user
 
-w: warning.js:36 Warning: Failed prop type: Invalid prop `errorMessage` of type `boolean` supplied to `App`, expected `string`.
-
 ## 1
 
 r: ** review user var in mapStateToProps
