@@ -31,9 +31,7 @@ class UserEdit extends Component {
   componentWillReceiveProps(nextProps) {
     console.log('UserEdit: CWRP', this.props, nextProps)
     // reset form
-    if (nextProps.user && isUserChanged(this.props.user, nextProps.user)
-        //|| nextProps.user._isCreated  || nextProps.user._isPatched
-           ) {
+    if (nextProps.user && isUserChanged(this.props.user, nextProps.user)) {
       this.setState( {
         userForm: this.userToForm(nextProps.user),
         modifiedFields: new Set()

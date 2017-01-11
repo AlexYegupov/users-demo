@@ -9,6 +9,4 @@ export function isUserChanged(user1, user2) {
   user2 = user2 || {}
   return !isSameUser(user1, user2)
     || user1._timestamp !== user2._timestamp
-    //|| !user1._isPatched && user2._isPatched
-    //|| !user1._isCreated && user2._isCreated
 }

@@ -2,12 +2,21 @@
 
 After browser refresh keep logged user
 
+w: warning.js:36 Warning: Failed prop type: Invalid prop `errorMessage` of type `boolean` supplied to `App`, expected `string`.
 
 ## 1
+
+r: ** review user var in mapStateToProps
+
+r: review "!!" in code
+
+r: review state & vars like _isNew, _isCreated
 
 r: state ->
 
 r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
+
++: when leave create user page with unsaved user show warning
 
 ## 2
 
