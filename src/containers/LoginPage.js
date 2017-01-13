@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
+//import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
 //import { loadUsers } from '../actions/usersActions'
 
@@ -142,11 +142,12 @@ class LoginPage extends Component {
     return (
       <div>
         <h3>Login</h3>
+        <p>sample: allan/1</p>
         <div>
-          Login: <input defaultValue="allan" ref={(input) => this.login = input} />
+          Login:<input defaultValue="allan" ref={(input) => this.login = input} />
         </div>
         <div>
-          Password:  <input defaultValue="1" ref={(input) => this.pwd = input} />
+          Password:  <input defaultValue="1" type="password" ref={(input) => this.pwd = input} />
         </div>
         <div>
           <button onClick={this.handleLoginClick.bind(this)}>Log in</button>
@@ -156,8 +157,6 @@ class LoginPage extends Component {
         <p>
           {this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}
         </p>
-
-
 
         <hr />
         Some other stuff:

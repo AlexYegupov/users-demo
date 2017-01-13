@@ -1,3 +1,32 @@
+# Users editor
+
+Simple demo users editor
+
+Features:
+* react+redux
+* cookie-based authorization
+* REST-api server (based on express)
+* simple json file-based storage (no concurrency)
+* user password secure crypring by scrypt library
+*
+
+Requirements:
+* nodejs 7+
+
+
+
+Based on [Redux Real World Example](https://github.com/reactjs/redux/tree/master/examples/real-world).
+
+
+
+TODO:
+
+* beautiful css
+* server rendering
+
+--------------
+
+
 # Redux Real World Example
 
 This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app).

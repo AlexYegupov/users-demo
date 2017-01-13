@@ -1,15 +1,17 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component,
+                //PropTypes
+              } from 'react'
 import { connect } from 'react-redux'
-import { loadUser, loadStarred } from '../actions'
-import User from '../components/User'
-import Repo from '../components/Repo'
-import List from '../components/List'
-import zip from 'lodash/zip'
+//import { loadUser, loadStarred } from '../actions'
+// import User from '../components/User'
+// import Repo from '../components/Repo'
+// import List from '../components/List'
+// import zip from 'lodash/zip'
 
-const loadData = ({ login, loadUser, loadStarred }) => {
-  loadUser(login, [ 'name' ])
-  loadStarred(login)
-}
+// const loadData = ({ login, loadUser, loadStarred }) => {
+//   loadUser(login, [ 'name' ])
+//   loadStarred(login)
+// }
 
 class TestPage extends Component {
   static propTypes = {
@@ -86,22 +88,23 @@ const mapStateToProps = (state, ownProps) => {
   // const starredPagination = starredByUser[login] || { ids: [] }
   // const starredRepos = starredPagination.ids.map(id => repos[id])
   // const starredRepoOwners = starredRepos.map(repo => users[repo.owner])
-  // 
-  // return {
-  //   login,
-  //   starredRepos,
-  //   starredRepoOwners,
-  //   starredPagination,
-  //   user: users[login]
-  // }
-  
+
+  return {
+    // login,
+    // starredRepos,
+    // starredRepoOwners,
+    // starredPagination,\
+    // user: users[login]
+  }
+
 }
 
 
 
 export default connect(
-  mapStateToProps, {
-    loadUser,
-    loadStarred
+  mapStateToProps,
+  {
+    // loadUser,
+    // loadStarred
   }
 )(TestPage)

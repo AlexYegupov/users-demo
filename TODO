@@ -1,6 +1,16 @@
 ## 0
 
-After browser refresh keep logged user
+i: ** prod mode
+
+f: After browser refresh keep logged user
+
+r: remove unneeded files
+
+w: clone&check project
+
+w: rewrite README.md
+
+r: remove direct urls from code like http://localhost:3001/api/users
 
 ## 1
 

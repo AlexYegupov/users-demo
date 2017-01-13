@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { logout } from '../actions/authActions'
 import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'

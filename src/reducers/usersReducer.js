@@ -1,8 +1,7 @@
 //import { CALL_API3 } from '../middleware/api3'
 
 // Updates an entity cache in response to any action with response.entities.
-export const users =
-  (state={users:[]}, action) => {
+export const users = (state={users:[]}, action) => {
     console.log('usersReducer ACTION:', action)
 
     if (action.type === 'LOAD_USERS') {

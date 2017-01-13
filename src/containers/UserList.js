@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
+//import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
 import { loadUsers3 as loadUsers, deleteUser } from '../actions/usersActions'
 
