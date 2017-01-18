@@ -4,6 +4,7 @@ import createLogger from 'redux-logger'
 //import { api } from '../middleware/api'
 //import { api2 } from '../middleware/api2'
 import { api3 } from '../middleware/api3'
+//import { localStorageData } from '../middleware/localStorageData'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
@@ -16,7 +17,10 @@ const configureStore = preloadedState => {
         thunk,
         //api,
         //api2,
-        api3, createLogger()),
+        api3,
+        createLogger(),
+        //localStorageData
+      ),
       DevTools.instrument()
     )
   )

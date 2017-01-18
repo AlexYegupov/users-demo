@@ -22,8 +22,13 @@ let localStorageLoggedUser = {
   }
 }
 
+// TODO: create <LoggedUser > component
+// (NOOOO, it should be done on store side (i think) that will load user from localStorage/on
+
+console.log('LSD 2: loading localStorage.loggedUser: ', localStorage.loggedUser)
+
 const defaultState = {
-  loggedUser: localStorageLoggedUser.get(),
+  loggedUser: localStorageLoggedUser.get(),  // null
   loginError: null
 }
 
@@ -31,11 +36,12 @@ export const auth = (state=defaultState, action) => {
   //console.log('REDUCER', action.type, action)
 
   if (action.type === 'LOGIN') {
+    console.log('LSD: login', action)
     if (!action.error) {
-      localStorageLoggedUser.set(action.payload)
-      return Object.assign({}, state, {loggedUser: action.payload, loginError: null})
+       //!! w LSD localStorageLoggedUser.set(action.payload)
+       return Object.assign({}, state, {loggedUser: action.payload, loginError: null})
     } else {
-      localStorageLoggedUser.set(null)
+      //!! w LSD localStorageLoggedUser.set(null)
       return Object.assign({}, state, {loggedUser: null, loginError: action.payload})
     }
   }
@@ -43,7 +49,7 @@ export const auth = (state=defaultState, action) => {
 
   if (action.type === 'LOGOUT') {
     // clear localStorage logged user
-    if (hasLocalStorage) localStorage.loggedUser = null
+    if (hasLocalStorage) localStorageLoggedUser.set(null)
 
     // simply assume no logout error
     return Object.assign({}, state, {loggedUser: null, loginError: null})
