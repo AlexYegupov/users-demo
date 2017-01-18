@@ -1,8 +1,8 @@
 //import { CALL_API2 } from '../middleware/api2'
 
-export const LOGIN_REQUEST = 'LOGIN'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+// export const LOGIN_REQUEST = 'LOGIN'
+// export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+// export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 
 // w
 // const fetchLogin = (login, pwd) => ({
@@ -29,12 +29,12 @@ export const login = (login, pwd) => (dispatch, getState) =>
   dispatch({
     type: 'LOGIN',
     meta: {
-      apiCall: 'http://localhost:3001/api/session', //TODO: "apiCall" -> "url"
+      apiCall: 'http://localhost:3001/api/session',
       fetchOptions: {
         method: 'POST',
         body: new URLSearchParams(`login=${encodeURIComponent(login)}&pwd=${encodeURIComponent(pwd)}`),
         credentials: 'include'  // to include cookies in fresponse CR
-      }  //TODO -> "options"
+      }
     }
   })
 

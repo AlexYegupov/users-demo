@@ -59,7 +59,7 @@ class UserDetailsPage extends Component {
   }
 
   loadUser(slug=null) {
-    console.log('%cLOAD USER', 'background: yellow', slug)
+    console.log('%cLOAD USER LUUU', 'background: yellow', slug)
 
     if (slug)
       this.props.dispatch(loadUser(slug))
@@ -85,10 +85,11 @@ class UserDetailsPage extends Component {
       this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
-    if (!nextProps.loggedUser && isCreating) {
-      // NOTE: redirect to login page if unlogged
-      this.props.history.push('/login')
-    }
+    // !!3
+    // if (!nextProps.loggedUser && isCreating) {
+    //   // NOTE: redirect to login page if unlogged
+    //   this.props.history.push('/login')
+    // }
 
     if (isCreating && nextProps.storeUser && nextProps.storeUser._isCreated) {
       console.log('UIC')
@@ -157,13 +158,13 @@ class UserDetailsPage extends Component {
   render() {
     let error = this.state.localError
 
-    console.log('%cRENDERING user', 'background: cyan', this.props.storeUser, error)
+    console.log('%cRENDERING user', 'background: cyan', this.props.storeUser, error, this.state)
 
     return (
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
 
-        <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser}
+        <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} /*!!3 readOnly={!this.props.loggedUser}*/
           error={error}
         />
 
@@ -179,7 +180,6 @@ class UserDetailsPage extends Component {
           <li><Link to={"/users/bob"}>bob user</Link></li>
           <li><button onClick={this.logout.bind(this)} >Logout</button></li>
         </ul>
-
       </div>
     )
   }
@@ -200,7 +200,7 @@ export default connect(
         }
     }
 
-    console.log('mapStateToProps', state, ownProps, 'storeUser:', storeUser)
+    console.log('mapStateToProps', state, ownProps, 'storeUser:', storeUser, state.auth)
 
     return {
       storeUser,

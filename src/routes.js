@@ -48,7 +48,7 @@ export const createRoutes = (store) => (
     <IndexRedirect to="/users" />
     <Route path="/test" component={TestPage} />
     <Route path="/users" component={UserList} />
-    <Route path="/users-create" component={UserDetailsPage} onEnter={requireAuth.bind(this, store)} />
+    <Route path="/users-create" component={UserDetailsPage} /*onEnter={requireAuth.bind(this, store)}*/ />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />  {/* onLeave={onLoginLeave} */}
     <Redirect from="/loginSuccess" to="/users" />

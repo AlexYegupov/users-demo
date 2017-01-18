@@ -1,7 +1,5 @@
 ## 0
 
-i: ** prod mode
-
 f: After browser refresh keep logged user
 
 r: remove unneeded files
@@ -12,7 +10,14 @@ w: rewrite README.md
 
 r: remove direct urls from code like http://localhost:3001/api/users
 
+r: remove using websocket (see Network tab)
+
+i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
+
+
 ## 1
+
+secure: check if it's ok to store session in memory
 
 r: ** review user var in mapStateToProps
 
@@ -29,3 +34,5 @@ r: don't overwrite action payload completely by error response, save sent to ser
 ## 2
 
 r: getUserError should return list of error, not string
+
+i: favicon -> processing static files

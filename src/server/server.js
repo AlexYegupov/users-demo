@@ -182,7 +182,7 @@ app.use(cors({credentials: true, origin: true}))
 function checkAuth(router) {
 
   function secureRouter(req, res, next) {
-    //console.log('RS, RSU', req.session, req.session.user)
+    console.log('RS, RSU', req.session, req.session.user)
 
     if (!req.session || !req.session.user) {
       res.status(403).send('unauthorized').end()
@@ -195,7 +195,7 @@ function checkAuth(router) {
   return secureRouter
 }
 
-// =login
+// post = create session = login
 app.post('/api/session', function(req, res) {
   const { login, pwd } = req.body
   let user = Users.login(login, pwd)
@@ -258,7 +258,7 @@ app.get('/api/secure', checkAuth(function(req, res, next) {
 }))
 
 app.get('/api/users', function(req, res) {
-  //console.log('RS, RSU', req.session, req.session.user)
+  console.log('/api/users', req.session, req.session.user)
   //res.json(Users.allDataSafe()).end()
   //return res.status(401).send('TEST error')  //text/html
   //return res.status(401).json({a: 1}).end() // application/json
@@ -298,6 +298,8 @@ app.patch('/api/users/:slug', checkAuth(function(req, res) {
 // use POST only for CREATING new users
 app.post('/api/users', checkAuth(function(req, res) {
   let data = req.body
+
+  console.log('POST /api/users', req.session, req.session.user)
 
   try {
     var user = Users.createUser(data)
