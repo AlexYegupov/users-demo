@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 //import { api } from '../middleware/api'
-import { api3 } from '../middleware/api3'
+import { api } from '../middleware/api'
 //import { localStorageData } from '../middleware/localStorageData'
 import rootReducer from '../reducers'
 
@@ -10,7 +10,7 @@ const configureStore = preloadedState => createStore(
   preloadedState,
   applyMiddleware(
     thunk,
-    api3,
+    api,
     //localStorageData
   )
 )

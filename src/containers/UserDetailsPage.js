@@ -85,11 +85,11 @@ class UserDetailsPage extends Component {
       this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
-    // !!3
-    // if (!nextProps.loggedUser && isCreating) {
-    //   // NOTE: redirect to login page if unlogged
-    //   this.props.history.push('/login')
-    // }
+    // fe3
+    if (!nextProps.loggedUser && isCreating) {
+      // NOTE: redirect to login page if unlogged
+      this.props.history.push('/login')
+    }
 
     if (isCreating && nextProps.storeUser && nextProps.storeUser._isCreated) {
       console.log('UIC')
@@ -164,7 +164,7 @@ class UserDetailsPage extends Component {
       <div>
         <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
 
-        <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} /*!!3 readOnly={!this.props.loggedUser}*/
+        <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser}  /* fe3 */
           error={error}
         />
 
