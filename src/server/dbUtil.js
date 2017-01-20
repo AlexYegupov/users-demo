@@ -78,7 +78,10 @@ let Users = {
       }
     }
 
-    if (user.pwd === '000') error += 'Test server error: pwd cannot be 000;'
+    if (verify(user.pwd, '000')) {
+      error += 'Test server error: pwd cannot be 000;'
+    }
+
     if (user.login === '000') error += 'Test server error: login cannot be 000;'
 
     // check unique attrs
@@ -124,16 +127,17 @@ let Users = {
 
     let modifiedUser = Object.assign({}, user)
     for (let attr of intersect(this.modifableAttrs, Object.keys(data))) {
-      modifiedUser[attr] = data[attr]
+      if (attr === 'pwd' && data['pwd']) {
+        modifiedUser['pwd'] = crypt(data['pwd'])
+      } else {
+        modifiedUser[attr] = data[attr]
+      }
     }
 
     let error = this.getUserError(modifiedUser, true)
     if (error) {
       throw new Error(`Cannot modify user: ${error}`)
     }
-
-    // crypt AFTER validating
-    if (modifiedUser.pwd) modifiedUser.pwd = crypt(modifiedUser.pwd)
 
     Object.assign(user, modifiedUser)
     return this._safeUser(user)
