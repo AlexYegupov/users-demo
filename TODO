@@ -1,8 +1,5 @@
 ## 0
-
-r: ** remove direct urls from code like http://localhost:3001/api/users
-
-r: store.subscribe(createListener()) -> some other file related to auth
+fix: user password is modified somehow if modify user name
 
 r: remove unneeded files
 
@@ -18,9 +15,9 @@ i: make <LoggedUser> component (will show logged user, will load it from localSt
 
 ## 1
 
-+: after save user redirect to userse list
+r: review _isPatched, _timestamp variables
 
-r: think about implement "LOGIN -> LS" in store.subscribe -> localStorageData
++: after save user redirect to userse list
 
 r: js: remove http-only cookie on LOGOUT
 
