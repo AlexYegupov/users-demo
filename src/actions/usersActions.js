@@ -1,10 +1,11 @@
 import { urlize } from '../utils/serialize'
+import settings from '../settings'
 
 
 export const loadUsers3 = () => (dispatch, getState) => {
   return dispatch({
     type: 'LOAD_USERS',
-    meta: {apiCall: 'http://localhost:3001/api/users'}
+    meta: {apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users`}
   })
 
 }
@@ -15,7 +16,7 @@ export const loadUser = (slug) => (dispatch, getState) => {
   return dispatch({
     type: 'LOAD_USER',
     meta: {
-      apiCall: `http://localhost:3001/api/users/${slug}`, 
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users/${slug}`,
       fetchOptions: {
         method: 'GET',
         //body: new URLSearchParams(`login=${login}&pwd=${pwd}`),
@@ -30,7 +31,7 @@ export const patchUser = (user) => (dispatch, getState) => {
   return dispatch({
     type: 'PATCH_USER',
     meta: {
-      apiCall: `http://localhost:3001/api/users/${user.slug}`, 
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users/${user.slug}`,
       fetchOptions: {
         method: 'PATCH',
         body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
@@ -47,7 +48,7 @@ export const createUser = (user) => (dispatch, getState) => {
   return dispatch({
     type: 'CREATE_USER',
     meta: {
-      apiCall: `http://localhost:3001/api/users`,
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users`,
       fetchOptions: {
         method: 'POST',
         body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`
@@ -62,7 +63,7 @@ export const deleteUser = (slug) => (dispatch, getState) => {
   return dispatch({
     type: 'DELETE_USER',
     meta: {
-      apiCall: `http://localhost:3001/api/users/${slug}`,
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users/${slug}`,
       fetchOptions: {
         method: 'DELETE',
         //body: new URLSearchParams(urlize(user)), //`login=${login}&pwd=${pwd}`

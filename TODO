@@ -1,12 +1,15 @@
 ## 0
 
+r: ** remove direct urls from code like http://localhost:3001/api/users
+
+r: store.subscribe(createListener()) -> some other file related to auth
+
 r: remove unneeded files
 
 w: clone&check project
 
 w: rewrite README.md
 
-r: remove direct urls from code like http://localhost:3001/api/users
 
 r: remove using websocket (see Network tab)
 
@@ -15,7 +18,13 @@ i: make <LoggedUser> component (will show logged user, will load it from localSt
 
 ## 1
 
-secure: check if it's ok to store session in memory
++: after save user redirect to userse list
+
+r: think about implement "LOGIN -> LS" in store.subscribe -> localStorageData
+
+r: js: remove http-only cookie on LOGOUT
+
+secure: check if it's ok to store session in memory on server (maybe for demo ok?)
 
 r: ** review user var in mapStateToProps
 
@@ -23,13 +32,13 @@ r: review "!!" in code
 
 r: review state & vars like _isNew, _isCreated
 
-r: state ->
-
 r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
 
 +: when leave create user page with unsaved user show warning
 
 ## 2
+
+fix: 403 => force logout user on client
 
 r: getUserError should return list of error, not string
 

@@ -1,8 +1,10 @@
+import settings from '../settings'
+
 export const login = (login, pwd) => (dispatch, getState) =>
   dispatch({
     type: 'LOGIN',
     meta: {
-      apiCall: 'http://localhost:3001/api/session',
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
       fetchOptions: {
         method: 'POST',
         body: new URLSearchParams(`login=${encodeURIComponent(login)}&pwd=${encodeURIComponent(pwd)}`),

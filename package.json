@@ -34,6 +34,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "server": "./node_modules/.bin/nodemon ./src/server/index.js",
-    "go": "concurrently --kill-others \"npm run server\" \"npm run start\""
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run start\"",
+    "testES6": "node ./src/server/testStart.js"
   }
 }

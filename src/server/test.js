@@ -1,7 +1,12 @@
-let a = 10;
+import settings from '../../settings'
 
-//import * as 'fs' from 'fs';
+console.log(settings, settings.apiPort)
 
-re
 
-fs.writeFile('/tmp/f1', 'adsfdasf')
+// let a = 10;
+// 
+// //import * as 'fs' from 'fs';
+// 
+// re
+// 
+// fs.writeFile('/tmp/f1', 'adsfdasf')

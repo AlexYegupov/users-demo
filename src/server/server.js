@@ -18,13 +18,14 @@ import Express from 'express'
 //import { fetchCounter } from '../common/api/counter'
 import bodyParser from 'body-parser';
 import session from 'express-session'
+import settings from '../settings'
+
+import { Users } from './dbUtil'
 
 var cors = require('cors')
 
 const app = new Express()
-const port = 3001
 
-import { Users } from './dbUtil'
 
 //import { intersect } from '../utils/setUtil'
 
@@ -182,7 +183,7 @@ app.use(cors({credentials: true, origin: true}))
 function checkAuth(router) {
 
   function secureRouter(req, res, next) {
-    console.log('RS, RSU', req.session, req.session.user)
+    //console.log('RS, RSU', req.session, req.session.user)
 
     if (!req.session || !req.session.user) {
       res.status(403).send('unauthorized').end()
@@ -234,7 +235,6 @@ app.get('/api/test', function(req, res, next) {
   //throw new Error("my error");
 
   //console.log('logged as:', req.session.user)
-
   //next()
   res.end()
 })
@@ -258,7 +258,7 @@ app.get('/api/secure', checkAuth(function(req, res, next) {
 }))
 
 app.get('/api/users', function(req, res) {
-  console.log('/api/users', req.session, req.session.user)
+  //console.log('/api/users', req.session, req.session.user)
   //res.json(Users.allDataSafe()).end()
   //return res.status(401).send('TEST error')  //text/html
   //return res.status(401).json({a: 1}).end() // application/json
@@ -382,10 +382,10 @@ app.get('', function handleRender(req, res) {
 //     `
 // }
 
-app.listen(port, (error) => {
+app.listen(settings.apiPort, (error) => {
   if (error) {
     console.error(error)
   } else {
-    console.info(`==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`)
+    console.info(`==> API server started at http://${settings.apiHost}:${settings.apiPort}`)
   }
 })

@@ -40,6 +40,7 @@ function createListener() {
   return handleChange
 }
 
+// http://redux.js.org/docs/api/Store.html#subscribe
 store.subscribe(createListener())
 
 
