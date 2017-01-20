@@ -1,8 +1,6 @@
-// naive json file database implementation
-
+// simple json file database implementation
 
 // Experimenttally using lowdb + YAML
-
 // const low = require('lowdb')
 // const fileAsync = require('lowdb/lib/file-async')
 // const yaml = require('js-yaml');
@@ -11,57 +9,20 @@
 //   serialize: (obj) => yaml.safeDump(obj),
 //   deserialize: (data) => yaml.safeLoad(data)
 // }
-
-
-import { intersect } from '../utils/setUtil'
-
-const fs = require('fs')
-const slugify = require('slugify')
-
-const DBFILE = 'src/server/db.json'
-
-import { crypt, verify } from './cryptUtil'
 // const db = low('server/db.yaml', {
 //   storage: fileAsync,
 //   format: YAMLFormat
 // })
 
+import { intersect } from '../utils/setUtil'
+import { crypt, verify } from './cryptUtil'
 
-// OOP is implemented without using classes. Used object prototype inheritance and instatiating based on Object.assign. Approach is inpired by Eric Elliot https://youtu.be/lKCCZTUx0sI?t=14m54s, also I've experimented there  https://github.com/AlexYegupov/test-js-classes.
+const fs = require('fs')
+const slugify = require('slugify')
+const DBFILE = 'src/server/db.json'
 
+// Implemented without using classes. Used object prototype inheritance and instatiating based on Object.assign. Approach is inpired by Eric Elliot https://youtu.be/lKCCZTUx0sI?t=14m54s, also I've experimented there  https://github.com/AlexYegupov/test-js-classes.
 
-// TODO: implement working with json file
-
-//
-// let UserProto = {
-//   // TODO: validate available data fields   _fields: ['login', 'slug', 'pwd']
-// 
-//   _data: {},
-// 
-//   // update user data except password
-//   update(newData) {
-// 
-//     delete newData.pwd
-//     return Object.assign(this._data, newData)
-//   },
-// 
-//   setPwd(old, new_) {
-//     if (old === this._data.old) return false
-// 
-//     this._data.pwd = new_
-//     return true
-//   },
-// 
-//   // user data without pwd
-//   dataSafe() {
-//     return Object.assign({}, this._data, {pwd: undefined})
-//   }
-// 
-// }
-
-
-
-// TODO: read Users json
 let Users = {
   attrs: ['login', 'pwd', 'slug', 'name', 'info'],
   requiredAttrs: ['login', 'pwd', 'slug', 'name'],
@@ -77,6 +38,8 @@ let Users = {
         error += `${field} should have value;`
       }
     }
+
+    if (error) return error // return here if not all fields are set
 
     if (verify(user.pwd, '000')) {
       error += 'Test server error: pwd cannot be 000;'
@@ -102,8 +65,13 @@ let Users = {
   createUser(data) {
     let user = {}
 
+    console.log(111)
     for (let attr of intersect(this.attrs, Object.keys(data))) {
-      user[attr] = data[attr]
+      if (attr === 'pwd' && data['pwd']) {
+        user['pwd'] = crypt(data['pwd'])
+      } else {
+        user[attr] = data[attr]
+      }
     }
 
     user.login = user.slug = slugify(data.login)
@@ -112,9 +80,6 @@ let Users = {
     if (error) {
       throw new Error(`Cannot create user: ${error}`)
     }
-
-    // crypt AFTER validating
-    if (user.pwd) user.pwd = crypt(user.pwd)
 
     this._items.push(user)
     return this._safeUser(user)
@@ -205,7 +170,6 @@ let Users = {
 
 }
 
-// // here?
 Users.loadAll()
 
 export { Users }

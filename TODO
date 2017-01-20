@@ -1,5 +1,6 @@
 ## 0
-fix: user password is modified somehow if modify user name
+
+fix: Error: data is not a valid scrypt-encrypted block when create new user
 
 r: remove unneeded files
 
