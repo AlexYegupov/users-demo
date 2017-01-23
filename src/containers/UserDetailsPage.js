@@ -111,11 +111,7 @@ class UserDetailsPage extends Component {
 
   }
 
-  test() {
-    console.log('test', arguments)
-  }
-
-  logout = () => {c
+  logout = () => {
     // actually not log out because cannot delete httpOnly cookie
     this.props.dispatch(logout())
   }

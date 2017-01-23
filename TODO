@@ -1,20 +1,26 @@
 ## 0
 
-r: remove unneeded files
-
-w: clone&check project
+fix: save & exit after server restart anyway goes to users list
 
 i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
 
-r: review all !! and TODO in code
+i: make flex css & breadcrumbs
+
+
+## last:
+
+try clone&check project
+
+remove unneeded files
+
+remove console.log from code
+
 
 ## 1
 
-r: remove console.log from code
-
 r: js: remove http-only cookie on LOGOUT
 
-secure: check if it's ok to store session in memory on server (maybe for demo ok?)
+verify: if it's ok to store session in memory on server (maybe for demo ok?)
 
 r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
 
@@ -34,3 +40,7 @@ r: getUserError should return list of error, not string
 i: favicon -> processing static files
 
 + activate user name input control initially
+
++: move setUtil to external module
+
++: multilanguage

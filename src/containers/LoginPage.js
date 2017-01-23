@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 //import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
-//import { loadUsers } from '../actions/usersActions'
 
 //import User2 from '../components/User2'
 import Repo from '../components/Repo'
@@ -11,14 +10,6 @@ import Repo from '../components/Repo'
 import { Link } from 'react-router'
 
 //import { push } from 'react-router-redux'
-
-// //const loadData = ({ login, loadUser, loadStarred }) => {
-// const loadData = ({ loadUsers }) => {
-//   console.log('loadData2')
-//   loadUsers()
-//   //loadUser(login, [ 'name' ])
-//   //loadStarred(login)\\
-// }
 
 class LoginPage extends Component {
   static propTypes = {
@@ -50,11 +41,6 @@ class LoginPage extends Component {
 
   componentWillMount() {
     //console.log('CWM')
-    //console.log('Cookie:', document.cookie)
-    //loadData(this.props)
-
-    //?? this.props.login(this.loggedUser.login, )
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,11 +58,7 @@ class LoginPage extends Component {
       })
 
     }
-    //? !!
-    //loadData(nextProps)
-    // if (nextProps.login !== this.props.login) {
-    //   loadData(nextProps)
-    // }
+
   }
 
   handleLoadMoreClick = () => {
@@ -96,16 +78,6 @@ class LoginPage extends Component {
     //this.props.loadStargazers(this.props.fullName, true)
     console.log('DELETE', this, slug)
   }
-  /* 
-   *   login = () => {
-   *     this.props.login('allan', '1')
-   *   }
-   * 
-   *   logout = () => {
-   *     // actually not log out because cannot delete httpOnly cookie
-   *     this.props.logout()
-   *   }
-   * */
 
   renderRepo([ repo, owner ]) {
     return (
@@ -164,35 +136,6 @@ class LoginPage extends Component {
           <li><button onClick={this.props.logout.bind(this)} >Logout</button></li>
           <li><Link to={"/users"}>users list</Link></li>
         </ul>
-
-
-        {/*
-        <h3>Users:</h3>
-        <button onClick={this.createClick.bind(this)} >Create</button>
-        <table>
-          <tbody>
-            { users.map( (user) =>
-              <tr key={ user.slug }>
-                <td>
-                  <User2 user={ user } />
-                </td>
-                <td>
-                  <Link to={`users/${user.slug}`}>
-                    <button value="edit">Edit</button>
-                  </Link>
-                  <button
-                      value="delete"
-                      disabled={false}
-                      onClick={this.deleteClick.bind(this, user.slug)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              )
-            }
-          </tbody>
-        </table>
-        */}
       </div>
     )
 

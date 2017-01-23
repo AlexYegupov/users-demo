@@ -27,9 +27,6 @@ var cors = require('cors')
 const app = new Express()
 
 
-//import { intersect } from '../utils/setUtil'
-
-
 // // Use this middleware to set up hot module reloading via webpack.
 // const compiler = webpack(webpackConfig)
 // app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }))
@@ -74,122 +71,14 @@ app.use(bodyParser.urlencoded( { extended: true } ))
 // to allow cors request (quick demo solution)
 app.use(cors({credentials: true, origin: true}))
 
-//app.use(checkAuth)
-
-// // naive urls auth requiring url list
-// const AUTH_URLS_PREFIX = [
-//   '/api/secureTest',
-//   '/api/users',
-//   ]
-
-//let url = require('url') //TODO: use import
-
-// function checkAuth (req, res, next) {
-//   console.log('checkAuth ', url.parse(req.url));
-// 
-//   // nw: req.path, req.originalUrl, req.url, req.route
-//   // check unsafe (http://stackoverflow.com/a/19460598/1948511)
-// 
-//   let urlIsSecure = AUTH_URLS_PREFIX.find( item => req.url.startsWith(item) )
-// 
-// 
-//   if (urlIsSecure && (!req.session || !req.session.user)) {
-// 		res.render('unauthorised', { status: 403 });
-//     return
-// 	}
-// 
-//   next()
-// 
-//   // don't serve /secure to those not logged in
-// 	// you should add to this list, for each and every secure url
-//   if (AUTH_URLS.req.url === '/secure' && (!req.session || !req.session.authenticated)) {
-// 		res.render('unauthorised', { status: 403 });
-// 		return;
-// 	}
-// 
-// 	next();
-// }
-
-
-// app.get('/user/:id?', function(req, res, next){
-//   console.log('RR:', req.route);
-//   next()
-// });
-
-// function login(req) {
-//   const user = {
-//     name: req.body.name
-//   };
-//   req.session.user = user;
-//   return Promise.resolve(user);
-// }
-
-
-// // Routes
-// // GET /posts/:id
-// app.get('/posts/:id', (req, res) => {
-//   console.log(req.params.id)
-//   const thePost = posts.find({ id: Number(req.params.id) }).value()
-// 
-//   console.log(thePost)
-//   res.send(thePost)
-// })
-// 
-// // POST /posts
-// app.post('/posts', (req, res) => {
-//   console.log(req.body)
-//   // Some basic id generation, use uuid ideally
-//   req.body.id = Date.now()
-// 
-//   // post will be created asynchronously in the background
-//   const post = posts
-//     .push(req.body)
-//     .last()
-//     .value()
-// 
-//   res.send(post)
-// })
-
-
-
-// 
-//   // nw: req.path, req.originalUrl, req.url, req.route
-//   // check unsafe (http://stackoverflow.com/a/19460598/1948511)
-// 
-//   let urlIsSecure = AUTH_URLS_PREFIX.find( item => req.url.startsWith(item) )
-// 
-// 
-//   if (urlIsSecure && (!req.session || !req.session.user)) {
-// 		res.render('unauthorised', { status: 403 });
-//     return
-// 	}
-// 
-//   next()
-// 
-//   // don't serve /secure to those not logged in
-// 	// you should add to this list, for each and every secure url
-//   if (AUTH_URLS.req.url === '/secure' && (!req.session || !req.session.authenticated)) {
-// 		res.render('unauthorised', { status: 403 });
-// 		return;
-// 	}
-// 
-// 	next();
-// }
-//
-//
-//}
-
 
 function checkAuth(router) {
-
   function secureRouter(req, res, next) {
     //console.log('RS, RSU', req.session, req.session.user)
-
     if (!req.session || !req.session.user) {
       res.status(403).send('unauthorized').end()
       return
     }
-
     return router(req, res, next)
   }
 
@@ -324,13 +213,6 @@ app.delete('/api/users/:slug', checkAuth(function(req, res) {
 app.get('', function handleRender(req, res) {
   res.send('it works').end()
 })
-
-
-
-// app.get('/api/user', function(req, res) {
-//   // TODO: read from json
-//   res.json(USERS).end()
-// })
 
 
 

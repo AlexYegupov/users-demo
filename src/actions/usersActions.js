@@ -2,7 +2,7 @@ import { urlize } from '../utils/serialize'
 import settings from '../settings'
 
 
-export const loadUsers3 = () => (dispatch, getState) => {
+export const loadUsers = () => (dispatch, getState) => {
   return dispatch({
     type: 'LOAD_USERS',
     meta: {apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users`}

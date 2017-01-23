@@ -23,8 +23,6 @@ function requireAuth(store, nextState, replace) {
 //   const state = store.getState()
 //   console.log('RO onLoginSuccess', nextState)
 // 
-//   // TODO: add default redirect
-//   
 //   if (!state.auth.loggedUser) {
 //   replace({
 //     pathname: nextState.location.state,
