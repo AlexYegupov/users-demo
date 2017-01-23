@@ -1,22 +1,18 @@
 ## 0
 
-fix: Error: data is not a valid scrypt-encrypted block when create new user
-
 r: remove unneeded files
 
 w: clone&check project
 
 w: rewrite README.md
 
-
-r: remove using websocket (see Network tab)
-
 i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
 
+r: review all !! and TODO in code
 
 ## 1
 
-r: review _isPatched, _timestamp variables
+r: remove console.log from code
 
 +: after save user redirect to userse list
 
@@ -35,6 +31,8 @@ r: don't overwrite action payload completely by error response, save sent to ser
 +: when leave create user page with unsaved user show warning
 
 ## 2
+
+fix: add favicon, static files
 
 fix: 403 => force logout user on client
 

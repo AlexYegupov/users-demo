@@ -65,7 +65,6 @@ let Users = {
   createUser(data) {
     let user = {}
 
-    console.log(111)
     for (let attr of intersect(this.attrs, Object.keys(data))) {
       if (attr === 'pwd' && data['pwd']) {
         user['pwd'] = crypt(data['pwd'])

@@ -65,7 +65,7 @@ class LoggedUser extends React.Component {
   handleClick() {
     this.props.dispatch({ type: 'TEST' })
     //this.props.dispatch
-    //console.log('clicked', this, 111, this.store, 222, this.props.dispatch({, 333, this.props)
+    //console.log('clicked', this, this.store, 222, this.props.dispatch({, 333, this.props)
     
   }
 

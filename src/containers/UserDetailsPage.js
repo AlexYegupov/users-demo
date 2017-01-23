@@ -92,7 +92,7 @@ class UserDetailsPage extends Component {
     }
 
     if (isCreating && nextProps.storeUser && nextProps.storeUser._isCreated) {
-      console.log('UIC')
+      //console.log('UIC')
       this.props.history.push(`/users/${nextProps.storeUser.slug}`)
     }
 
