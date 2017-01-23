@@ -27,6 +27,7 @@ class UserDetailsPage extends Component {
     storeUser: PropTypes.object,
     serverError: PropTypes.object,
     loggedUser: PropTypes.object,
+    exitAfterSave: PropTypes.bool,
 
     history: PropTypes.object,
     dispatch: PropTypes.func,
@@ -79,13 +80,13 @@ class UserDetailsPage extends Component {
 
     this.setState( {isCreating} )
 
+    //update error state by server value
     if (nextProps.serverError && !this.state.localError) {
       console.log('Overwrite Error', nextProps.error)
-      //update error state by server value
       this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
-    // fe3
+    // goto login if creating new user being unlogged
     if (!nextProps.loggedUser && isCreating) {
       // NOTE: redirect to login page if unlogged
       this.props.history.push('/login')
@@ -104,19 +105,25 @@ class UserDetailsPage extends Component {
       this.loadUser(nextProps.params.slug)
     }
 
+    if (this.state.exitAfterSave) {
+      this.props.history.push(`/users`)
+    }
+
   }
 
   test() {
     console.log('test', arguments)
   }
 
-  logout = () => {
+  logout = () => {c
     // actually not log out because cannot delete httpOnly cookie
     this.props.dispatch(logout())
   }
 
-  saveUser(user) {
-    console.log('Saving: ', user, this)
+  saveUser(user, exitAfterSave) {
+    //console.log('Saving: ', user, stayEditing)
+
+    this.setState( {exitAfterSave} )
 
     if (!this.state.localError) {
       if (this.state.isCreating) {
@@ -195,7 +202,7 @@ export default connect(
     let storeUser = null
     if (u) {
       if ((isUserCreating(ownProps) && (u._isNew || u._isCreated))
-        || ((ownProps.params||{}).slug === u.slug)) {
+          || ((ownProps.params||{}).slug === u.slug)) {
           storeUser = u
         }
     }

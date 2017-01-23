@@ -298,8 +298,7 @@ app.patch('/api/users/:slug', checkAuth(function(req, res) {
 // use POST only for CREATING new users
 app.post('/api/users', checkAuth(function(req, res) {
   let data = req.body
-
-  console.log('POST /api/users', req.session, req.session.user)
+  //console.log('POST /api/users', req.session, req.session.user)
 
   try {
     var user = Users.createUser(data)

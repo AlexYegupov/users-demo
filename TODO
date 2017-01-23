@@ -4,8 +4,6 @@ r: remove unneeded files
 
 w: clone&check project
 
-w: rewrite README.md
-
 i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
 
 r: review all !! and TODO in code
@@ -14,23 +12,18 @@ r: review all !! and TODO in code
 
 r: remove console.log from code
 
-+: after save user redirect to userse list
-
 r: js: remove http-only cookie on LOGOUT
 
 secure: check if it's ok to store session in memory on server (maybe for demo ok?)
-
-r: ** review user var in mapStateToProps
-
-r: review "!!" in code
-
-r: review state & vars like _isNew, _isCreated
 
 r: don't overwrite action payload completely by error response, save sent to server data somewhere. Maybe payload->req, ->response?
 
 +: when leave create user page with unsaved user show warning
 
+
 ## 2
+
+fix: make localStorage logged user obsolete time & get it from server
 
 fix: add favicon, static files
 
@@ -39,3 +32,5 @@ fix: 403 => force logout user on client
 r: getUserError should return list of error, not string
 
 i: favicon -> processing static files
+
++ activate user name input control initially

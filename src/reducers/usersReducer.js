@@ -22,6 +22,7 @@ export const users = (state={users:[]}, action) => {
     if (action.type === 'PATCH_USER') {
       if (!action.error) {
         let user = action.payload
+        //user._isPatched = true
         user._timestamp = action.meta.timestamp
         return Object.assign({}, state, {user, userError: null})
       } else {

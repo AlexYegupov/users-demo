@@ -123,8 +123,10 @@ class UserEdit extends Component {
 
         {/* { this.state.error ? <div>Error: {this.state.error}</div> : '' } */}
         <div>
-          <button onClick={this.saveClicked.bind(this)}
+          <button onClick={this.saveClicked.bind(this, false)}
                   disabled={saveDisabled}>Save</button>
+          <button onClick={this.saveClicked.bind(this, true)}
+                  disabled={saveDisabled}>Save & exit</button>
 
 
         </div>
@@ -182,11 +184,11 @@ class UserEdit extends Component {
     return user
   }
 
-  saveClicked() {
+  saveClicked(exitAfterSave) {
     let user = this.getFormUser()
-    console.log('saveClicked', user) //this.props.user,this.state.modifiedFields)
+    //console.log('saveClicked', user, stayEditing)
 
-    this.props.onSave(user)
+    this.props.onSave(user, exitAfterSave)
   }
 
 }
