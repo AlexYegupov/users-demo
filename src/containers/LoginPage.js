@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-//import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 import { login, logout } from '../actions/authActions'
 
 //import User2 from '../components/User2'
@@ -90,12 +89,6 @@ class LoginPage extends Component {
 
   handleLoginClick(e) {
     this.props.login(this.login.value, this.pwd.value)
-    /*
-     *     this.setState({
-     *       login: this.login.value,
-     *       pwd: this.pwd.value
-     *     })
-     * */
   }
 
   renderError() {
@@ -107,9 +100,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    //const { users } = this.props
-
-    console.log('RENDER', this.props)
+    //console.log('RENDER', this.props)
 
     return (
       <div>

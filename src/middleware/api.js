@@ -1,24 +1,24 @@
 export const api = store => next => action => {
   if (!(action.meta && action.meta.apiCall)) return next(action)
 
-  console.log('MIDDLEWARE: api. action:', action)
+  //console.log('MIDDLEWARE: api. action:', action)
 
   return fetch(action.meta.apiCall, action.meta.fetchOptions)
     .then( response => {
-      console.log('FE3:', response)
+      //console.log('FE3:', response)
 
       const contentType = response.headers.get('Content-Type')
 
       if (response.status !== 204
           && (!contentType || !contentType.includes('application/json'))) {
-        console.log('response is not json', contentType)
+        //console.log('response is not json', contentType)
         return response.text().then(
           text => Promise.reject({body: text, code: response.status})
         )
       }
 
       if (!response.ok) {
-        console.log('response is not ok')
+        //console.log('response is not ok')
         return response.json().then(
           json => Promise.reject(json)
         )
@@ -36,7 +36,7 @@ export const api = store => next => action => {
       return next(action)
     })
     .catch(error => {
-      console.log('resp Error. json:', error)
+      //console.log('resp Error. json:', error)
       action['error'] = true
       action['payload'] = error
       return next(action)

@@ -1,8 +1,6 @@
 /* eslint-disable no-console, no-use-before-define */
 
-//import path from 'path'
 import Express from 'express'
-//import qs from 'qs'
 
 // import webpack from 'webpack'
 // import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -19,13 +17,10 @@ import Express from 'express'
 import bodyParser from 'body-parser';
 import session from 'express-session'
 import settings from '../settings'
-
 import { Users } from './dbUtil'
 
 var cors = require('cors')
-
 const app = new Express()
-
 
 // // Use this middleware to set up hot module reloading via webpack.
 // const compiler = webpack(webpackConfig)
@@ -45,16 +40,6 @@ const app = new Express()
 //   storage: fileAsync,
 //   format: YAMLFormat
 // })
-
-// // Init
-// db.defaults({ posts: [] })
-//   .value()
-
-// Define posts
-//const posts = db.get('posts')
-//const users = db.get('users')
-// console.log('all posts:', posts.value())
-// console.log('exact post:', posts.find({id: 1478198356002}).value())
 
 app.use(session({
   secret: 'myASQR$Rsecretasfdhkasdfhflkasjhfjqwef98p1y32',
@@ -100,6 +85,14 @@ app.post('/api/session', function(req, res) {
   res.json(user).end()
 })
 
+// get current session user (to re-get already logged user credentials)
+app.get('/api/session', checkAuth(function(req, res, next) {
+
+  res.json(req.session.user)
+  res.end()
+}))
+
+
 // ==logout
 app.delete('/api/session', function(req, res) {
 
@@ -113,7 +106,7 @@ app.delete('/api/session', function(req, res) {
   //delete req.session
 
   req.session.user = null
-  res.json({user: null}).end()
+  res.json(req.session.user).end()
 })
 
 
@@ -127,19 +120,6 @@ app.get('/api/test', function(req, res, next) {
   //next()
   res.end()
 })
-
-
-// app.patch('/api/test', function(req, res, next) {
-//   console.log('T PATCH: RS, RSU', req.session, req.session.user)
-//   res.json({loggedUser: req.session.user})
-//   //res.send('Hello3')
-//   //throw new Error("my error");
-// 
-//   //console.log('logged as:', req.session.user)
-// 
-//   //next()
-//   res.end()
-// })
 
 
 app.get('/api/secure', checkAuth(function(req, res, next) {

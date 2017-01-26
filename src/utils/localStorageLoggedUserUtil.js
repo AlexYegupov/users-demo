@@ -6,9 +6,18 @@ export const localStorageLoggedUser = {
   get: () => {
     if (hasLocalStorage && localStorage.loggedUser) {
       try {
-        return JSON.parse(localStorage.loggedUser)
+        let loggedUser = JSON.parse(localStorage.loggedUser)
+        console.log('LU', loggedUser)
+
+        // if (loggedUser['obsolete'] < (new Date()).toJSON()) {
+        //   return null
+        // }
+
+        return loggedUser['user']
+
       } catch (e) {
-        if (e instanceof SyntaxError) return null
+        if (e instanceof SyntaxError
+            || e instanceof TypeError) return null
         throw e
       }
 
@@ -17,7 +26,10 @@ export const localStorageLoggedUser = {
 
   set: (user) => {
     if (hasLocalStorage) {
-      localStorage.loggedUser = JSON.stringify(user)
+      // let obsolete = new Date()
+      // obsolete.setMinutes(obsolete.getMinutes() + 1)
+
+      localStorage.loggedUser = JSON.stringify( {user} )  // , obsolete
     }
   }
 }

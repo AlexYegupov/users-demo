@@ -1,6 +1,10 @@
 ## 0
 
-fix: save & exit after server restart anyway goes to users list
+fix: correct reflect if logout other tab
+
+fix: save & exit ignores pwd=000 error on create new user
+
+fix: ** save & exit after server restart anyway goes to users list
 
 i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
 
@@ -15,6 +19,7 @@ remove unneeded files
 
 remove console.log from code
 
+increase getLoggedUserNextRefreshTime interval (1 minute)
 
 ## 1
 
@@ -44,3 +49,5 @@ i: favicon -> processing static files
 +: move setUtil to external module
 
 +: multilanguage
+
++: add functional & rest-server tests

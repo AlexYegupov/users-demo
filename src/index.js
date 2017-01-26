@@ -9,8 +9,6 @@ import { createListeners } from './store/listeners'
 const store = configureStore() // w {auth: {loggedUser: loggedUser}}
 const history = syncHistoryWithStore(browserHistory, store)
 
-
-
 createListeners(store)
 
 
