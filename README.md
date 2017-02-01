@@ -33,24 +33,32 @@ TODO:
 
 # Quick start
 
-`git clone git@github.com:AlexYegupov/users-demo.git
+```sh
+git clone git@github.com:AlexYegupov/users-demo.git
 cd users-demo
 npm i
 npm run dev
 
-chrome localhost:3000`
+chrome localhost:3000
+```
 
 
 ## Dev
-`npm run dev
-chrome localhost:3000`
+```sh
+npm run dev
+chrome localhost:3000
+```
 
 ## Prod
-`npm run build`
+```sh
+npm run build
+```
 
 in parallel:
 
-`(cd build && python -m SimpleHTTPServer 9000)
+```sh
+(cd build && python -m SimpleHTTPServer 9000)
 npm run server
-open localhost:9000`
+open localhost:9000
+```
 
