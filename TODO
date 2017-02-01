@@ -29,6 +29,8 @@ remove console.log from code
 
 increase getLoggedUserNextRefreshTime interval (1 minute)
 
+review dev/common dependencies
+
 ## 1
 
 verify: if it's ok to store session in memory on server (maybe for demo ok?)

@@ -4,11 +4,14 @@ Simple demo users editor.
 Reworked Redux Real World Example demo.
 Implemented almost without external libraries.
 
+version 0.1 (beta)
+
 Features:
 * CRUD user, basic validation, secure password (by scrypt library)
 * REST-api server on express
 * auto-syncronizing logged user with server by timer WITH any redux events
 * auto-refresing logged user after full page reload
+* routing by react-router
 * json-file data storage (no database, no concurrency yet)
 * es6, babel
 * react + redux
@@ -30,11 +33,19 @@ TODO:
 
 # Quick start
 
- ## Dev
+git clone git@github.com:AlexYegupov/users-demo.git
+cd users-demo
+npm i
+npm run dev
+
+open localhost:3000
+
+
+## Dev
 npm run dev
 open localhost:3000
 
- ## Prod
+## Prod
 npm run build
 
 in parallel:
