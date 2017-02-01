@@ -2,11 +2,14 @@
 
 Simple demo users editor.
 Reworked Redux Real World Example demo.
+Implemented almost without external libraries.
 
 Features:
-* CRUD user, basic validation, password scrypt-ing
+* CRUD user, basic validation, secure password (by scrypt library)
 * REST-api server on express
-* json-file data storage (no database, no concurrency)
+* auto-syncronizing logged user with server by timer WITH any redux events
+* auto-refresing logged user after full page reload
+* json-file data storage (no database, no concurrency yet)
 * es6, babel
 * react + redux
 * cookie-based authorization, localStorage-bases logged user storage
@@ -15,14 +18,14 @@ Features:
 * set host & port by env variables
 
 Requirements:
-* nodejs 7+
+* nodejs 7+ (tested on)
 
 TODO:
 * beautiful css
 * try react-forms or something similar to simplify processing logic
 * server rendering
 * try yaml-based storage with libs like js-yaml + r/w concurency
-* see also TODO
+* see also TODO file
 
 
 # Quick start

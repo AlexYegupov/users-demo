@@ -1,6 +1,5 @@
 export const api = store => next => action => {
   if (!(action.meta && action.meta.apiCall)) return next(action)
-
   //console.log('MIDDLEWARE: api. action:', action)
 
   return fetch(action.meta.apiCall, action.meta.fetchOptions)
@@ -26,19 +25,22 @@ export const api = store => next => action => {
 
       return response.status === 204 ? {} : response.json()
     })
-    .then(json => {
+    .then( json => {
       //console.log('resp OK. json:', json)
       action['payload'] = json
 
       // exp: response timestamp
       action['meta'].timestamp = new Date().toISOString()
 
-      return next(action)
+      let result = next(action)
+      //console.log('API result', action, result)
+      return result
     })
-    .catch(error => {
+    .catch( error => {
       //console.log('resp Error. json:', error)
       action['error'] = true
       action['payload'] = error
       return next(action)
     })
+
 }

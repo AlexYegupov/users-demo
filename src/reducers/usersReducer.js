@@ -6,7 +6,7 @@ export const users = (state={users:[]}, action) => {
       if (!action.error)
         return Object.assign({}, state, {users: action.payload, usersError: null})
       else
-        return Object.assign({}, state, {users: [], usersError: action.payload})
+        return Object.assign({}, state, {users: [], usersError: action.payload, zz: 2})
     }
 
     if (action.type === 'LOAD_USER') {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { logout } from '../actions/authActions'
+import { logout, refreshLoggedUserAction } from '../actions/authActions'
 import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'
 import UserEdit from '../components/UserEdit'
@@ -57,6 +57,9 @@ class UserDetailsPage extends Component {
       this.loadUser(this.props.params.slug)
     }
 
+    console.log('action cwm:refreshLoggedUser')
+    this.props.dispatch(refreshLoggedUserAction())
+
   }
 
   loadUser(slug=null) {
@@ -102,6 +105,7 @@ class UserDetailsPage extends Component {
         ||(this.props.location.pathname !== nextProps.location.pathname)
        )
     {
+      console.log('action 2LU', nextProps.params.slug)
       this.loadUser(nextProps.params.slug)
     }
 

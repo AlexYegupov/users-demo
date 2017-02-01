@@ -1,6 +1,14 @@
 ## 0
 
-fix: correct reflect if logout other tab
+todo: when set default state read user from LS & assume empty
+
+fix: restore logged user on ANY page reload
+
+fix: double-calling LOAD_USER on edit form if REFRESH_LOGGED_USER is auto-called
+
+fix: 403 => force logout user on client
+
+fix: correct reflect if logout other tab (probably LOGOUT on empty LS)
 
 fix: save & exit ignores pwd=000 error on create new user
 
@@ -15,15 +23,13 @@ i: make flex css & breadcrumbs
 
 try clone&check project
 
-remove unneeded files
+remove unneeded files & comments
 
 remove console.log from code
 
 increase getLoggedUserNextRefreshTime interval (1 minute)
 
 ## 1
-
-r: js: remove http-only cookie on LOGOUT
 
 verify: if it's ok to store session in memory on server (maybe for demo ok?)
 
@@ -38,7 +44,6 @@ fix: make localStorage logged user obsolete time & get it from server
 
 fix: add favicon, static files
 
-fix: 403 => force logout user on client
 
 r: getUserError should return list of error, not string
 

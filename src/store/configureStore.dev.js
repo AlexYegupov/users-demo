@@ -4,7 +4,7 @@ import createLogger from 'redux-logger'
 //import { api } from '../middleware/api'
 //import { api2 } from '../middleware/api2'
 import { api } from '../middleware/api'
-//import { localStorageData } from '../middleware/localStorageData'
+import { refreshLoggedUser } from '../middleware/refreshLoggedUser'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
@@ -16,8 +16,8 @@ const configureStore = preloadedState => {
       applyMiddleware(
         thunk,
         api,
+        refreshLoggedUser,
         createLogger(),
-        //localStorageData
       ),
       DevTools.instrument()
     )

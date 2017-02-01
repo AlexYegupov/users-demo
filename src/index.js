@@ -4,12 +4,12 @@ import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import Root from './containers/Root'
 import configureStore from './store/configureStore'
-import { createListeners } from './store/listeners'
+//import { createListeners } from './store/listeners'
 
-const store = configureStore() // w {auth: {loggedUser: loggedUser}}
+export const store = configureStore() // w {auth: {loggedUser: loggedUser}}
 const history = syncHistoryWithStore(browserHistory, store)
 
-createListeners(store)
+//createListeners(store)
 
 
 render(

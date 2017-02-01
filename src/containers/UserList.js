@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 //import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
+//import { test } from '../actions/authActions'
 import { login, logout } from '../actions/authActions'
 import { loadUsers, deleteUser } from '../actions/usersActions'
 
@@ -16,6 +17,7 @@ class UserList extends Component {
     users: PropTypes.array.isRequired,
     usersError: PropTypes.object,
     loggedUser: PropTypes.object,
+    //test: PropTypes.func.isRequired,
     loadUsers: PropTypes.func.isRequired,
 
     login: PropTypes.func,
@@ -32,6 +34,7 @@ class UserList extends Component {
     console.log('CWM')
     //console.log('Cookie:', document.cookie)
     this.props.loadUsers()
+    //this.props.test()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -147,6 +150,7 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps,
   {
+    //test,
     loadUsers,
     //loadUser,
     //loadStarred
