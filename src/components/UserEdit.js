@@ -21,7 +21,7 @@ class UserEdit extends Component {
 
   constructor(props) {
     super(props)
-    console.log('UserEdit. constructor. user:', props.user)
+    //console.log('UserEdit. constructor. user:', props.user)
     this.state = {
       userForm: this.userToForm(props.user),
       modifiedFields: new Set()
@@ -29,7 +29,7 @@ class UserEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('UserEdit: CWRP', this.props, nextProps)
+    //console.log('UserEdit: CWRP', this.props, nextProps)
     // reset form
     if (nextProps.user && isUserChanged(this.props.user, nextProps.user)) {
       this.setState( {
@@ -48,12 +48,9 @@ class UserEdit extends Component {
   // }
 
   // componentWillUpdate(nextProps, nextState) {
-  // 
   //   let error = this.getFormError(this.state.userForm)
   //   //this.setState( {userForm, error} )
   //   if (this.props.onChange) this.props.onChange(userForm, error)
-  // 
-  // 
   // }
 
   componentDidUpdate(prevProps, prevState) {
@@ -76,7 +73,7 @@ class UserEdit extends Component {
      * }*/
 
     const readOnly = this.props.readOnly
-    console.log('UserEdit: RENDERING', readOnly, this.state)
+    //console.log('UserEdit: RENDERING', readOnly, this.state)
 
     let saveDisabled = (readOnly || this.state.error
                         || !this.state.modifiedFields.size)
@@ -85,50 +82,53 @@ class UserEdit extends Component {
 
     return (
       <div>
-        <div>
-          Name:
-          <input value={this.state.userForm.name}
-                 /* ref={(input) => this.nameInput = input} */
-                 disabled={readOnly}
-                 onChange={this.handleChange.bind(this, 'name')}
-            />
-        </div>
 
-        <div>
-          Login:
-          <input value={this.state.userForm.login}
-                 /* {this.props.user.login} */
-                 disabled={readOnly}
-                 onChange={this.handleChange.bind(this, 'login')}
-          />
-        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td>Name:</td>
+              <td><input value={this.state.userForm.name}
+                         /* ref={(input) => this.nameInput = input} */
+                         disabled={readOnly}
+                         onChange={this.handleChange.bind(this, 'name')}
+                  /></td>
+            </tr>
 
-        <div>
-          Password:
-          <input value={this.state.userForm.pwd}
-                 type="password"
-                 disabled={readOnly}
-                 onChange={this.handleChange.bind(this, 'pwd')}
-          />
-        </div>
+            <tr>
+              <td>Login:</td>
+              <td><input value={this.state.userForm.login}
+                         /* {this.props.user.login} */
+                         disabled={readOnly}
+                         onChange={this.handleChange.bind(this, 'login')}
+                  /></td>
+            </tr>
 
-        <div>
-          Password again:
-          <input value={this.state.userForm.pwd2}
-                 type="password"
-                 disabled={readOnly}
-                 onChange={this.handleChange.bind(this, 'pwd2')}
-          />
-        </div>
+            <tr>
+              <td>Password:</td>
+              <td><input value={this.state.userForm.pwd}
+                         type="password"
+                         disabled={readOnly}
+                         onChange={this.handleChange.bind(this, 'pwd')}
+                  /></td>
+            </tr>
 
-        {/* { this.state.error ? <div>Error: {this.state.error}</div> : '' } */}
+            <tr>
+              <td>Password again:</td>
+              <td><input value={this.state.userForm.pwd2}
+                         type="password"
+                         disabled={readOnly}
+                         onChange={this.handleChange.bind(this, 'pwd2')}
+                  /></td>
+            </tr>
+
+            {/* { this.state.error ? <div>Error: {this.state.error}</div> : '' } */}
+          </tbody>
+        </table>
         <div>
           <button onClick={this.saveClicked.bind(this, false)}
                   disabled={saveDisabled}>Save</button>
           <button onClick={this.saveClicked.bind(this, true)}
                   disabled={saveDisabled}>Save & exit</button>
-
-
         </div>
       </div>
     )
@@ -136,7 +136,7 @@ class UserEdit extends Component {
 
   // simplified form error
   getFormError(form) {
-    console.log('FF', form)
+    //console.log('FF', form)
     if (!form['name']) return 'Empty name'
     if (!form['login']) return 'Empty login'
     if (form['login'].length < 3) return 'Login should be 3+ characters length'

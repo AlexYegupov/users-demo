@@ -1,5 +1,9 @@
 ## 0
 
+fix: reload users list => visually seems unlogged
+
+fix
+
 todo: when set default state read user from LS & assume empty
 
 fix: restore logged user on ANY page reload

@@ -19,7 +19,7 @@ const configureStore = preloadedState => {
         refreshLoggedUser,
         createLogger(),
       ),
-      DevTools.instrument()
+      //DevTools.instrument()
     )
   )
 

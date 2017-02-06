@@ -1,7 +1,7 @@
 # Users editor
 
 Simple demo users editor.
-Reworked Redux Real World Example demo.
+Reworked and extended Redux Real World Example .
 Implemented almost without external libraries.
 
 version 0.1 (beta)
@@ -9,13 +9,13 @@ version 0.1 (beta)
 Features:
 * CRUD user, basic validation, secure password (by scrypt library)
 * REST-api server on express
-* auto-syncronizing logged user with server by timer WITH any redux events
 * auto-refresing logged user after full page reload
 * routing by react-router
 * json-file data storage (no database, no concurrency yet)
 * es6, babel
 * react + redux
-* cookie-based authorization, localStorage-bases logged user storage
+* cookie-based authorization + localStorage-based logged user storage
+* auto-syncronizing logged user with server by timer WITH any redux events
 * no special react forms used
 * dev & prod versions
 * set host & port by env variables

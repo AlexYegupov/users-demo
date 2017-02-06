@@ -104,7 +104,7 @@ class LoginPage extends Component {
 
     return (
       <div>
-        <h3>Login</h3>
+        <h2>Login</h2>
         <p>sample: allan/1</p>
         <div>
           Login:<input defaultValue="allan" ref={(input) => this.login = input} />
@@ -113,7 +113,7 @@ class LoginPage extends Component {
           Password:  <input defaultValue="1" type="password" ref={(input) => this.pwd = input} />
         </div>
         <div>
-          <button onClick={this.handleLoginClick.bind(this)}>Log in</button>
+          <button onClick={this.handleLoginClick.bind(this)}>Login</button>
         </div>
 
         { this.renderError() }
@@ -121,12 +121,15 @@ class LoginPage extends Component {
           {this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}
         </p>
 
-        <hr />
-        Some other stuff:
-        <ul>
-          <li><button onClick={this.props.logout.bind(this)} >Logout</button></li>
-          <li><Link to={"/users"}>users list</Link></li>
-        </ul>
+        <div className="otherStuff">
+          <ul>
+            <li><Link to={"/login"}>login</Link></li>
+            <li><Link to={"/users"}>users list</Link></li>
+            <li><Link to={"/users-create"}>create user</Link></li>
+            <li><Link to={"/users/terry"}>terry user</Link></li>
+            <li><Link to={"/users/bob"}>bob user</Link></li>
+          </ul>
+        </div>
       </div>
     )
 

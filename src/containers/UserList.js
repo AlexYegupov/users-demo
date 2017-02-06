@@ -6,11 +6,13 @@ import { login, logout } from '../actions/authActions'
 import { loadUsers, deleteUser } from '../actions/usersActions'
 
 import User2 from '../components/User2'
-//import LU from '../components/LoggedUser'
+import LoggedUser from '../components/LoggedUser'
 import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 import { Link } from 'react-router'
+
+import './UserList.css'
 
 class UserList extends Component {
   static propTypes = {
@@ -83,9 +85,11 @@ class UserList extends Component {
 
     return (
       <div>
-        <p>Logged as: { loggedUser ? loggedUser.name : ''} </p>
+        {/* <p>Logged as: { loggedUser ? loggedUser.name : ''}</p>*/}
 
-        <h3>Users:</h3>
+        <LoggedUser user={ loggedUser } />
+
+        <h2>Users</h2>
         { this.renderError() }
 
         <Link to={`/users-create`}>
@@ -105,6 +109,8 @@ class UserList extends Component {
                       { loggedUser ? 'Edit' : 'View' }
                     </button>
                   </Link>
+                </td>
+                <td>
                   <button value="delete" disabled={!loggedUser}
                           onClick={this.deleteClick.bind(this, user.slug)}>
                     Delete
@@ -118,17 +124,17 @@ class UserList extends Component {
 
         <div>{ error ? `Error: ${error}` : '' }</div>
 
-        <hr />
-        Other stuff:
-        <ul>
-          <li><Link to={"/login"}>login</Link></li>
-          {/* <li><button onClick={this.login.bind(this)} >Login</button></li> */}
-          <li><Link to={"/users"}>users list</Link></li>
-          <li><Link to={"/users-create"}>create user</Link></li>
-          <li><Link to={"/users/terry"}>terry user</Link></li>
-          <li><Link to={"/users/bob"}>bob user</Link></li>
-          <li><button onClick={this.logout.bind(this)} >Logout</button></li>
-        </ul>
+
+        <div className="otherStuff">
+          <ul>
+            <li><Link to={"/login"}>login</Link></li>
+            <li><Link to={"/users"}>users list</Link></li>
+            <li><Link to={"/users-create"}>create user</Link></li>
+            <li><Link to={"/users/terry"}>terry user</Link></li>
+            <li><Link to={"/users/bob"}>bob user</Link></li>
+            {/*<li><button onClick={this.logout.bind(this)} >Logout</button></li>*/}
+          </ul>
+        </div>
       </div>
     )
   }

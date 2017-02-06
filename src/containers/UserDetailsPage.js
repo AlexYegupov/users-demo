@@ -5,6 +5,7 @@ import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'
 import UserEdit from '../components/UserEdit'
 import { isSameUser, isUserChanged } from  '../utils/userUtil'
+import LoggedUser from '../components/LoggedUser'
 
 // simply stringify object
 function stringifySimple(obj) {
@@ -165,28 +166,31 @@ class UserDetailsPage extends Component {
   render() {
     let error = this.state.localError
 
-    console.log('%cRENDERING user', 'background: cyan', this.props.storeUser, error, this.state)
+    //console.log('%cRENDERING user', 'background: cyan', this.props.storeUser, error, this.state)
 
     return (
       <div>
-        <p>Logged as: { this.props.loggedUser ? this.props.loggedUser.name : '' } </p>
+        <LoggedUser user={this.props.loggedUser} />
+
+        <Link to={"/users"}>Users</Link> » {this.props.storeUser ? this.props.storeUser.name : '-'}
+
+        <p></p>
 
         <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser}  /* fe3 */
           error={error}
         />
 
         { error ? <div>Error: {error}</div> : '' }
-        <hr />
 
-        Other stuff:
-        <ul>
-          <li><Link to={"/login"}>login</Link></li>
-          <li><Link to={"/users"}>users list</Link></li>
-          <li><Link to={"/users-create"}>create user</Link></li>
-          <li><Link to={"/users/terry"}>terry user</Link></li>
-          <li><Link to={"/users/bob"}>bob user</Link></li>
-          <li><button onClick={this.logout.bind(this)} >Logout</button></li>
-        </ul>
+        <div className="otherStuff">
+          <ul>
+            <li><Link to={"/login"}>login</Link></li>
+            <li><Link to={"/users"}>users list</Link></li>
+            <li><Link to={"/users-create"}>create user</Link></li>
+            <li><Link to={"/users/terry"}>terry user</Link></li>
+            <li><Link to={"/users/bob"}>bob user</Link></li>
+          </ul>
+        </div>
       </div>
     )
   }

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import { logout } from '../actions/authActions'
+import './LoggedUser.css'
 
 // const LoggedUser = ({ user }) => {
 //   const { login, avatarUrl, name } = user
@@ -54,24 +56,42 @@ import { connect } from 'react-redux'
 class LoggedUser extends React.Component {
 
   static propTypes = {
-    loggedUser: PropTypes.shape({
+    user: PropTypes.shape({
       login: PropTypes.string.isRequired,
       //avatarUrl: PropTypes.string.isRequired,
       name: PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    dispatch: PropTypes.func,
   }
 
-
-  handleClick() {
-    this.props.dispatch({ type: 'TEST' })
-    //this.props.dispatch
-    //console.log('clicked', this, this.store, 222, this.props.dispatch({, 333, this.props)
-    
-  }
+  /* 
+   *   handleClick() {
+   *     this.props.dispatch({ type: 'TEST' })
+   *     //this.props.dispatch
+   *     //console.log('clicked', this, this.store, 222, this.props.dispatch({, 333, this.props)
+   *     
+   *   }
+   * */
 
   render() {
+    let { user } = this.props
+    let content = ''
 
-    return <div> LLL </div>
+    if (user) {
+      content = (
+        <div>
+          Welcome {user.name}
+          <button onClick={ () => this.props.dispatch(logout()) } >
+            Logout
+          </button>
+        </div>
+      )
+    } else {
+      content = <Link to={"/login"}><button>Login</button></Link>
+    }
+
+    return (<div className="loggedUser">{ content }</div>)
     /* 
      *     if (this.props.loggedUser) {
      *       return <div>
