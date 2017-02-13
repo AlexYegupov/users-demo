@@ -86,7 +86,7 @@ class UserDetailsPage extends Component {
 
     //update error state by server value
     if (nextProps.serverError && !this.state.localError) {
-      console.log('Overwrite Error', nextProps.error)
+      // overwrite error
       this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
@@ -110,7 +110,7 @@ class UserDetailsPage extends Component {
       this.loadUser(nextProps.params.slug)
     }
 
-    if (this.state.exitAfterSave) {
+    if (this.state.exitAfterSave && !nextProps.serverError && !this.state.localError) {
       this.props.history.push(`/users`)
     }
 

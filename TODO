@@ -8,8 +8,6 @@ fix: 403 => force logout user on client
 
 fix: correct reflect if logout other tab (probably LOGOUT on empty LS)
 
-fix: save & exit ignores pwd=000 error on create new user
-
 fix: ** save & exit after server restart anyway goes to users list
 
 i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
