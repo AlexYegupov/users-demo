@@ -135,7 +135,7 @@ app.get('/api/users', function(req, res) {
 })
 
 
-// alt: could use :id instead of :slug
+// NOTE: experimentally use :slug as :id
 app.get('/api/users/:slug', function(req, res) {
   let user = Users.findUser(req.params.slug)
   if (!user) return res.status(204).end() //send('User not found').

@@ -50,6 +50,7 @@ fix: make localStorage logged user obsolete time & get it from server
 
 fix: add favicon, static files
 
++: implement "are you sure" when exi
 
 r: getUserError should return list of error, not string
 
@@ -62,3 +63,5 @@ i: favicon -> processing static files
 +: multilanguage
 
 +: add functional & rest-server tests
+
++: use react-forms and compare

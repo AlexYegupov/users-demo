@@ -1,25 +1,20 @@
-//import { localStorageLoggedUser } from '../utils/localStorageLoggedUserUtil'
-//import { localStorageObject } from '../utils/localStorageUtil'
-
-
-//console.log('LSD LS -> logged user: ', localStorageLoggedUser.get())
-
-
-//import { store } from '../index'  // get store there?
-//import { tryRestoreLoggedUser } from '../actions/authActions'
-
-// problem: is null here
-// console.log('ST', store)
-// tryRestoreLoggedUser(store)  // here?
-
 const defaultState = {
   loggedUser: null, //localStorageLoggedUser.get(),
   loginError: null,
   loggedUserRefreshTime: null
 }
 
+let loggedUserRefreshInterval
+
+if (process.env.NODE_ENV === 'production') {
+  loggedUserRefreshInterval = 5 * 60 * 1000  // 5 minutes
+} else {
+  loggedUserRefreshInterval = 30 * 1000  // 30 seconds
+}
+
+
 function getLoggedUserNextRefreshTime() {
-  return new Date(Date.now() + 15*1000) // should be 1 minute !!
+  return new Date(Date.now() + loggedUserRefreshInterval)
 }
 
 const logoutUserState = {

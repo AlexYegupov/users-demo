@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { logout, refreshLoggedUserAction } from '../actions/authActions'
+import { logout, refreshLoggedUser } from '../actions/authActions'
 import { loadUser, patchUser, createUser } from '../actions/usersActions'
 import { Link } from 'react-router'
 import UserEdit from '../components/UserEdit'
@@ -59,7 +59,7 @@ class UserDetailsPage extends Component {
     }
 
     console.log('action cwm:refreshLoggedUser')
-    this.props.dispatch(refreshLoggedUserAction())
+    this.props.dispatch(refreshLoggedUser())
 
   }
 
@@ -92,7 +92,7 @@ class UserDetailsPage extends Component {
 
     // goto login if creating new user being unlogged
     if (!nextProps.loggedUser && isCreating) {
-      // NOTE: redirect to login page if unlogged
+      // redirect to login page if unlogged
       this.props.history.push('/login')
     }
 

@@ -31,6 +31,16 @@ TODO:
 * see also TODO file
 
 
+## Auth system
+Cookie authrization.
+
+Store the loggedUser and the loggedUserRefreshTime in redux storage
+
+On ANY redux action check loggedUserRefreshTime and optionally refresh loggedUser by server
+
+On any page componentWillMount force to call refreshLoggedUser
+
+
 # Quick start
 
 ```sh

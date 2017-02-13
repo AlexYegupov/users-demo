@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 //import { test } from '../actions/authActions'
 import { login, logout } from '../actions/authActions'
 import { loadUsers, deleteUser } from '../actions/usersActions'
+import { refreshLoggedUser } from '../actions/authActions'
 
 import User2 from '../components/User2'
 import LoggedUser from '../components/LoggedUser'
@@ -37,6 +38,8 @@ class UserList extends Component {
     //console.log('Cookie:', document.cookie)
     this.props.loadUsers()
     //this.props.test()
+
+    this.props.refreshLoggedUser()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -162,6 +165,7 @@ export default connect(
     //loadStarred
     login,
     logout,
-    deleteUser
+    deleteUser,
+    refreshLoggedUser
   }
 )(UserList)

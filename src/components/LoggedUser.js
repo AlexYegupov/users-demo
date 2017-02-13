@@ -81,7 +81,7 @@ class LoggedUser extends React.Component {
     if (user) {
       content = (
         <div>
-          Welcome {user.name}
+          Welcome, {user.name}!
           <button onClick={ () => this.props.dispatch(logout()) } >
             Logout
           </button>

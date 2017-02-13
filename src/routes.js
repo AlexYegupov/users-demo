@@ -8,17 +8,19 @@ import UserDetailsPage from './containers/UserDetailsPage'
 import NotFoundPage from './containers/NotFoundPage'
 
 
-function requireAuth(store, nextState, replace) {
-  const state = store.getState()
+//
+// function requireAuth(store, nextState, replace) {
+//   const state = store.getState()
+// 
+//   if (!state.auth.loggedUser) {
+//     replace({
+//       pathname: '/login',
+//       state: { nextPathname: nextState.location.pathname },
+//     })
+//   }
+// }
 
-  if (!state.auth.loggedUser) {
-    replace({
-      pathname: '/login',
-      state: { nextPathname: nextState.location.pathname },
-    })
-  }
-}
-
+// 
 // function onLoginSuccess(nextState, replace) {
 //   const state = store.getState()
 //   console.log('RO onLoginSuccess', nextState)
@@ -42,7 +44,10 @@ export const createRoutes = (store) => (
     <IndexRedirect to="/users" />
     <Route path="/test" component={TestPage} />
     <Route path="/users" component={UserList} />
-    <Route path="/users-create" component={UserDetailsPage} onEnter={requireAuth.bind(this, store)} />
+    <Route path="/users-create" component={UserDetailsPage} /*onEnter={requireAuth.bind(this, store)} don't use
+        TODO: implement "refresh_logged_user && redirect if unlogged behavour"
+       */
+      />
     <Route path="/users/:slug" component={UserDetailsPage} />
     <Route path="/login" component={LoginPage} />  {/* onLeave={onLoginLeave} */}
     <Redirect from="/loginSuccess" to="/users" />
