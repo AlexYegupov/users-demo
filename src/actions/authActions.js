@@ -26,19 +26,21 @@ export const logout = () => async (dispatch, getState) => {
   //saveUserToLocalStorage(state.auth.loggedUser)
 }
 
-//? export const refreshLoggedUser = () => (dispatch, getState) => {
-// NOTE: ~~ return only structure (is that OK?) because used both
-// in middleware AND react component
-export const refreshLoggedUser = () => {
-  return {
-    type: 'REFRESH_LOGGED_USER',
-    meta: {
-      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
-      fetchOptions: {
-        method: 'GET',
-        credentials: 'include'  // to include cookies in fresponse CR
+
+export const refreshLoggedUser = () => async (dispatch, getState) => {
+  let { loggedUser } = getState().auth
+
+  if (loggedUser && loggedUser.slug) {
+    await dispatch({
+      type: 'REFRESH_LOGGED_USER',
+      meta: {
+        apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
+        fetchOptions: {
+          method: 'GET',
+          credentials: 'include'  // to include cookies in fresponse CR
+        }
       }
-    }
+    })
   }
 
   // let result = dispatch({

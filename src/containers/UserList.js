@@ -25,7 +25,8 @@ class UserList extends Component {
 
     login: PropTypes.func,
     logout: PropTypes.func,
-    deleteUser: PropTypes.func
+    deleteUser: PropTypes.func,
+    refreshLoggedUser: PropTypes.func
   }
 
   constructor(props) {

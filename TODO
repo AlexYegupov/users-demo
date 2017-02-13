@@ -1,12 +1,6 @@
 ## 0
 
-fix: reload users list => visually seems unlogged
-
-fix
-
 todo: when set default state read user from LS & assume empty
-
-fix: restore logged user on ANY page reload
 
 fix: double-calling LOAD_USER on edit form if REFRESH_LOGGED_USER is auto-called
 
@@ -65,3 +59,5 @@ i: favicon -> processing static files
 +: add functional & rest-server tests
 
 +: use react-forms and compare
+
+fix: redirect to create-user page BACK after logging in (see nextPathname)

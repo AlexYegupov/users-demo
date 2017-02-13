@@ -9,9 +9,10 @@ export const refreshLoggedUserEmitter = store => next => action => {
 
   // emit REFRESH_LOGGED_USER on ANY action if loggedUserRefreshTime is come
   if (action.type !== 'REFRESH_LOGGED_USER') {
-    let {loggedUser, loggedUserRefreshTime} = state.auth
+    let {loggedUserRefreshTime} = state.auth  //loggedUser
 
-    if ( loggedUser && loggedUser.slug && loggedUserRefreshTime
+    if ( //loggedUser && loggedUser.slug &&   (moved to refreshLoggedUser)
+         loggedUserRefreshTime
          && loggedUserRefreshTime.valueOf() < Date.now() ) {
       store.dispatch(refreshLoggedUser())
     }

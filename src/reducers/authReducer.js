@@ -9,7 +9,7 @@ let loggedUserRefreshInterval
 if (process.env.NODE_ENV === 'production') {
   loggedUserRefreshInterval = 5 * 60 * 1000  // 5 minutes
 } else {
-  loggedUserRefreshInterval = 30 * 1000  // 30 seconds
+  loggedUserRefreshInterval = 15 * 1000  // 15 seconds
 }
 
 
@@ -56,7 +56,7 @@ export const auth = (state=defaultState, action) => {
       // clear logged user
       return Object.assign({}, state, {
         loggedUser: null,
-        loginError: action.payload,
+        loginError: (action.payload.code === 403) ? null : action.payload,
         loggedUserRefreshTime: null
       })
     }
