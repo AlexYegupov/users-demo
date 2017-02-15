@@ -1,8 +1,5 @@
 ## 0
 
-fix: edit user, enter pwd=000, press save, switch to "terry user" => error will stay
-
-
 fix: 403 => force logout user on client
 
 fix: correct reflect if logout other tab (probably LOGOUT on empty LS)

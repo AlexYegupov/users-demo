@@ -42,7 +42,7 @@ class UserDetailsPage extends Component {
 
     this.state = {
       isCreating: undefined,
-      localError: '',
+      localError: null,
     }
 
     console.log('CONSTRUCTOR', props)
@@ -93,11 +93,14 @@ class UserDetailsPage extends Component {
 
     this.setState( {isCreating} )
 
-    //update error state by server value
-    if (nextProps.serverError && !this.state.localError) {
-      // overwrite error
-      console.log('udp:sle', stringifySimple(nextProps.serverError))
-      this.setState( {localError: stringifySimple(nextProps.serverError)} )
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.setState( {localError: null} )
+    } else {
+      // overwrite local error by server error
+      if (nextProps.serverError !== this.props.serverError
+          || nextProps.serverError && !this.state.localError) {
+        this.setState( {localError: stringifySimple(nextProps.serverError)} )
+      }
     }
 
     // goto login if creating new user being unlogged
