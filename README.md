@@ -60,6 +60,8 @@ chrome localhost:3000
 ```
 
 ## Prod
+(beta)
+
 ```sh
 npm run build
 ```
@@ -71,4 +73,8 @@ in parallel:
 npm run server
 open localhost:9000
 ```
+
+​
+## Screenshots
+![screenshots](https://raw.githubusercontent.com/AlexYegupov/users-demo/master/screenshots.png)
 
