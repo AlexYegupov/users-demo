@@ -5,15 +5,14 @@ import settings from '../settings'
 export const loadUsers = () => (dispatch, getState) => {
   return dispatch({
     type: 'LOAD_USERS',
-    meta: {apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users`},
-    zz: 1
+    meta: {apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/users`}
   })
 
 }
 
 
 export const loadUser = (slug) => (dispatch, getState) => {
-  console.log('action LU', slug)
+  //console.log('action LU', slug)
   return dispatch({
     type: 'LOAD_USER',
     meta: {

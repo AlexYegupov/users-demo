@@ -55,22 +55,31 @@ class UserDetailsPage extends Component {
     this.setState( {isCreating: isUserCreating(this.props)} )
 
     if (!this.props.storeUser) {
+      console.log('action 1LU')
       this.loadUser(this.props.params.slug)
     }
 
-    console.log('action cwm:refreshLoggedUser')
-    this.props.dispatch(refreshLoggedUser())
+    // "hope to restore" logged user from server on mount
+    if (!this.props.loggedUser) {
+      this.props.dispatch(refreshLoggedUser())
+    }
+    // let what = refreshLoggedUser()
+    // console.log('udp rlu', what)
+    // this.props.dispatch(what)
 
   }
 
   loadUser(slug=null) {
     console.log('%cLOAD USER LUUU', 'background: yellow', slug)
 
-    if (slug)
+    if (slug) {
       this.props.dispatch(loadUser(slug))
-    else
+      //let what = loadUser(slug)
+      //console.log('udp lu', what)
+      //this.props.dispatch(what)
+     } else {
       this.props.dispatch({type: 'INIT_NEW_USER'})
-
+     }
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -87,6 +96,7 @@ class UserDetailsPage extends Component {
     //update error state by server value
     if (nextProps.serverError && !this.state.localError) {
       // overwrite error
+      console.log('udp:sle', stringifySimple(nextProps.serverError))
       this.setState( {localError: stringifySimple(nextProps.serverError)} )
     }
 
@@ -102,8 +112,8 @@ class UserDetailsPage extends Component {
     }
 
     // try: initiate loading user
-    if ((!nextProps.storeUser && !nextProps.serverError)
-        ||(this.props.location.pathname !== nextProps.location.pathname)
+    if (/*(!nextProps.storeUser && !nextProps.serverError)   (cwm::lu seems enough)
+        ||*/(this.props.location.pathname !== nextProps.location.pathname)
        )
     {
       console.log('action 2LU', nextProps.params.slug)

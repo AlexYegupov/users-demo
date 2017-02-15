@@ -6,7 +6,7 @@ import createLogger from 'redux-logger'
 import { api } from '../middleware/api'
 import { refreshLoggedUserEmitter } from '../middleware/refreshLoggedUserEmitter'
 import rootReducer from '../reducers'
-//import DevTools from '../containers/DevTools'
+import DevTools from '../containers/DevTools'
 
 const configureStore = preloadedState => {
   const store = createStore(
@@ -19,7 +19,7 @@ const configureStore = preloadedState => {
         refreshLoggedUserEmitter,
         createLogger(),
       ),
-      //DevTools.instrument()
+      DevTools.instrument()
     )
   )
 

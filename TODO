@@ -1,8 +1,7 @@
 ## 0
 
-todo: when set default state read user from LS & assume empty
+fix: edit user, enter pwd=000, press save, switch to "terry user" => error will stay
 
-fix: double-calling LOAD_USER on edit form if REFRESH_LOGGED_USER is auto-called
 
 fix: 403 => force logout user on client
 

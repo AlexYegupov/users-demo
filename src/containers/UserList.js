@@ -40,7 +40,10 @@ class UserList extends Component {
     this.props.loadUsers()
     //this.props.test()
 
-    this.props.refreshLoggedUser()
+    // "hope to restore" logged user from server on mount
+    if (!this.props.loggedUser) {
+      this.props.refreshLoggedUser()
+    }
   }
 
   componentWillReceiveProps(nextProps) {

@@ -28,10 +28,10 @@ export const logout = () => async (dispatch, getState) => {
 
 
 export const refreshLoggedUser = () => async (dispatch, getState) => {
-  let { loggedUser } = getState().auth
+  //let { loggedUser } = getState().auth
 
-  if (loggedUser && loggedUser.slug) {
-    await dispatch({
+  //if (!loggedUser) {  // &&  loggedUser.slug
+    return await dispatch({
       type: 'REFRESH_LOGGED_USER',
       meta: {
         apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
@@ -41,7 +41,7 @@ export const refreshLoggedUser = () => async (dispatch, getState) => {
         }
       }
     })
-  }
+  //} else console.log('NOOOOOOOO loggedUser')
 
   // let result = dispatch({
   //   type: 'TEST'
