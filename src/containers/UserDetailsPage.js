@@ -55,7 +55,6 @@ class UserDetailsPage extends Component {
     this.setState( {isCreating: isUserCreating(this.props)} )
 
     if (!this.props.storeUser) {
-      console.log('action 1LU')
       this.loadUser(this.props.params.slug)
     }
 
@@ -97,8 +96,8 @@ class UserDetailsPage extends Component {
       this.setState( {localError: null} )
     } else {
       // overwrite local error by server error
-      if (nextProps.serverError !== this.props.serverError
-          || nextProps.serverError && !this.state.localError) {
+      if ((nextProps.serverError !== this.props.serverError)
+          || (nextProps.serverError && !this.state.localError)) {
         this.setState( {localError: stringifySimple(nextProps.serverError)} )
       }
     }
@@ -193,7 +192,10 @@ class UserDetailsPage extends Component {
           error={error}
         />
 
-        { error ? <div>Error: {error}</div> : '' }
+        <p>To initiate server error input password: 000</p>
+
+        <p>{ error ? <div>Error: {error}</div> : '' }</p>
+
 
         <div className="otherStuff">
           <ul>

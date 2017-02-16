@@ -8,7 +8,7 @@ export const login = (login, pwd) => async (dispatch, getState) => {
       fetchOptions: {
         method: 'POST',
         body: new URLSearchParams(`login=${encodeURIComponent(login)}&pwd=${encodeURIComponent(pwd)}`),
-        credentials: 'include'  // to include cookies in fresponse CR
+        credentials: 'include'  // to include cookies in response
       }
     }
   })
@@ -19,7 +19,11 @@ export const login = (login, pwd) => async (dispatch, getState) => {
 
 export const logout = () => async (dispatch, getState) => {
   await dispatch({
-    type: 'LOGOUT'
+    type: 'LOGOUT',
+    meta: {
+      apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
+      fetchOptions: { method: 'DELETE', credentials: 'include' }
+    }
   })
 
   //let state = getState()
@@ -35,10 +39,7 @@ export const refreshLoggedUser = () => async (dispatch, getState) => {
       type: 'REFRESH_LOGGED_USER',
       meta: {
         apiCall: `http://${settings.apiHost}:${settings.apiPort}/api/session`,
-        fetchOptions: {
-          method: 'GET',
-          credentials: 'include'  // to include cookies in fresponse CR
-        }
+        fetchOptions: { method: 'GET', credentials: 'include' }
       }
     })
   //} else console.log('NOOOOOOOO loggedUser')

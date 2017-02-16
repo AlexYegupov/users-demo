@@ -34,6 +34,10 @@ r: don't overwrite action payload completely by error response, save sent to ser
 
 ## 2
 
++: improve algorithm: distinguish between "logged out" state and "unknown log in" state (to avoid asking server for login after server refresh)
+
+fix: edit existing user, input 000 password (to produce server error), save => username is disappeared from breadcrumb
+
 fix: make localStorage logged user obsolete time & get it from server
 
 fix: add favicon, static files
