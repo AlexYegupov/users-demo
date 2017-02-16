@@ -6,9 +6,8 @@ import { login, logout } from '../actions/authActions'
 import { loadUsers, deleteUser } from '../actions/usersActions'
 import { refreshLoggedUser } from '../actions/authActions'
 
-import User2 from '../components/User2'
+import User from '../components/User'
 import LoggedUser from '../components/LoggedUser'
-import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 import { Link } from 'react-router'
@@ -70,15 +69,6 @@ class UserList extends Component {
     this.props.logout()
   }
 
-  renderRepo([ repo, owner ]) {
-    return (
-      <Repo
-        repo={repo}
-        owner={owner}
-        key={repo.fullName} />
-    )
-  }
-
   renderError() {
     if (this.props.usersError)
       return <p>Error: {JSON.stringify(this.props.usersError)}</p>
@@ -108,7 +98,7 @@ class UserList extends Component {
             { users.map( (user) =>
               <tr key={ user.slug }>
                 <td>
-                  <User2 user={ user } />
+                  <User user={ user } />
                 </td>
                 <td>
                   <Link to={`/users/${user.slug}`}>

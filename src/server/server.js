@@ -41,6 +41,7 @@ const app = new Express()
 //   format: YAMLFormat
 // })
 
+// Note: storing session in memory (ok for demo)
 app.use(session({
   secret: 'myASQR$Rsecretasfdhkasdfhflkasjhfjqwef98p1y32',
   resave: false,

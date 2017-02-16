@@ -1,10 +1,7 @@
-import React, { Component,
-                //PropTypes
-              } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 //import { loadUser, loadStarred } from '../actions'
 // import User from '../components/User'
-// import Repo from '../components/Repo'
 // import List from '../components/List'
 // import zip from 'lodash/zip'
 
@@ -38,14 +35,6 @@ class TestPage extends Component {
   //   this.props.loadStarred(this.props.login, true)
   // }
   // 
-  // renderRepo([ repo, owner ]) {
-  //   return (
-  //     <Repo
-  //       repo={repo}
-  //       owner={owner}
-  //       key={repo.fullName} />
-  //   )
-  // }
 
   // render() {
   //   const { user, login } = this.props
