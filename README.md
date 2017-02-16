@@ -1,12 +1,13 @@
 # Users editor
 
 Simple demo users editor.
-Reworked and extended Redux Real World Example .
-Implemented almost without external libraries.
 
-version 0.1 (beta)
+version 0.1 (developing)
 
-Features:
+Originally based on redux real world example.
+
+
+## Features
 * CRUD user, basic validation, secure password (by scrypt library)
 * REST-api server on express
 * auto-refresing logged user after full page reload
@@ -20,10 +21,10 @@ Features:
 * dev & prod versions
 * set host & port by env variables
 
-Requirements:
-* nodejs 7+ (tested on)
+## Requirements:
+Tested on Ubuntu 14.04, node 7.0.
 
-TODO:
+## TODO
 * beautiful css
 * try react-forms or something similar to simplify processing logic
 * server rendering
@@ -48,18 +49,18 @@ git clone git@github.com:AlexYegupov/users-demo.git
 cd users-demo
 npm i
 npm run dev
-
-chrome localhost:3000
 ```
+and open http://localhost:3000 in browser
 
 
-## Dev
+
+### Dev
 ```sh
 npm run dev
 chrome localhost:3000
 ```
 
-## Prod
+### Prod
 
 ```sh
 npm run build
