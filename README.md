@@ -60,19 +60,13 @@ chrome localhost:3000
 ```
 
 ## Prod
-(beta)
 
 ```sh
 npm run build
-```
-
-in parallel:
-
-```sh
 (cd build && python -m SimpleHTTPServer 9000)
 npm run server
-open localhost:9000
 ```
+and open http://localhost:9000 in browser
 
 ​
 ## Screenshots
