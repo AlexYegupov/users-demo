@@ -106,20 +106,29 @@ class LoginPage extends Component {
       <div>
         <h2>Login</h2>
         <p>sample: allan/1</p>
-        <div>
-          Login:<input defaultValue="allan" ref={(input) => this.login = input} />
-        </div>
-        <div>
-          Password:  <input defaultValue="1" type="password" ref={(input) => this.pwd = input} />
-        </div>
-        <div>
-          <button onClick={this.handleLoginClick.bind(this)}>Login</button>
-        </div>
 
-        { this.renderError() }
-        <p>
-          {this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}
-        </p>
+        <table>
+          <tbody>
+            <tr>
+              <td>Login</td>
+              <td>
+                <input defaultValue="allan" ref={(input) => this.login = input} />
+              </td>
+            </tr>
+            <tr>
+              <td>Password</td>
+              <td>
+                <input defaultValue="1" type="password" ref={(input) => this.pwd = input} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button onClick={this.handleLoginClick.bind(this)}>Login</button>
+
+        <div>{ this.renderError() }</div>
+
+        {/* <p>{this.props.loggedUser ? `Logged as: ${this.props.loggedUser.name}`:''}</p> */}
 
         <div className="otherStuff">
           <ul>

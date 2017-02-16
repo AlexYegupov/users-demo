@@ -186,13 +186,11 @@ class UserDetailsPage extends Component {
 
         <Link to={"/users"}>Users</Link> » {this.props.storeUser ? this.props.storeUser.name : '-'}
 
-        <p></p>
+        <p>Note: To initiate server error input password: 000</p>
 
         <UserEdit user={this.props.storeUser} onSave={this.saveUser.bind(this)}   onUpdate={this.onUserEditUpdate.bind(this)} readOnly={!this.props.loggedUser}  /* fe3 */
           error={error}
         />
-
-        <p>To initiate server error input password: 000</p>
 
         <p>{ error ? <div>Error: {error}</div> : '' }</p>
 

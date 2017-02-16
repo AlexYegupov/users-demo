@@ -1,16 +1,5 @@
 ## 0
 
-fix: 403 => force logout user on client
-
-fix: correct reflect if logout other tab (probably LOGOUT on empty LS)
-
-fix: ** save & exit after server restart anyway goes to users list
-
-i: make <LoggedUser> component (will show logged user, will load it from localStorage OR cookie)
-
-i: make flex css & breadcrumbs
-
-
 ## last:
 
 try clone&check project
@@ -24,6 +13,9 @@ increase getLoggedUserNextRefreshTime interval (1 minute)
 review dev/common dependencies
 
 ## 1
++: make beautiful css
+
++: improve algorithm: distinguish between "logged out" state (after logout) and "unknown log in state" (after page refresh)
 
 verify: if it's ok to store session in memory on server (maybe for demo ok?)
 
@@ -33,8 +25,7 @@ r: don't overwrite action payload completely by error response, save sent to ser
 
 
 ## 2
-
-+: improve algorithm: distinguish between "logged out" state and "unknown log in" state (to avoid asking server for login after server refresh)
++: server 403 => force logout user on client
 
 fix: edit existing user, input 000 password (to produce server error), save => username is disappeared from breadcrumb
 
