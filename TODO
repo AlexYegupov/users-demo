@@ -31,16 +31,10 @@ r: getUserError should return list of error, not string
 
 ?: don't overwrite action payload completely by error response, save sent to server data somewhere in action. Maybe payload->req, ->response?
 
+-: remove useless comments
 
-## At last:
+i: console.log -> empty(prod)/console.log(dev)
 
-try clone&check project
+i: review dev/common dependencies
 
-remove unneeded files & comments
-
-remove console.log from code
-
-increase getLoggedUserNextRefreshTime interval (1 minute)
-
-review dev/common dependencies
 
