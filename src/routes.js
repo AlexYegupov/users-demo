@@ -7,6 +7,8 @@ import TestPage from './containers/TestPage'
 import UserDetailsPage from './containers/UserDetailsPage'
 import NotFoundPage from './containers/NotFoundPage'
 
+import QuestionList from './containers/QuestionListPage'
+
 
 //
 // function requireAuth(store, nextState, replace) {
@@ -43,6 +45,12 @@ export const createRoutes = (store) => (
   <Route path="/" >
     <IndexRedirect to="/users" />
     <Route path="/test" component={TestPage} />
+
+    <Route path="/questions" component={QuestionList} />
+    {/* <Route path="/questions/:slug" component={QuestionDetailsPage} />
+    <Route path="/questions-create" component={QuestionsCreatePage} /> */}
+
+
     <Route path="/users" component={UserList} />
     <Route path="/users-create" component={UserDetailsPage} /*onEnter={requireAuth.bind(this, store)} don't use
         TODO: implement "refresh_logged_user && redirect if unlogged behavour"

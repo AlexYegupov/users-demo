@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Control, Form, Errors } from 'react-redux-form' //actions
+
 //import { loadUser, loadStarred } from '../actions'
 // import User from '../components/User'
 // import List from '../components/List'
@@ -56,17 +58,77 @@ class TestPage extends Component {
   //   )
   // }
 
+  button0clicked() {
+    //const { dispatch } = this.props;
+    console.log('button0clicked', arguments)
+
+    /* this.props.dispatch(
+     *   actions.change('forms.user.firstName', user.firstName + '!')
+     * )*/
+  }
+
+  button1clicked() {
+    console.log('b1click', this.props.forms.user)
+  }
+
   render() {
+    let form = this.props.forms.user
+    console.log('RR', form)
+
     return (
-        <div>
-          this is test
-        </div>
+      <div>
+        <Form model="forms.user"
+              onSubmit={this.button0clicked.bind(this)}>
+
+          <label>First name:</label>
+          <Control.text model=".firstName"
+                        validators={{
+                          required: (val) => val,
+                          longEnough: (val) => val && val.length > 3,
+                          //isEmail,
+                        }}
+          />
+
+          <label>Last name:</label>
+          <Control.text model=".lastName" />
+
+          <label>email:</label>
+          <Control.text type="email" model=".email" />
+
+          <label></label>
+
+          <p>Form.valid: {String(form.$form.valid)}</p>
+          <p>firstName.valid: {String(form.firstName.valid)}
+            {JSON.stringify(form.firstName.errors)}
+          </p>
+          <p>lastName.valid: {String(form.lastName.valid)}</p>
+          <p>email.valid: {String(form.email.valid)}</p>
+
+          <hr />
+          <Errors model="forms.user.firstName"
+                  /* messages={{
+                  isRequired: 'Please provide an email address.',
+                  isEmail: (val) => `${val} is not a valid email.`,
+                  longEnough: val => `Not long enough: ${val}`
+                  }} */
+                  show={true}
+          />
+
+          <button onClick={this.button0clicked.bind(this)}>button0</button>
+
+          <button onClick={this.button1clicked.bind(this)}>button1</button>
+
+        </Form>
+
+      </div>
     )
   }
 
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  console.log('333', state)
   //const login = ownProps.params.login.toLowerCase()
   
   // const {
@@ -79,6 +141,7 @@ const mapStateToProps = (state, ownProps) => {
   // const starredRepoOwners = starredRepos.map(repo => users[repo.owner])
 
   return {
+    forms: state.forms.forms
     // login,
     // starredRepos,
     // starredRepoOwners,
@@ -92,8 +155,8 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  {
+  //{
     // loadUser,
     // loadStarred
-  }
+  //}
 )(TestPage)
