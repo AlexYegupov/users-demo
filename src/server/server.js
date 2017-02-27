@@ -46,13 +46,11 @@ const app = new Express()
 let pgp = require('pg-promise')(/*options*/)
 
 let db = pgp({
-  database: process.env.SO_DB_NAME || 'stackover',
-  password: process.env.SO_DB_PWD || 'secret',
-  user: process.env.SO_DB_USER || process.env.USER,
-  //host: process.env.SO_DB_HOST || 'localhost',
+  database: settings.dbName,
+  password: settings.dbPassword,
+  user: settings.dbUser,
+  //host: settings.dbHost,
 })
-
-console.log('DB:', db)
 
 // // Note: storing session in memory (ok for demo)
 // app.use(session({
@@ -189,7 +187,7 @@ app.post('/api/users', function(req, res) {
 })
 
 
-// TODO: change camelCase to underlined_case everywhere because pg minimizes it
+// TODO: change camelCase to underlined_case everywhere because postgres minimizes it
 
 app.get('/api/questions', function(req, res) {
   db.any(`select question.id, min(question.text) as text,
@@ -267,20 +265,7 @@ app.post('/api/questions', function(req, res) {
     res.status(400).json({'error': e, 'message': e.message}).end()
   })
 
-
-  // db.one(`insert into question(text, userId) values($<text>, $<userId>) returning id, text, userid`, data)
-  //   .then( data => {
-  //     res.json(data).end()
-  //   })
-  //   .catch( error => {
-  //     res.status(400).json(error).end()
-  //   })
-
 })
-
-
-
-
 
 app.get('/api/questions/:id/answers', function(req, res) {
   db.any(`select answer.*, users.name as userName
@@ -312,14 +297,25 @@ app.get('/api/questions/:id/answers', function(req, res) {
 app.post('/api/questions/:questionId/answers', function(req, res) {
   let data = Object.assign({}, req.body, {questionId: req.params.questionId})
 
-  db.one(`insert into answer(questionId, text, userId)
-          values ($<questionId>, $<text>, $<userId>) returning id, text, userid`, data)
-    .then( data => {
+  Promise.resolve(
+  ).then(
+    () => {
+      if (!data.userName) throw new Error('Answer user should be non-empty')
+      if (!data.text) throw new Error('Answer text should be non-empty')
+    }
+  ).then(
+    () => upsertUser(data.userName)
+  ).then(
+    userData =>
+      db.one(`insert into answer(questionId, text, userId)
+          values ($<questionId>, $<text>, $<userId>) returning id, text, userid`, Object.assign({}, data, {userId: userData.id}) )
+  ).then(
+    data =>
       res.json(data).end()
-    })
-    .catch( error => {
+  ).catch(
+    e =>
       res.status(400).json({'error': e, 'message': e.message}).end()
-    })
+  )
 })
 
 // // NOTE: experimentally use :slug as :id

@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import { auth } from './authReducer'
 import { users } from './usersReducer'
 import { questions } from './questionReducer'
+import { answers } from './answerReducer'
 import { combineForms } from 'react-redux-form'
 
 const DefaultUser = {firstName: '?', lastName: '', email: ''}
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     user: DefaultUser
   }, 'forms'),
   questions,
+  answers,
   users,
   auth,
   routing

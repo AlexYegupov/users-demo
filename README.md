@@ -1,6 +1,6 @@
 About
 ==============
-Questions editor
+Demo questions editor
 
 
 
@@ -88,7 +88,7 @@ insert into answer (id, questionId, text, userId) values (2, 1, 'q2 a2', 4);
 (I used nvm for that)
 
 
-3. Clone & Install sources
+3. Install and run
 ----------------------------------
 
 
@@ -99,18 +99,28 @@ insert into answer (id, questionId, text, userId) values (2, 1, 'q2 a2', 4);
 
  npm i
 
- # Note: substitute your data (see also process.env.SO_DB_ in code and https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object)
- export SO_DB_NAME='stackover'
- export SO_DB_PWD='secret'
+ # Note: check manually that src/settings.js are correct (modify it or set env variables)
 
  npm run dev
 
- # Note: to use db env variables - seek "process.env.SO" in code
 
 ```
 
+open http://localhost:3000 in browser
 
 
 
 
+TODO
+---------------
+
+remove extra code
+
+remove extra comments from code
+
+clear new questions and answer after successful creating
+
+keep "logged user" through all forms (store in redux storage)
+
+make "prod" mode works
 

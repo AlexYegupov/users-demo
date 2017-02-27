@@ -8,6 +8,7 @@ import UserDetailsPage from './containers/UserDetailsPage'
 import NotFoundPage from './containers/NotFoundPage'
 
 import QuestionList from './containers/QuestionListPage'
+import QuestionDetails from './containers/QuestionDetailsPage'
 
 
 //
@@ -47,8 +48,9 @@ export const createRoutes = (store) => (
     <Route path="/test" component={TestPage} />
 
     <Route path="/questions" component={QuestionList} />
-    {/* <Route path="/questions/:slug" component={QuestionDetailsPage} />
-    <Route path="/questions-create" component={QuestionsCreatePage} /> */}
+    <Route path="/questions/:id" component={QuestionDetails} />
+
+    {/*<Route path="/questions-create" component={QuestionsCreatePage} /> */}
 
 
     <Route path="/users" component={UserList} />

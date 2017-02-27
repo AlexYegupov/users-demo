@@ -203,7 +203,7 @@ class QuestionList extends Component {
                   { question.username }
                 </td>
                 <td>
-                  <Link to={`/api/questions/${question.id}`}>
+                  <Link to={`/questions/${question.id}`}>
                     Details
                   </Link>
                 </td>
@@ -222,65 +222,6 @@ class QuestionList extends Component {
       </div>
     )
 
-    // const { users, loggedUser } = this.props
-    // const readOnly = !loggedUser
-    // let error = this.state.error
-    // console.log('RENDER', this.props, error)
-    // 
-    // return (
-    //   <div>
-    //     {/* <p>Logged as: { loggedUser ? loggedUser.name : ''}</p>*/}
-    // 
-    //     <LoggedUser user={ loggedUser } />
-    // 
-    //     <h2>Users</h2>
-    //     { this.renderError() }
-    // 
-    //     <Link to={`/users-create`}>
-    //       <button disabled={readOnly}>Create</button>
-    //     </Link>
-    // 
-    //     <table>
-    //       <tbody>
-    //         { users.map( (user) =>
-    //           <tr key={ user.slug }>
-    //             <td>
-    //               <User user={ user } />
-    //             </td>
-    //             <td>
-    //               <Link to={`/users/${user.slug}`}>
-    //                 <button value="edit">
-    //                   { loggedUser ? 'Edit' : 'View' }
-    //                 </button>
-    //               </Link>
-    //             </td>
-    //             <td>
-    //               <button value="delete" disabled={!loggedUser}
-    //                       onClick={this.deleteClick.bind(this, user.slug)}>
-    //                 Delete
-    //               </button>
-    //             </td>
-    //           </tr>
-    //           )
-    //         }
-    //       </tbody>
-    //     </table>
-    // 
-    //     <div>{ error ? `Error: ${error}` : '' }</div>
-    // 
-    // 
-    //     <div className="otherStuff">
-    //       <ul>
-    //         <li><Link to={"/login"}>login</Link></li>
-    //         <li><Link to={"/users"}>users list</Link></li>
-    //         <li><Link to={"/users-create"}>create user</Link></li>
-    //         <li><Link to={"/users/terry"}>terry user</Link></li>
-    //         <li><Link to={"/users/bob"}>bob user</Link></li>
-    //         {/*<li><button onClick={this.logout.bind(this)} >Logout</button></li>*/}
-    //       </ul>
-    //     </div>
-    //   </div>
-    // )
   }
 }
 
