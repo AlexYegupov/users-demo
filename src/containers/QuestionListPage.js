@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 //import { /* testLogin, testLogout*//* , loadStarred*/} from '../actions'
 //import { test } from '../actions/authActions'
 //import { login, logout } from '../actions/authActions'
-import { loadQuestions } from '../actions/questionActions'
+import { loadQuestions, createQuestion } from '../actions/questionActions'
 //import { refreshLoggedUser } from '../actions/authActions'
 
 // import User from '../components/User'
@@ -11,12 +11,11 @@ import { loadQuestions } from '../actions/questionActions'
 // // import List from '../components/List'
 // // import zip from 'lodash/zip'
 import { Link } from 'react-router'
-// 
-// import './UserList.css'
+import './QuestionList.css'
+import { formatUnknownError } from '../utils/errorUtil'
 
 
-const DisplayQuestions = ['all', 'unanswered', 'answered']
-
+const DISPLAY_QUESTIONS = ['all', 'unanswered', 'answered']
 
 class QuestionList extends Component {
   static propTypes = {
@@ -31,25 +30,82 @@ class QuestionList extends Component {
   //   deleteUser: PropTypes.func,
   //   refreshLoggedUser: PropTypes.func
     questions: PropTypes.array,
+    questionsError: PropTypes.object,
 
     dispatch: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    this.state = {displayQuestions: 'all'}
+
+    // NOTE: in case of complicating logic move to redux store and components
+    this.state = {
+      displayQuestions: 'all',
+      filteredQuestions: [],
+      newQuestion: '',
+      userName: '',
+    }
+
     //this.state = {error: '', users: []}
   }
 
+  refreshFilteredQuestions(displayQuestions, questions) {
+    console.log('RFQ', displayQuestions, questions)
+
+    let filteredQuestions = []
+
+    switch (displayQuestions) {
+      case 'answered':
+        // TODO: investigate why answercount is NOT number
+        filteredQuestions = questions.filter(q => Number(q.answercount) > 0)
+        break;
+      case 'unanswered':
+        filteredQuestions = questions.filter(q => Number(q.answercount) === 0)
+        break;
+      case 'all':
+      default:
+        filteredQuestions = questions
+    }
+
+    console.log('FQ', filteredQuestions)
+    this.setState( {filteredQuestions}  )
+
+  }
+
   componentWillMount() {
-    //console.log('CWM')
+    console.log('CWM', this.state.displayQuestions)
     //console.log('Cookie:', document.cookie)
     this.props.dispatch(loadQuestions())
+
+    this.refreshFilteredQuestions(this.state.displayQuestions, this.props.questions)
 
     //"hope to restore" logged user from server on mount
     //if (!this.props.loggedUser) {
     //  this.props.refreshLoggedUser()
     //}
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('CWU', this.props.location.pathname, nextProps, nextState)
+
+    if (this.state.displayQuestions !== nextState.displayQuestions) {
+      this.refreshFilteredQuestions(nextState.displayQuestions, this.props.questions)
+    }
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('%cCWRP', 'background: lightgray', this.props, nextProps)
+
+    // simply reload questions
+    if (nextProps.createdQuestion && !nextProps.questionsError) {
+      this.props.dispatch(loadQuestions())
+    }
+
+    // Note: ideally should compare old and new questions arrays
+    this.refreshFilteredQuestions(this.state.displayQuestions, nextProps.questions)
+
+
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -85,17 +141,22 @@ class QuestionList extends Component {
     this.setState({ displayQuestions: event.target.value })
   }
 
+  createQuestion() {
+    //console.log('cQ', this.state.newQuestion )
+    this.props.dispatch(createQuestion({
+      'text': this.state.newQuestion,
+      'userName': this.state.userName
+    }))
+  }
+
   render() {
     const state = this.state
-    const { questions } = this.props
 
-    console.log('QQ', questions)
-
-    const displayQuestionsRadioGroup = () => DisplayQuestions.map( val => (
+    const displayQuestionsRadioGroup = () => DISPLAY_QUESTIONS.map( val => (
       <li key={val}>
         <label>
           <input type="radio" name="optradio"
-                 value={val} checked={state.displayQuestions === val}/>
+                 value={val} defaultChecked={state.displayQuestions === val}/>
           { val }
         </label>
       </li>
@@ -106,37 +167,58 @@ class QuestionList extends Component {
       <div>
         <h2>Questions</h2>
 
+        <div>
+          <input
+              placeholder="Your name" type="text" className="userName"
+              value={this.state.userName}
+              onChange={ ev => this.setState({userName: ev.target.value}) } />
+          <textarea
+              placeholder="Your question"
+              value={this.state.newQuestion}
+              onChange={ ev => this.setState({newQuestion: ev.target.value}) } />
+          <button onClick={this.createQuestion.bind(this)}>Ask</button>
+        </div>
+
+
+        <div className="error" >
+          { formatUnknownError(this.props.questionsError) }
+        </div>
+
+        <hr />
+
         <form onChange={this.handleFilterChange.bind(this)}>
-          <ul>
+          <ul className="filter">
             { displayQuestionsRadioGroup() }
           </ul>
         </form>
 
         <table>
           <tbody>
-            { questions.map( (question) =>
+            { this.state.filteredQuestions.map( (question) =>
               <tr key={ question.id }>
                 <td>
                   { question.text }
                 </td>
+                <td className="questionAskee">
+                  { question.username }
+                </td>
                 <td>
                   <Link to={`/api/questions/${question.id}`}>
-                    <button value="edit">
-                      Details
-                    </button>
+                    Details
                   </Link>
                 </td>
                 {/*<td>
-                  <button value="delete" disabled={!loggedUser}
-                          onClick={this.deleteClick.bind(this, user.slug)}>
-                    Delete
-                  </button>
+                <button value="delete" disabled={!loggedUser}
+                onClick={this.deleteClick.bind(this, user.slug)}>
+                Delete
+                </button>
                 </td> */}
               </tr>
               )
             }
           </tbody>
         </table>
+
       </div>
     )
 
@@ -203,10 +285,12 @@ class QuestionList extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('mapStateToProps', state, ownProps, state.users)
+  console.log('mapStateToProps', state, ownProps)
 
   return {
-    questions: state.questions.questions
+    questions: state.questions.questions,
+    questionsError: state.questions.questionsError,
+    createdQuestion: state.questions.createdQuestion,
     // users: state.users.users,
     // usersError: state.users.usersError,
     // loggedUser: state.auth.loggedUser,

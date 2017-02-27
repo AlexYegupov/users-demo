@@ -43,6 +43,7 @@ create table question(
 
 alter table question alter column text set not null;
 alter table question alter column userId set not null;
+alter table question add unique (text);
 
 
 insert into question (1, text, userId) values (id, 'what they do in a bed?', 1);

@@ -43,7 +43,7 @@ import QuestionList from './containers/QuestionListPage'
 
 export const createRoutes = (store) => (
   <Route path="/" >
-    <IndexRedirect to="/users" />
+    <IndexRedirect to="/questions" />
     <Route path="/test" component={TestPage} />
 
     <Route path="/questions" component={QuestionList} />

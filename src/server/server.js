@@ -187,6 +187,8 @@ app.post('/api/users', function(req, res) {
 })
 
 
+// TODO: change camelCase to underlined_case everywhere because pg minimizes it
+
 app.get('/api/questions', function(req, res) {
   db.any(`select question.id, min(question.text) as text,
                  min(question.userId) as userId,
@@ -194,7 +196,9 @@ app.get('/api/questions', function(req, res) {
                  count(answer.id) as answerCount
             from question inner join users on question.userid = users.id
                  left join answer on answer.questionId = question.id
-          group by question.id`)
+          group by question.id
+          order by min(question.text)
+         `)
     .then( data => {
       res.json(data).end()
     })
@@ -217,17 +221,59 @@ app.get('/api/questions/:id', function(req, res) {
 })
 
 
+function upsertUser(name) {
+  // NOTE: temporary solution. For latest postgres should use INSERT INTO ... ON CONFLICT
+
+  return db.one('insert into users (name) values ($1) returning id, name', [name] )
+    .catch(
+      (error) => {
+        if (error.detail.includes('already exists')) {
+          return db.one('select id, name from users where name = $1', [name])
+        } else {
+          throw error
+        }
+      })
+}
+
+
 // use POST only for CREATING new questions
 app.post('/api/questions', function(req, res) {
-  let data = req.body
+  console.log('body', req.body)
 
-  db.one(`insert into question(text, userId) values($<text>, $<userId>) returning id, text, userid`, data)
-    .then( data => {
+  Promise.resolve(
+  ).then( () => {
+    // naive checking
+    if (!req.body.userName) throw new Error('Question user should be non-empty')
+    if (!req.body.text) throw new Error('Question text should be non-empty')
+  }).then( () => {
+    return upsertUser(req.body.userName)
+  }).then(
+    userData => db.one(
+      `insert into question(text, userId) values($<text>, $<userId>)
+             returning id, text, userid`,
+      {
+        text: req.body.text,
+        userId: userData.id
+      }
+    )
+  ).then(
+    data => {
       res.json(data).end()
-    })
-    .catch( error => {
-      res.status(400).json(error).end()
-    })
+    }
+  ).catch( e => {
+    console.log('e:', e, JSON.stringify(e))
+    res.status(400).json({'error': e, 'message': e.message}).end()
+  })
+
+
+  // db.one(`insert into question(text, userId) values($<text>, $<userId>) returning id, text, userid`, data)
+  //   .then( data => {
+  //     res.json(data).end()
+  //   })
+  //   .catch( error => {
+  //     res.status(400).json(error).end()
+  //   })
+
 })
 
 
@@ -270,7 +316,7 @@ app.post('/api/questions/:questionId/answers', function(req, res) {
       res.json(data).end()
     })
     .catch( error => {
-      res.status(400).json(error).end()
+      res.status(400).json({'error': e, 'message': e.message}).end()
     })
 })
 

@@ -1,13 +1,37 @@
-// Updates an entity cache in response to any action with response.entities.
-export const questions = (state={questions:[]}, action) => {
+
+const DEFAULT_QUESTIONS = {
+  questions: [],
+  questionsError: null,  // naive meaning "some error related with questions"
+  createdQuestion: null, // just created question
+}
+
+export const questions = (state=DEFAULT_QUESTIONS, action) => {
     //console.log('usersReducer ACTION:', action)
 
     if (action.type === 'LOAD_QUESTIONS') {
       if (!action.error)
-        return Object.assign({}, state, {questions: action.payload, questionsError: null})
+        return Object.assign({}, state, {
+          questions: action.payload,
+          createdQuestion: null,
+          questionsError: null,
+        })
       else
-        return Object.assign({}, state, {questions: [], questionsError: action.payload})
+        return Object.assign({}, state, {
+          questions: [],
+          createdQuestion: null,
+          questionsError: action.payload,
+        })
     }
+
+    if (action.type === 'CREATE_QUESTION') {
+
+      if (!action.error)
+        return Object.assign({}, state, {createdQuestion: action.payload, questionsError: null})
+      else
+        return Object.assign({}, state, {createdQuestion: null, questionsError: action.payload})
+    }
+
+
 
     // if (action.type === 'LOAD_USER') {
     //   if (!action.error) {
