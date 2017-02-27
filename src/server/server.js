@@ -15,9 +15,9 @@ import Express from 'express'
 //import App from '../common/containers/App'
 //import { fetchCounter } from '../common/api/counter'
 import bodyParser from 'body-parser';
-import session from 'express-session'
+//import session from 'express-session'
 import settings from '../settings'
-import { Users } from './dbUtil'
+//import { Users } from './dbUtil'
 
 var cors = require('cors')
 const app = new Express()
@@ -47,10 +47,12 @@ let pgp = require('pg-promise')(/*options*/)
 
 let db = pgp({
   database: process.env.SO_DB_NAME || 'stackover',
-  password: process.env.SO_DB_PWD || 'secret'
+  password: process.env.SO_DB_PWD || 'secret',
+  user: process.env.SO_DB_USER || process.env.USER,
+  //host: process.env.SO_DB_HOST || 'localhost',
 })
 
-
+console.log('DB:', db)
 
 // // Note: storing session in memory (ok for demo)
 // app.use(session({

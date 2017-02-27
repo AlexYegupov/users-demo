@@ -1,20 +1,27 @@
+About
+==============
+Questions editor
 
 
 
-Env variables
------------------
-see "process.env.SO_" in code
+
+Quick instructions (tested on ubuntu 14.04)
+==============================================
 
 
+Init database (tested on postgres 9.3.16)
+------------------------------------------
 
-Init database
--------------------
 
 0. Preparations:
-  0.1 Create postgres user == os user
-  0.2 Set that user pwd to 'secret'
+
+  0.1 Create postgres user with same name as current OS user
+  0.2 Set postgres user password to 'secret' value
+
 
 1. Create database and metadata
+
+(in psql):
 
 ```
 create database stackover;
@@ -47,8 +54,7 @@ alter table question add unique (text);
 
 
 insert into question (1, text, userId) values (id, 'what they do in a bed?', 1);
-insert into question (2, text, userId) values (id, 'why don''t we do it in a road?', 2);
-
+<insert into question (2, text, userId) values (id, 'why dont we do it in a road?', 2);
 
 create table answer(
     id serial primary key,
@@ -69,10 +75,42 @@ insert into answer (id, questionId, text, userId) values (2, 1, 'q2 a2', 4);
 #----+-------------------------------+--------+----+------------+-------+--------
 #  1 | what they do in a bed?        |      1 |  2 |          1 | q2 a2 |      4
 #  1 | what they do in a bed?        |      1 |  1 |          1 | q1 a1 |      3
-#  2 | why don't we do it in a road? |      2 |    |            |       |
+#  2 | why dont we do it in a road? |      2 |    |            |       |
 # (3 rows)
 
+
+
 ```
+
+
+2. Setup fresh nodejs (tested on v7.0.0)
+----------------------------------------
+(I used nvm for that)
+
+
+3. Clone & Install sources
+----------------------------------
+
+
+```
+ git clone https://github.com/AlexYegupov/users-demo
+ cd users-demo
+ git checkout origin/stackover
+
+ npm i
+
+ # Note: substitute your data (see also process.env.SO_DB_ in code and https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object)
+ export SO_DB_NAME='stackover'
+ export SO_DB_PWD='secret'
+
+ npm run dev
+
+ # Note: to use db env variables - seek "process.env.SO" in code
+
+```
+
+
+
 
 
 
