@@ -131,6 +131,11 @@ insert into answer (id, questionId, text, userId) values (2, 1, 'q2 a2', 4);
 open http://localhost:3000 in browser
 
 
+Screnshots
+---------------------
+
+![screenshots](https://github.com/AlexYegupov/users-demo/blob/stackover/screenshots.png?raw=true)
+
 
 
 TODO
@@ -147,3 +152,5 @@ keep "logged user" through all forms (store in redux storage)
 make "prod" mode works
 
 move project from branch into separate one
+
+
