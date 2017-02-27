@@ -133,8 +133,7 @@ open http://localhost:3000 in browser
 
 Screnshots
 ---------------------
-
-![screenshots](https://github.com/AlexYegupov/users-demo/blob/stackover/screenshots.png?raw=true)
+![screenshots](https://github.com/AlexYegupov/users-demo/blob/stackover/ss.png?raw=true)
 
 
 
