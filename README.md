@@ -124,3 +124,4 @@ keep "logged user" through all forms (store in redux storage)
 
 make "prod" mode works
 
+move project from branch into separate one
