@@ -45,6 +45,7 @@ const app = new Express()
 // check: ?global variables
 let pgp = require('pg-promise')(/*options*/)
 
+// see https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 let db = pgp({
   database: settings.dbName,
   password: settings.dbPassword,
